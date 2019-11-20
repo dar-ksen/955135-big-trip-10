@@ -87,7 +87,7 @@ const getCardContainerTemplate = () => {
         <span class="day__counter">1</span>
         <time class="day__date" datetime="2019-03-18">MAR 18</time>
       </div>
-      <ul class="trip-events__list">
+      <ul class="trip-events__list js-trip-events__list">
       </ul>
     </li>
   </ul>
@@ -327,11 +327,11 @@ const editCardTemplate = () => {
   `);
 };
 
-const tripMainElement = document.querySelector(`.trip-main`);
-const tripInfoElement = tripMainElement.querySelector(`.trip-info`);
-const tripConrolsElement = tripMainElement.querySelector(`.trip-controls`);
-const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`h2`);
-const tripEventsElement = document.querySelector(`.trip-events`);
+const tripMainElement = document.querySelector(`.js-trip-main`);
+const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
+const tripConrolsElement = tripMainElement.querySelector(`.js-trip-controls`);
+const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`.js-trip-controls-heading`);
+const tripEventsElement = document.querySelector(`.js-trip-events`);
 
 
 const render = (container, template, place = `beforeend`) => {
@@ -344,7 +344,7 @@ render(tripControlsHeaderElements[1], getFilterTemplate(), `afterend`);
 render(tripEventsElement, getSortTemplate());
 render(tripEventsElement, getCardContainerTemplate());
 
-const tripEventListElement = tripEventsElement.querySelector(`.trip-events__list`);
+const tripEventListElement = tripEventsElement.querySelector(`.js-trip-events__list`);
 render(tripEventListElement, editCardTemplate());
 
 new Array(CARD_COUNT)
