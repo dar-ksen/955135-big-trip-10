@@ -15,8 +15,8 @@
       <div class="page-body__container  page-header__container">
         <img class="page-header__logo" src="img/logo.png" width="42" height="42" alt="Trip logo">
 
-        <div class="trip-main">
-          <section class="trip-main__trip-info  trip-info">
+        <div class="trip-main js-trip-main">
+          <section class="trip-main__trip-info  trip-info js-trip-info">
             <!-- Маршрут -->
 
             <p class="trip-info__cost">
@@ -24,11 +24,11 @@
             </p>
           </section>
 
-          <div class="trip-main__trip-controls  trip-controls">
-            <h2 class="visually-hidden">Switch trip view</h2>
+          <div class="trip-main__trip-controls  trip-controls js-trip-controls">
+            <h2 class="visually-hidden js-trip-controls-heading">Switch trip view</h2>
             <!-- Меню -->
 
-            <h2 class="visually-hidden">Filter events</h2>
+            <h2 class="visually-hidden js-trip-controls-heading">Filter events</h2>
             <!-- Фильтры -->
           </div>
 
@@ -38,7 +38,7 @@
     </header>
     <main class="page-body__page-main  page-main">
       <div class="page-body__container">
-          <section class="trip-events">
+          <section class="trip-events js-trip-events">
             <h2 class="visually-hidden">Trip events</h2>
 
             <!-- Сортировка -->
@@ -47,5 +47,6 @@
           </section>
       </div>
     </main>
+    <script src="../src/main.js"></script>
   </body>
 </html>
