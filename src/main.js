@@ -27,8 +27,5 @@ render(tripEventsElement, getCardContainerTemplate());
 const tripEventListElement = tripEventsElement.querySelector(`.js-trip-events__list`);
 render(tripEventListElement, editCardTemplate());
 
-new Array(CARD_COUNT)
-  .fill(``)
-  .forEach(
-      () => render(tripEventListElement, getCardTemplate())
-  );
+const tripEventsTemplate = new Array(CARD_COUNT).fill(getCardTemplate()).join(``);
+render(tripEventListElement, tripEventsTemplate);
