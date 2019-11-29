@@ -1,11 +1,16 @@
-import {getInfoElement} from "./components/info";
-import {getMenuTemplate} from "./components/menu";
-import {getFilterTemplate} from "./components/filter";
-import {getSortTemplate} from "./components/sort";
-import {getCardContainerTemplate} from "./components/card-container";
-import {getCardTemplate} from "./components/card";
-import {editCardTemplate} from "./components/edit-card";
+import {getInfoElement} from './components/info';
+import {getMenuTemplate} from './components/menu';
+import {getFilterTemplate} from './components/filter';
+import {getSortTemplate} from './components/sort';
+import {getCardContainerTemplate} from './components/card-container';
+import {getCardTemplate} from './components/card';
+import {editCardTemplate} from './components/edit-card';
+
+import {generateCards} from './mock/card';
+
 const CARD_COUNT = 3;
+
+const cards = generateCards(CARD_COUNT);
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
@@ -25,7 +30,6 @@ render(tripEventsElement, getSortTemplate());
 render(tripEventsElement, getCardContainerTemplate());
 
 const tripEventListElement = tripEventsElement.querySelector(`.js-trip-events__list`);
-render(tripEventListElement, editCardTemplate());
+render(tripEventListElement, editCardTemplate(cards[0]));
 
-const tripEventsTemplate = new Array(CARD_COUNT).fill(getCardTemplate()).join(``);
-render(tripEventListElement, tripEventsTemplate);
+cards.forEach((card) => render(tripEventListElement, getCardTemplate(card)));
