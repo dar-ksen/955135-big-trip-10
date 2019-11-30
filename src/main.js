@@ -8,7 +8,7 @@ import {editCardTemplate} from './components/edit-card';
 
 import {generateCards} from './mock/card';
 
-const CARD_COUNT = 3;
+const CARD_COUNT = 10;
 
 const cards = generateCards(CARD_COUNT);
 
@@ -23,7 +23,7 @@ const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
-render(tripInfoElement, getInfoElement(), `afterbegin`);
+render(tripInfoElement, getInfoElement(cards), `afterbegin`);
 render(tripControlsHeaderElements[0], getMenuTemplate(), `afterend`);
 render(tripControlsHeaderElements[1], getFilterTemplate(), `afterend`);
 render(tripEventsElement, getSortTemplate());
@@ -32,4 +32,10 @@ render(tripEventsElement, getCardContainerTemplate());
 const tripEventListElement = tripEventsElement.querySelector(`.js-trip-events__list`);
 render(tripEventListElement, editCardTemplate(cards[0]));
 
-cards.forEach((card) => render(tripEventListElement, getCardTemplate(card)));
+cards.slice(1).forEach((card) => render(tripEventListElement, getCardTemplate(card)));
+
+const cost = cards.map(({price}) => price).reduce((sum, price) => sum + price);
+
+const costPlace = document.querySelector(`.trip-info__cost-value`);
+costPlace.textContent = cost;
+
