@@ -1,9 +1,34 @@
-export const getInfoElement = () => {
+const monthNames = {
+  0: `JUN`,
+  1: `FEB`,
+  2: `MAR`,
+  3: `APR`,
+  4: `MAY`,
+  5: `JUN`,
+  6: `JUL`,
+  7: `AUG`,
+  8: `SEP`,
+  9: `OCT`,
+  10: `NOV`,
+  11: `DEC`
+};
+
+const getCitiesMarkup = (cards) => {
+  const cities = cards.map(({city}) => city);
+  return cities.map((city, i) => i ? `&mdash; ${city}` : `${city}`).join(`\n`);
+};
+
+export const getInfoElement = (cards) => {
+  const getCitiesTemplate = getCitiesMarkup(cards);
   return (`
   <div class="trip-info__main">
-    <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
+    <h1 class="trip-info__title">${getCitiesTemplate}</h1>
 
-    <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
+    <p class="trip-info__dates">
+    ${monthNames[(cards[0].startTime).getMonth()]} ${cards[0].startTime.getDate()}
+    &nbsp;&mdash;&nbsp;
+    ${monthNames[(cards[cards.length - 1].endTime).getMonth()]} ${cards[cards.length - 1].endTime.getDate()}
+    </p>
   </div>
   `);
 };
