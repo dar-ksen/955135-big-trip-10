@@ -27,8 +27,8 @@ const getOfferMarkup = (offers) => {
 };
 
 export const editCardTemplate = ({type, city, pictures, description, startTime, endTime, price, offers}) => {
-  const picturesTemplate = gerPicturesMarkup(pictures);
-  const offersTemplate = getOfferMarkup(offers);
+  const picturesMarkup = gerPicturesMarkup(pictures);
+  const offerMarkup = getOfferMarkup(offers);
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
@@ -155,7 +155,7 @@ export const editCardTemplate = ({type, city, pictures, description, startTime, 
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            ${offersTemplate}
+            ${offerMarkup}
           </div>
         </section>
 
@@ -165,7 +165,7 @@ export const editCardTemplate = ({type, city, pictures, description, startTime, 
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
-              ${picturesTemplate}
+              ${picturesMarkup}
             </div>
           </div>
         </section>

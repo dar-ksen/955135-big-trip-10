@@ -35,9 +35,9 @@ const getOfferMarkup = (offers) => {
 };
 
 export const getCardTemplate = ({type, city, startTime, endTime, price, offers}) => {
-  const offersTemplate = getOfferMarkup(offers);
+  const offerMarkup = getOfferMarkup(offers);
   const duration = getDuration(startTime, endTime);
-  const durationTemplate = getDurationMarkup(duration);
+  const durationMarkup = getDurationMarkup(duration);
 
   return (`
   <li class="trip-events__item">
@@ -53,7 +53,7 @@ export const getCardTemplate = ({type, city, startTime, endTime, price, offers})
           &mdash;
           <time class="event__end-time" datetime="${endTime.toISOString()}">${formatTime(endTime)}</time>
         </p>
-        <p class="event__duration">${durationTemplate}</p>
+        <p class="event__duration">${durationMarkup}</p>
       </div>
 
       <p class="event__price">
@@ -62,7 +62,7 @@ export const getCardTemplate = ({type, city, startTime, endTime, price, offers})
 
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${offersTemplate}
+        ${offerMarkup}
       </ul>
 
       <button class="event__rollup-btn" type="button">

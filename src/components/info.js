@@ -19,10 +19,10 @@ const getCitiesMarkup = (cards) => {
 };
 
 export const getInfoElement = (cards) => {
-  const getCitiesTemplate = getCitiesMarkup(cards);
+  const citiesMarkup = getCitiesMarkup(cards);
   return (`
   <div class="trip-info__main">
-    <h1 class="trip-info__title">${getCitiesTemplate}</h1>
+    <h1 class="trip-info__title">${citiesMarkup}</h1>
 
     <p class="trip-info__dates">
     ${monthNames[(cards[0].startTime).getMonth()]} ${cards[0].startTime.getDate()}
