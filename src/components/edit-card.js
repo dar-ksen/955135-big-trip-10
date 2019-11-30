@@ -1,13 +1,34 @@
+import {Offers} from '../const';
+
 const getTime = (time) => {
-  return `${time.getDay()}/${ time.getMonth()}/${time.getYear()} ${time.getHours(time)}:${time.getMinutes()}`;
+  return `${time.getDay()}/${ time.getMonth()}/${time.getYear() - 100} ${time.getHours(time)}:${time.getMinutes()}`;
 };
 
 const gerPicturesMarkup = (pictures) => {
   return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
 };
 
-export const editCardTemplate = ({type, city, pictures, description, startTime, endTime, price}) => {
+const getOfferMarkup = (offers) => {
+  const isChecked = (offer) => {
+    return offers[offer] ? `checked` : ``;
+  };
+  return Object.keys(offers).map((offer)=>{
+    return `
+      <div class="event__offer-selector">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer}-1" type="checkbox" name="event-offer-${offer}" ${isChecked(offer)}>
+        <label class="event__offer-label" for="event-offer-${offer}-1">
+        <span class="event__offer-title">${Offers[offer].title}</span>
+        &plus;
+        &euro;&nbsp;<span class="event__offer-price">${Offers[offer].price}</span>
+        </label>
+      </div>
+  `;
+  }).join(`\n`);
+};
+
+export const editCardTemplate = ({type, city, pictures, description, startTime, endTime, price, offers}) => {
   const picturesTemplate = gerPicturesMarkup(pictures);
+  const offersTemplate = getOfferMarkup(offers);
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
@@ -134,50 +155,7 @@ export const editCardTemplate = ({type, city, pictures, description, startTime, 
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-              <label class="event__offer-label" for="event-offer-luggage-1">
-                <span class="event__offer-title">Add luggage</span>
-                &plus;
-                &euro;&nbsp;<span class="event__offer-price">30</span>
-              </label>
-            </div>
-
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-              <label class="event__offer-label" for="event-offer-comfort-1">
-                <span class="event__offer-title">Switch to comfort class</span>
-                &plus;
-                &euro;&nbsp;<span class="event__offer-price">100</span>
-              </label>
-            </div>
-
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-              <label class="event__offer-label" for="event-offer-meal-1">
-                <span class="event__offer-title">Add meal</span>
-                &plus;
-                &euro;&nbsp;<span class="event__offer-price">15</span>
-              </label>
-            </div>
-
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-              <label class="event__offer-label" for="event-offer-seats-1">
-                <span class="event__offer-title">Choose seats</span>
-                &plus;
-                &euro;&nbsp;<span class="event__offer-price">5</span>
-              </label>
-            </div>
-
-            <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-              <label class="event__offer-label" for="event-offer-train-1">
-                <span class="event__offer-title">Travel by train</span>
-                &plus;
-                &euro;&nbsp;<span class="event__offer-price">40</span>
-              </label>
-            </div>
+            ${offersTemplate}
           </div>
         </section>
 

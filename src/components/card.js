@@ -1,4 +1,5 @@
 import {formatTime} from '../utils';
+import {Offers} from '../const';
 
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
@@ -24,19 +25,17 @@ const getDurationMarkup = (duration) => {
 };
 
 const getOfferMarkup = (offers) => {
-  return offers.map((offer) => {
-    return (
-      `<li class="event__offer">
-        <span class="event__offer-title">${offer.title}</span>
-        &plus;
-        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
-      </li>`
-    );
+  return Object.keys(offers).map((offer)=>{
+    return (offers[offer] ? `<li class="event__offer">
+    <span class="event__offer-title">${Offers[offer].title}</span>
+     &plus;
+    &euro;&nbsp;<span class="event__offer-price">${Offers[offer].price}</span>
+   </li>` : ``);
   }).join(`\n`);
 };
 
 export const getCardTemplate = ({type, city, startTime, endTime, price, offers}) => {
-  const offersTemplate = getOfferMarkup(Array.from(offers));
+  const offersTemplate = getOfferMarkup(offers);
   const duration = getDuration(startTime, endTime);
   const durationTemplate = getDurationMarkup(duration);
 
