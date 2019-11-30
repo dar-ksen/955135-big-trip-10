@@ -6,6 +6,7 @@ import {getCardContainerTemplate} from './components/card-container';
 import {getCardTemplate} from './components/card';
 import {editCardTemplate} from './components/edit-card';
 
+import {filterItem} from './mock/filter';
 import {generateCards} from './mock/card';
 
 const CARD_COUNT = 10;
@@ -25,7 +26,7 @@ const render = (container, template, place = `beforeend`) => {
 
 render(tripInfoElement, getInfoElement(cards), `afterbegin`);
 render(tripControlsHeaderElements[0], getMenuTemplate(), `afterend`);
-render(tripControlsHeaderElements[1], getFilterTemplate(), `afterend`);
+render(tripControlsHeaderElements[1], getFilterTemplate(filterItem), `afterend`);
 render(tripEventsElement, getSortTemplate());
 render(tripEventsElement, getCardContainerTemplate());
 
