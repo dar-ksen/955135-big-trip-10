@@ -75,37 +75,18 @@ const DescriptionsItems = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-const Offers = [
-  {
-    title: `Add luggage`,
-    price: 30,
-  },
-  {
-    title: `Switch to comfort class`,
-    price: 100,
-  },
-  {
-    title: `Add meal`,
-    price: 15,
-  },
-  {
-    title: `Choose seats`,
-    price: 5,
-  },
-  {
-    title: `Travel by train`,
-    price: 40,
-  }
-];
+const getOfferState = () => {
+  return {
+    luggage: Math.random() > 0.5,
+    comfort: Math.random() > 0.5,
+    meal: false,
+    seats: false,
+    train: false,
+  };
+};
 
 const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(max * Math.random());
-};
-
-const generateOffers = (offers) => {
-  return offers
-    .filter(() => Math.random() > 0.5)
-    .slice(0, 2);
 };
 
 const getRandomArrayItem = (array) => {
@@ -125,7 +106,7 @@ const getRandomDescription = () => {
 
 const getRandomDate = () => {
   const targetDate = new Date();
-  const diffValue = getRandomIntegerNumber(0, 6);
+  const diffValue = getRandomIntegerNumber(0, 15);
 
   targetDate.setHours(targetDate.getHours() + diffValue);
 
@@ -145,14 +126,14 @@ const generateCard = () => {
     startTime,
     endTime,
     price: getRandomIntegerNumber(50, 100),
-    offers: new Set(generateOffers(Offers))
+    offers: getOfferState(),
   };
 };
 
 const generateCards = (count) => {
   return new Array(count)
     .fill(``)
-    .map(generateCard).sort((a, b) => a.startTime < b.startTime);
+    .map(generateCard).sort((a, b) => a.startTime - b.startTime);
 };
 
 export {generateCard, generateCards};
