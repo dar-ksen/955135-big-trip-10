@@ -1,10 +1,22 @@
-const castTimeFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
+const getTwoDigitalFormat = (value) => String(value).padStart(2, `0`);
+
+const formatterOptionsTime = {
+  hour12: false,
+  hour: `2-digit`,
+  minute: `2-digit`,
 };
 
-export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours());
-  const minutes = castTimeFormat(date.getMinutes());
+const TimeFormatter = new Intl.DateTimeFormat(`en-US`, formatterOptionsTime);
 
-  return `${hours}:${minutes}`;
+const formatTime = (date) => TimeFormatter.format(date);
+
+const formatterOptionsDate = {
+  day: `numeric`,
+  month: `short`,
 };
+
+const DateFormatter = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate);
+
+const formatDate = (date) => DateFormatter.format(date);
+
+export { formatTime, getTwoDigitalFormat, formatDate };

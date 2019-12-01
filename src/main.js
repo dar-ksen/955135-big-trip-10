@@ -1,6 +1,6 @@
 import { getInfoElement } from './components/info';
 import { getMenuTemplate } from './components/menu';
-import { getFilterTemplate } from './components/filter';
+import { getFiltersTemplate } from './components/filter';
 import { getSortTemplate } from './components/sort';
 import { getCardContainerTemplate } from './components/card-container';
 import { getCardTemplate } from './components/card';
@@ -22,7 +22,7 @@ const render = (container, template, place = `beforeend`) => {
 
 render(tripInfoElement, getInfoElement(cards), `afterbegin`);
 render(tripControlsHeaderElements[0], getMenuTemplate(), `afterend`);
-render(tripControlsHeaderElements[1], getFilterTemplate(filterItem), `afterend`);
+render(tripControlsHeaderElements[1], getFiltersTemplate(filterItem), `afterend`);
 render(tripEventsElement, getSortTemplate());
 render(tripEventsElement, getCardContainerTemplate());
 

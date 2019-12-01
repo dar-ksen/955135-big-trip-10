@@ -1,4 +1,4 @@
-const getFilterMarkup = (filter, isChecked) => {
+const getFilterTemplate = (filter, isChecked) => {
   const { name, title } = filter;
 
   return (
@@ -9,15 +9,15 @@ const getFilterMarkup = (filter, isChecked) => {
   );
 };
 
-const getFilterTemplate = (filters) => {
-  const filtersMarkup = filters.map((filter, i) => getFilterMarkup(filter, i === 0)).join(`\n`);
+const getFiltersTemplate = (filters) => {
+  const filtersTemplate = filters.map((filter, i) => getFilterTemplate(filter, i === 0)).join(`\n`);
   return (`
   <form class="trip-filters  trip-filters--hidden" action="#" method="get">
-    ${filtersMarkup}
+    ${filtersTemplate}
 
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>
   `);
 };
 
-export { getFilterTemplate };
+export { getFiltersTemplate };

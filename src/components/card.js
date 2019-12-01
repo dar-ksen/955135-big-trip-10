@@ -1,14 +1,11 @@
-import { formatTime } from '../utils';
+import { formatTime, getTwoDigitalFormat } from '../utils';
 import { Offers } from '../const';
 
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
-  let minutes = duration % 60;
-  let hours = Math.floor(duration / 60) % 60;
-  let days = Math.floor(duration / 3600) % 24;
-  minutes = (minutes < 10) ? `0${minutes}` : minutes;
-  hours = (hours < 10) ? `0${hours}` : hours;
-  days = (days < 10) ? `0${days}` : days;
+  let minutes = getTwoDigitalFormat(duration % 60);
+  let hours = getTwoDigitalFormat(Math.floor(duration / 60) % 24);
+  let days = getTwoDigitalFormat(Math.floor(duration / (60 * 24)));
   return {
     minutes,
     hours,
@@ -16,15 +13,13 @@ const getDuration = (start, end) => {
   };
 };
 
-const getDurationMarkup = (duration) => {
-  return (
-    `${duration.days !== `00` ? `${duration.days}D` : ``}
-    ${duration.hours !== `00` ? `${duration.hours}H` : ``}
-    ${duration.minutes !== `00` ? `${duration.minutes}M` : ``}`
-  );
-};
+const getDurationTemplate = (duration) => `
+  ${duration.days !== `00` ? `${duration.days}D` : ``}
+  ${duration.hours !== `00` ? `${duration.hours}H` : ``}
+  ${duration.minutes !== `00` ? `${duration.minutes}M` : ``}`
+;
 
-const getOfferMarkup = (offers) => {
+const getOfferTemplate = (offers) => {
   return Object.keys(offers).map((offer)=>{
     return (offers[offer] ? `<li class="event__offer">
     <span class="event__offer-title">${Offers[offer].title}</span>
@@ -35,9 +30,9 @@ const getOfferMarkup = (offers) => {
 };
 
 export const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
-  const offerMarkup = getOfferMarkup(offers);
+  const offerTemplate = getOfferTemplate(offers);
   const duration = getDuration(startTime, endTime);
-  const durationMarkup = getDurationMarkup(duration);
+  const durationTemplate = getDurationTemplate(duration);
 
   return (`
   <li class="trip-events__item">
@@ -53,7 +48,7 @@ export const getCardTemplate = ({ type, city, startTime, endTime, price, offers 
           &mdash;
           <time class="event__end-time" datetime="${endTime.toISOString()}">${formatTime(endTime)}</time>
         </p>
-        <p class="event__duration">${durationMarkup}</p>
+        <p class="event__duration">${durationTemplate}</p>
       </div>
 
       <p class="event__price">
@@ -62,13 +57,12 @@ export const getCardTemplate = ({ type, city, startTime, endTime, price, offers 
 
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${offerMarkup}
+        ${offerTemplate}
       </ul>
 
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
     </div>
-  </li>
-  `);
+  </li>`);
 };

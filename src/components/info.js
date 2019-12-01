@@ -1,17 +1,4 @@
-const monthNames = {
-  0: `JUN`,
-  1: `FEB`,
-  2: `MAR`,
-  3: `APR`,
-  4: `MAY`,
-  5: `JUN`,
-  6: `JUL`,
-  7: `AUG`,
-  8: `SEP`,
-  9: `OCT`,
-  10: `NOV`,
-  11: `DEC`
-};
+import { formatDate } from '../utils';
 
 const getCitiesMarkup = (cards) => {
   const cities = cards.map(({ city }) => city);
@@ -28,9 +15,9 @@ export const getInfoElement = (cards) => {
     <h1 class="trip-info__title">${citiesMarkup}</h1>
 
     <p class="trip-info__dates">
-    ${monthNames[(cards[0].startTime).getMonth()]} ${cards[0].startTime.getDate()}
+    ${formatDate(cards[0].startTime)}
     &nbsp;&mdash;&nbsp;
-    ${monthNames[(cards[cards.length - 1].endTime).getMonth()]} ${cards[cards.length - 1].endTime.getDate()}
+    ${formatDate(cards[cards.length - 1].endTime)}
     </p>
   </div>
   `);

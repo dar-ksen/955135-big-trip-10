@@ -4,11 +4,11 @@ const getTime = (time) => {
   return `${time.getDay()}/${ time.getMonth()}/${time.getYear() - 100} ${time.getHours(time)}:${time.getMinutes()}`;
 };
 
-const gerPicturesMarkup = (pictures) => {
+const gerPicturesTemplate = (pictures) => {
   return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
 };
 
-const getOfferMarkup = (offers) => {
+const getOfferTemplate = (offers) => {
   const isChecked = (offer) => {
     return offers[offer] ? `checked` : ``;
   };
@@ -25,8 +25,8 @@ const getOfferMarkup = (offers) => {
 };
 
 export const editCardTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
-  const picturesMarkup = gerPicturesMarkup(pictures);
-  const offerMarkup = getOfferMarkup(offers);
+  const picturesTemplate = gerPicturesTemplate(pictures);
+  const offerTemplate = getOfferTemplate(offers);
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
@@ -153,7 +153,7 @@ export const editCardTemplate = ({ type, city, pictures, description, startTime,
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
-            ${offerMarkup}
+            ${offerTemplate}
           </div>
         </section>
 
@@ -163,7 +163,7 @@ export const editCardTemplate = ({ type, city, pictures, description, startTime,
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
-              ${picturesMarkup}
+              ${picturesTemplate}
             </div>
           </div>
         </section>
