@@ -1,5 +1,5 @@
-import {formatTime} from '../utils';
-import {Offers} from '../const';
+import { formatTime } from '../utils';
+import { Offers } from '../const';
 
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
@@ -34,7 +34,7 @@ const getOfferMarkup = (offers) => {
   }).join(`\n`);
 };
 
-export const getCardTemplate = ({type, city, startTime, endTime, price, offers}) => {
+export const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
   const offerMarkup = getOfferMarkup(offers);
   const duration = getDuration(startTime, endTime);
   const durationMarkup = getDurationMarkup(duration);

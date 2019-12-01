@@ -1,4 +1,4 @@
-import {Offers} from '../const';
+import { Offers } from '../const';
 
 const getTime = (time) => {
   return `${time.getDay()}/${ time.getMonth()}/${time.getYear() - 100} ${time.getHours(time)}:${time.getMinutes()}`;
@@ -12,8 +12,7 @@ const getOfferMarkup = (offers) => {
   const isChecked = (offer) => {
     return offers[offer] ? `checked` : ``;
   };
-  return Object.keys(offers).map((offer)=>{
-    return `
+  return Object.keys(offers).map((offer)=> `
       <div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer}-1" type="checkbox" name="event-offer-${offer}" ${isChecked(offer)}>
         <label class="event__offer-label" for="event-offer-${offer}-1">
@@ -22,11 +21,10 @@ const getOfferMarkup = (offers) => {
         &euro;&nbsp;<span class="event__offer-price">${Offers[offer].price}</span>
         </label>
       </div>
-  `;
-  }).join(`\n`);
+  `).join(`\n`);
 };
 
-export const editCardTemplate = ({type, city, pictures, description, startTime, endTime, price, offers}) => {
+export const editCardTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
   const picturesMarkup = gerPicturesMarkup(pictures);
   const offerMarkup = getOfferMarkup(offers);
   return (`

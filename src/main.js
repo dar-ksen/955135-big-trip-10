@@ -1,13 +1,13 @@
-import {getInfoElement} from './components/info';
-import {getMenuTemplate} from './components/menu';
-import {getFilterTemplate} from './components/filter';
-import {getSortTemplate} from './components/sort';
-import {getCardContainerTemplate} from './components/card-container';
-import {getCardTemplate} from './components/card';
-import {editCardTemplate} from './components/edit-card';
+import { getInfoElement } from './components/info';
+import { getMenuTemplate } from './components/menu';
+import { getFilterTemplate } from './components/filter';
+import { getSortTemplate } from './components/sort';
+import { getCardContainerTemplate } from './components/card-container';
+import { getCardTemplate } from './components/card';
+import { editCardTemplate } from './components/edit-card';
 
-import {filterItem} from './mock/filter';
-import {generateCards} from './mock/card';
+import { filterItem } from './mock/filter';
+import { generateCards } from './mock/card';
 
 const CARD_COUNT = 10;
 
@@ -35,7 +35,7 @@ render(tripEventListElement, editCardTemplate(cards[0]));
 
 cards.slice(1).forEach((card) => render(tripEventListElement, getCardTemplate(card)));
 
-const cost = cards.map(({price}) => price).reduce((sum, price) => sum + price);
+const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
 
 const costPlace = document.querySelector(`.trip-info__cost-value`);
 costPlace.textContent = cost;

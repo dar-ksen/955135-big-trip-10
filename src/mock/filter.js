@@ -13,4 +13,4 @@ const filterItem = [
   },
 ];
 
-export {filterItem};
+export { filterItem };

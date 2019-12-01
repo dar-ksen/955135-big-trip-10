@@ -136,4 +136,4 @@ const generateCards = (count) => {
     .map(generateCard).sort((a, b) => a.startTime - b.startTime);
 };
 
-export {generateCard, generateCards};
+export { generateCard, generateCards };

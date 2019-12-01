@@ -14,7 +14,7 @@ const monthNames = {
 };
 
 const getCitiesMarkup = (cards) => {
-  const cities = cards.map(({city}) => city);
+  const cities = cards.map(({ city }) => city);
   if (cities.length > 3) {
     return `${cities[0]} &mdash; ... &mdash; ${cities[cities.length - 1]}`;
   }

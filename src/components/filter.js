@@ -1,5 +1,5 @@
 const getFilterMarkup = (filter, isChecked) => {
-  const {name, title} = filter;
+  const { name, title } = filter;
 
   return (
     `<div class="trip-filters__filter">
@@ -20,4 +20,4 @@ const getFilterTemplate = (filters) => {
   `);
 };
 
-export {getFilterTemplate};
+export { getFilterTemplate };
