@@ -1,7 +1,18 @@
 import { Offers } from '../const';
 
+
 const getTime = (time) => {
-  return `${time.getDay()}/${ time.getMonth()}/${time.getYear() - 100} ${time.getHours(time)}:${time.getMinutes()}`;
+  const formatterOptionsDate = {
+    year: `2-digit`,
+    month: `2-digit`,
+    day: `numeric`,
+    hour12: false,
+    hour: `2-digit`,
+    minute: `2-digit`,
+  };
+
+  const date = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate).format(time);
+  return `${date.replace(`,`, ``)}`;
 };
 
 const gerPicturesTemplate = (pictures) => {

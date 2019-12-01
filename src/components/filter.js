@@ -1,3 +1,5 @@
+import { isFirst } from '../utils';
+
 const getFilterTemplate = (filter, isChecked) => {
   const { name, title } = filter;
 
@@ -10,7 +12,7 @@ const getFilterTemplate = (filter, isChecked) => {
 };
 
 const getFiltersTemplate = (filters) => {
-  const filtersTemplate = filters.map((filter, i) => getFilterTemplate(filter, i === 0)).join(`\n`);
+  const filtersTemplate = filters.map((filter, index) => getFilterTemplate(filter, isFirst(index))).join(`\n`);
   return (`
   <form class="trip-filters  trip-filters--hidden" action="#" method="get">
     ${filtersTemplate}

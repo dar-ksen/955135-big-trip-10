@@ -19,4 +19,6 @@ const DateFormatter = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate);
 
 const formatDate = (date) => DateFormatter.format(date);
 
-export { formatTime, getTwoDigitalFormat, formatDate };
+const isFirst = (index) => index === 0;
+
+export { formatTime, getTwoDigitalFormat, formatDate, isFirst };
