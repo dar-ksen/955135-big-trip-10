@@ -7,11 +7,7 @@ import { getCardTemplate } from './components/card';
 import { editCardTemplate } from './components/edit-card';
 
 import { filterItem } from './mock/filter';
-import { generateCards } from './mock/card';
-
-const CARD_COUNT = 10;
-
-const cards = generateCards(CARD_COUNT);
+import { Cards as cards } from './mock/card';
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
