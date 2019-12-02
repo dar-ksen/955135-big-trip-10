@@ -15,7 +15,7 @@ const getTime = (time) => {
   return `${date.replace(`,`, ``)}`;
 };
 
-const gerPicturesTemplate = (pictures) => {
+const getPicturesTemplate = (pictures) => {
   return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
 };
 
@@ -36,7 +36,7 @@ const getOfferTemplate = (offers) => {
 };
 
 export const editCardTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
-  const picturesTemplate = gerPicturesTemplate(pictures);
+  const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
   return (`
   <li class="trip-events__item">
