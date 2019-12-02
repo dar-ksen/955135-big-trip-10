@@ -38,7 +38,7 @@ const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price)
 const costPlace = document.querySelector(`.trip-info__cost-value`);
 costPlace.textContent = cost;
 
-// Чуть позже переписать
+// TODO: Added filter to check sorting
 
 const tripSort = document.querySelector(`.js-trip-sort`);
 
