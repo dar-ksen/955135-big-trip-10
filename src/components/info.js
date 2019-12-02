@@ -9,15 +9,16 @@ const getCitiesMarkup = (cards) => {
 };
 
 export const getInfoElement = (cards) => {
-  const citiesMarkup = getCitiesMarkup(cards);
+  const sortingCards = cards.sort((a, b) => a.startTime - b.startTime);
+  const citiesMarkup = getCitiesMarkup(sortingCards);
   return (`
   <div class="trip-info__main">
     <h1 class="trip-info__title">${citiesMarkup}</h1>
 
     <p class="trip-info__dates">
-    ${formatDate(cards[0].startTime)}
+    ${formatDate(sortingCards[0].startTime)}
     &nbsp;&mdash;&nbsp;
-    ${formatDate(cards[cards.length - 1].endTime)}
+    ${formatDate(sortingCards[sortingCards.length - 1].endTime)}
     </p>
   </div>
   `);
