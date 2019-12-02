@@ -3,13 +3,12 @@ import { getMenuTemplate } from './components/menu';
 import { getFiltersTemplate } from './components/filter';
 import { getSortTemplate } from './components/sort';
 import { getCardContainerTemplate } from './components/card-container';
-import { getCardTemplate } from './components/card';
-import { editCardTemplate } from './components/edit-card';
+import { sortCardTemplate } from './components/sort-cards';
+
+import { createDaysTemplate } from './components/days';
 
 import { filterItem } from './mock/filter';
 import { Cards as cards } from './mock/card';
-
-import { isFirst } from './utils';
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
@@ -28,12 +27,9 @@ render(tripControlsHeaderElements[1], getFiltersTemplate(filterItem), `afterend`
 render(tripEventsElement, getSortTemplate());
 render(tripEventsElement, getCardContainerTemplate());
 
-const tripEventListElement = tripEventsElement.querySelector(`.js-trip-events__list`);
+const tripEventListElement = tripEventsElement.querySelector(`.js-trip-days`);
 
-let cardtListTemlate = cards.map((card, index) => isFirst(index)
-  ? editCardTemplate(card)
-  : getCardTemplate(card)
-).join(`\n`);
+let cardtListTemlate = createDaysTemplate(cards);
 
 render(tripEventListElement, cardtListTemlate);
 
@@ -47,19 +43,9 @@ costPlace.textContent = cost;
 const tripSort = document.querySelector(`.js-trip-sort`);
 
 const chooseSort = {
-  'sort-event': () => cards.map((card, index) => isFirst(index)
-    ? editCardTemplate(card)
-    : getCardTemplate(card)
-  ).join(`\n`),
-  'sort-time': () =>cards.slice().sort((a, b) => a.startTime - b.startTime).map((card, index) => isFirst(index)
-    ? editCardTemplate(card)
-    : getCardTemplate(card)
-  ).join(`\n`),
-  'sort-price': () => cards.slice().sort((a, b) => a.price - b.price).map((card, index) => isFirst(index)
-    ? editCardTemplate(card)
-    : getCardTemplate(card)
-  ).join(`\n`),
-
+  'sort-event': () => createDaysTemplate(cards),
+  'sort-time': () => sortCardTemplate(cards.slice().sort((a, b) => a.startTime - b.startTime)),
+  'sort-price': () => sortCardTemplate(cards.slice().sort((a, b) => a.price - b.price)),
 };
 
 tripSort.addEventListener(`change`, function () {
