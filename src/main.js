@@ -8,7 +8,7 @@ import { sortCardTemplate } from './components/sort-cards';
 import { createDaysTemplate } from './components/days';
 
 import { filterItem } from './mock/filter';
-import { Cards as cards } from './mock/card';
+import { cards } from './mock/card';
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);

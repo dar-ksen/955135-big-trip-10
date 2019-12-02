@@ -138,6 +138,6 @@ const generateCards = (count) => {
     .map(generateCard);
 };
 
-const Cards = generateCards(CARDS_COUNT);
+const cards = generateCards(CARDS_COUNT);
 
-export { Cards };
+export { cards };
