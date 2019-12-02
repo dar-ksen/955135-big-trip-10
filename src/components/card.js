@@ -20,11 +20,11 @@ const getDurationTemplate = (duration) => `
 ;
 
 const getOfferTemplate = (offers) => {
-  return Object.keys(offers).map((offer)=>{
-    return (offers[offer] ? `<li class="event__offer">
-    <span class="event__offer-title">${Offers[offer].title}</span>
+  return Object.entries(offers).map(([offerName, offer])=>{
+    return (offer ? `<li class="event__offer">
+    <span class="event__offer-title">${Offers[offerName].title}</span>
      &plus;
-    &euro;&nbsp;<span class="event__offer-price">${Offers[offer].price}</span>
+    &euro;&nbsp;<span class="event__offer-price">${Offers[offerName].price}</span>
    </li>` : ``);
   }).join(`\n`);
 };
