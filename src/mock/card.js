@@ -1,3 +1,5 @@
+const CARDS_COUNT = 15;
+
 const Types = [
   {
     id: `taxi`,
@@ -92,7 +94,6 @@ const getRandomDescription = () => {
   return Array.from(description).join(` `);
 };
 
-/*
 const COUNT_PICTURE = 5;
 
 const getOfferState = () => {
@@ -107,7 +108,7 @@ const getOfferState = () => {
 
 const getRandomDate = () => {
   const targetDate = new Date();
-  const diffValue = getRandomIntegerNumber(0, 15);
+  const diffValue = getRandomIntegerNumber(0, 60);
 
   targetDate.setHours(targetDate.getHours() + diffValue);
 
@@ -134,80 +135,9 @@ const generateCard = () => {
 const generateCards = (count) => {
   return new Array(count)
     .fill(``)
-    .map(generateCard).sort((a, b) => a.startTime - b.startTime);
-}; */
+    .map(generateCard);
+};
 
-const Cards = [
-  {
-    type: Types[0],
-    city: Cities[0],
-    pictures: new Array(3).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 10, 5, 5, 45)),
-    endTime: new Date(Date.UTC(2019, 10, 5, 6, 45)),
-    price: 180,
-    offers: { luggage: false, comfort: false, meal: true, seats: true, train: false },
-  },
-  {
-    type: Types[1],
-    city: Cities[4],
-    pictures: new Array(3).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 10, 5, 5, 45)),
-    endTime: new Date(Date.UTC(2019, 10, 5, 12, 45)),
-    price: 180,
-    offers: { luggage: true, comfort: false, meal: true, seats: true, train: false },
-  },
-  {
-    type: Types[1],
-    city: Cities[3],
-    pictures: new Array(3).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 6, 5, 7, 45)),
-    endTime: new Date(Date.UTC(2019, 6, 5, 9, 30)),
-    price: 30,
-    offers: { luggage: false, comfort: true, meal: false, seats: false, train: false },
-  },
-  {
-    type: Types[2],
-    city: Cities[2],
-    pictures: new Array(4).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 7, 7, 5, 30)),
-    endTime: new Date(Date.UTC(2019, 7, 8, 6, 0)),
-    price: 10,
-    offers: { luggage: false, comfort: false, meal: false, seats: true, train: false },
-  },
-  {
-    type: Types[3],
-    city: Cities[4],
-    pictures: new Array(1).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 5, 9, 5, 45)),
-    endTime: new Date(Date.UTC(2019, 5, 10, 5, 45)),
-    price: 500,
-    offers: { luggage: false, comfort: false, meal: true, seats: false, train: true },
-  },
-  {
-    type: Types[7],
-    city: Cities[5],
-    pictures: new Array(1).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 5, 9, 5, 45)),
-    endTime: new Date(Date.UTC(2019, 5, 10, 8, 45)),
-    price: 500,
-    offers: { luggage: false, comfort: false, meal: true, seats: false, train: true },
-  },
-  {
-    type: Types[3],
-    city: Cities[4],
-    pictures: new Array(1).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
-    startTime: new Date(Date.UTC(2019, 10, 11, 5, 45)),
-    endTime: new Date(Date.UTC(2019, 10, 12, 5, 45)),
-    price: 550,
-    offers: { luggage: false, comfort: false, meal: true, seats: false, train: true },
-  },
-];
+const Cards = generateCards(CARDS_COUNT);
 
 export { Cards };
