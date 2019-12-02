@@ -1,11 +1,11 @@
-import { formatTime, getTwoDigitalFormat } from '../utils';
+import { formatTime, getTwoDigitFormat } from '../utils';
 import { Offers } from '../const';
 
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
-  let minutes = getTwoDigitalFormat(duration % 60);
-  let hours = getTwoDigitalFormat(Math.floor(duration / 60) % 24);
-  let days = getTwoDigitalFormat(Math.floor(duration / (60 * 24)));
+  let minutes = getTwoDigitFormat(duration % 60);
+  let hours = getTwoDigitFormat(Math.floor(duration / 60) % 24);
+  let days = getTwoDigitFormat(Math.floor(duration / (60 * 24)));
   return {
     minutes,
     hours,

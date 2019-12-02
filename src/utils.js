@@ -1,4 +1,4 @@
-const getTwoDigitalFormat = (value) => String(value).padStart(2, `0`);
+const getTwoDigitFormat = (value) => String(value).padStart(2, `0`);
 
 const formatterOptionsTime = {
   hour12: false,
@@ -21,4 +21,4 @@ const formatDate = (date) => DateFormatter.format(date);
 
 const isFirst = (index) => index === 0;
 
-export { formatTime, getTwoDigitalFormat, formatDate, isFirst };
+export { formatTime, getTwoDigitFormat, formatDate, isFirst };
