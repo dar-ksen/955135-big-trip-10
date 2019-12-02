@@ -21,4 +21,8 @@ const formatDate = (date) => DateFormatter.format(date);
 
 const isFirst = (index) => index === 0;
 
-export { formatTime, getTwoDigitFormat, formatDate, isFirst };
+const getFirst = (array) => array[0];
+
+const getLast = (array) => array[array.length - 1];
+
+export { formatTime, getTwoDigitFormat, formatDate, isFirst, getFirst, getLast };

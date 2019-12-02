@@ -1,24 +1,26 @@
-import { formatDate } from '../utils';
+import { formatDate, getFirst, getLast } from '../utils';
 
-const getCitiesMarkup = (cards) => {
+const getCitiesTemplate = (cards) => {
   const cities = cards.map(({ city }) => city);
   if (cities.length > 3) {
-    return `${cities[0]} &mdash; ... &mdash; ${cities[cities.length - 1]}`;
+    const sourceCity = getFirst(cities);
+    const destinationCity = getLast(cities);
+    return `${sourceCity} &mdash; ... &mdash; ${destinationCity}`;
   }
-  return cities.map((city, i) => i ? `&mdash; ${city}` : `${city}`).join(`\n`);
+  return cities.map((city) => `${city}`).join(`&mdash`);
 };
 
 export const getInfoElement = (cards) => {
   const sortingCards = cards.sort((a, b) => a.startTime - b.startTime);
-  const citiesMarkup = getCitiesMarkup(sortingCards);
+  const citiesTemplate = getCitiesTemplate(sortingCards);
   return (`
   <div class="trip-info__main">
-    <h1 class="trip-info__title">${citiesMarkup}</h1>
+    <h1 class="trip-info__title">${citiesTemplate}</h1>
 
     <p class="trip-info__dates">
-    ${formatDate(sortingCards[0].startTime)}
+    ${formatDate(getFirst(sortingCards).startTime)}
     &nbsp;&mdash;&nbsp;
-    ${formatDate(sortingCards[sortingCards.length - 1].endTime)}
+    ${formatDate(getLast(sortingCards).endTime)}
     </p>
   </div>
   `);
