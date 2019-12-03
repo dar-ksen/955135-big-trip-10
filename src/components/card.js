@@ -19,18 +19,19 @@ const getDurationTemplate = (duration) => `
   ${duration.minutes !== `00` ? `${duration.minutes}M` : ``}`
 ;
 
-const getOfferTemplate = (offers) => {
-  return Object.entries(offers).map(([offerName, offer])=>{
-    return (offer ? `<li class="event__offer">
-    <span class="event__offer-title">${Offers[offerName].title}</span>
+const getAvailableOffersTemplate = (offers, availableOfferNames) => {
+  return availableOfferNames.map((offerName)=> `<li class="event__offer">
+    <span class="event__offer-title">${offers[offerName].title}</span>
      &plus;
-    &euro;&nbsp;<span class="event__offer-price">${Offers[offerName].price}</span>
-   </li>` : ``);
-  }).join(`\n`);
+    &euro;&nbsp;<span class="event__offer-price">${offers[offerName].price}</span>
+   </li>`).join(`\n`);
 };
 
 export const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
-  const offerTemplate = getOfferTemplate(offers);
+  const availableOfferNames = Object.entries(offers)
+  .filter(([, isOfferAvailable]) => isOfferAvailable)
+  .map(([offerName]) => offerName);
+  const offerTemplate = getAvailableOffersTemplate(Offers, availableOfferNames);
   const duration = getDuration(startTime, endTime);
   const durationTemplate = getDurationTemplate(duration);
 
