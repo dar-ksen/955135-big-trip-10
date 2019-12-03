@@ -1,11 +1,14 @@
-import {getInfoElement} from "./components/info";
-import {getMenuTemplate} from "./components/menu";
-import {getFilterTemplate} from "./components/filter";
-import {getSortTemplate} from "./components/sort";
-import {getCardContainerTemplate} from "./components/card-container";
-import {getCardTemplate} from "./components/card";
-import {editCardTemplate} from "./components/edit-card";
-const CARD_COUNT = 3;
+import { getInfoElement } from './components/info';
+import { getMenuTemplate } from './components/menu';
+import { getFiltersTemplate } from './components/filter';
+import { getSortTemplate } from './components/sort';
+import { getCardContainerTemplate } from './components/card-container';
+import { sortCardTemplate } from './components/sort-cards';
+
+import { createDaysTemplate } from './components/days';
+
+import { filterItem } from './mock/filter';
+import { cards } from './mock/card';
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
@@ -18,14 +21,37 @@ const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
-render(tripInfoElement, getInfoElement(), `afterbegin`);
+render(tripInfoElement, getInfoElement(cards), `afterbegin`);
 render(tripControlsHeaderElements[0], getMenuTemplate(), `afterend`);
-render(tripControlsHeaderElements[1], getFilterTemplate(), `afterend`);
+render(tripControlsHeaderElements[1], getFiltersTemplate(filterItem), `afterend`);
 render(tripEventsElement, getSortTemplate());
 render(tripEventsElement, getCardContainerTemplate());
 
-const tripEventListElement = tripEventsElement.querySelector(`.js-trip-events__list`);
-render(tripEventListElement, editCardTemplate());
+const tripEventListElement = tripEventsElement.querySelector(`.js-trip-days`);
 
-const tripEventsTemplate = new Array(CARD_COUNT).fill(getCardTemplate()).join(``);
-render(tripEventListElement, tripEventsTemplate);
+let cardtListTemlate = createDaysTemplate(cards);
+
+render(tripEventListElement, cardtListTemlate);
+
+const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
+
+const costPlace = document.querySelector(`.trip-info__cost-value`);
+costPlace.textContent = cost;
+
+// TODO: Add filter to check sorting
+
+const tripSort = document.querySelector(`.js-trip-sort`);
+
+const chooseSort = {
+  'sort-event': () => createDaysTemplate(cards),
+  'sort-time': () => sortCardTemplate(cards.slice().sort((a, b) => a.startTime - b.startTime)),
+  'sort-price': () => sortCardTemplate(cards.slice().sort((a, b) => a.price - b.price)),
+};
+
+tripSort.addEventListener(`change`, function () {
+  const checked = tripSort.querySelector(`input:checked`).id;
+  tripEventListElement.textContent = ``;
+  cardtListTemlate = chooseSort[checked]();
+  render(tripEventListElement, cardtListTemlate);
+});
+
