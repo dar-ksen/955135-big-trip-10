@@ -1,4 +1,4 @@
-import { formatTime, getTwoDigitFormat } from '../utils';
+import { formatTime, getTwoDigitFormat, createElement } from '../utils';
 import { Offers } from '../const';
 
 const getDuration = (start, end) => {
@@ -27,7 +27,7 @@ const getAvailableOffersTemplate = (offers, availableOfferNames) => {
    </li>`).join(`\n`);
 };
 
-export const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
+const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
   const availableOfferNames = Object.entries(offers)
   .filter(([, isOfferAvailable]) => isOfferAvailable)
   .map(([offerName]) => offerName);
@@ -67,3 +67,27 @@ export const getCardTemplate = ({ type, city, startTime, endTime, price, offers 
     </div>
   </li>`);
 };
+
+export default class Card {
+  constructor(card) {
+    this._card = card;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
