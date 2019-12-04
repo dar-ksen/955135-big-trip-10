@@ -6,7 +6,7 @@ const getCardContainerTemplate = () => {
   `);
 };
 
-export default class CardContainer {
+export default class DayList {
   constructor() {
     this._element = null;
   }

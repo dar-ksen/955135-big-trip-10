@@ -2,7 +2,7 @@ import InfoComponent from './components/info';
 import MenuComponent from './components/menu';
 import FilterComponent from './components/filter';
 import SortComponent from './components/sort';
-import CardContainerComponent from './components/card-container';
+import DayListComponent from './components/day-list';
 import SortCardsComponent from './components/sort-cards';
 import CardComponent from './components/card';
 import CardEditComponent from './components/card-edit';
@@ -57,13 +57,13 @@ render(tripControlsHeaderElements[0], new MenuComponent().getElement(), RenderPo
 render(tripControlsHeaderElements[1], new FilterComponent(filterItem).getElement(), RenderPosition.AFTER);
 render(tripEventsElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-const cardContainer = new CardContainerComponent().getElement();
+const dayList = new DayListComponent().getElement();
 
-render(tripEventsElement, cardContainer, RenderPosition.BEFOREEND);
+render(tripEventsElement, dayList, RenderPosition.BEFOREEND);
 
 const sortContainer = new SortCardsComponent(cards).getElement();
 const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
-render(cardContainer, sortContainer, RenderPosition.BEFOREEND);
+render(dayList, sortContainer, RenderPosition.BEFOREEND);
 cards.map((card) => renderCard(sortContainerElement, card));
 
 const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);

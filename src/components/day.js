@@ -68,7 +68,7 @@ const createDaysTemplate = (cards) => {
   );
 };
 
-export default class Days {
+export default class Day {
   constructor(cards) {
     this._cards = cards;
     this._element = null;
