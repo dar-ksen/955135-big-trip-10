@@ -1,14 +1,50 @@
-import { getInfoElement } from './components/info';
-import { getMenuTemplate } from './components/menu';
-import { getFiltersTemplate } from './components/filter';
-import { getSortTemplate } from './components/sort';
-import { getCardContainerTemplate } from './components/card-container';
-import { sortCardTemplate } from './components/sort-cards';
+import InfoComponent from './components/info';
+import MenuComponent from './components/menu';
+import FilterComponent from './components/filter';
+import SortComponent from './components/sort';
+import CardContainerComponent from './components/card-container';
+import SortCardsComponent from './components/sort-cards';
+import CardComponent from './components/card';
+import CardEditComponent from './components/card-edit';
 
-import { createDaysTemplate } from './components/days';
+import { render, RenderPosition } from './utils';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
+
+const renderCard = (cardListElement, card) => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToTask();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const replaceEditToTask = () => {
+    cardListElement.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
+  };
+
+  const replaceTaskToEdit = () => {
+    cardListElement.replaceChild(cardEditComponent.getElement(), cardComponent.getElement());
+  };
+
+  const cardComponent = new CardComponent(card);
+  const editButton = cardComponent.getElement().querySelector(`.event__rollup-btn`);
+
+  editButton.addEventListener(`click`, () => {
+    replaceTaskToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  const cardEditComponent = new CardEditComponent(card);
+  const editForm = cardEditComponent.getElement().querySelector(`form`);
+
+  editForm.addEventListener(`submit`, replaceEditToTask);
+
+  render(cardListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
+};
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
@@ -16,15 +52,27 @@ const tripConrolsElement = tripMainElement.querySelector(`.js-trip-controls`);
 const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`.js-trip-controls-heading`);
 const tripEventsElement = document.querySelector(`.js-trip-events`);
 
+render(tripInfoElement, new InfoComponent(cards).getElement(), RenderPosition.AFTERBEGIN);
+render(tripControlsHeaderElements[0], new MenuComponent().getElement(), RenderPosition.AFTER);
+render(tripControlsHeaderElements[1], new FilterComponent(filterItem).getElement(), RenderPosition.AFTER);
+render(tripEventsElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
+const cardContainer = new CardContainerComponent().getElement();
 
-render(tripInfoElement, getInfoElement(cards), `afterbegin`);
-render(tripControlsHeaderElements[0], getMenuTemplate(), `afterend`);
-render(tripControlsHeaderElements[1], getFiltersTemplate(filterItem), `afterend`);
-render(tripEventsElement, getSortTemplate());
+render(tripEventsElement, cardContainer, RenderPosition.BEFOREEND);
+
+const sortContainer = new SortCardsComponent(cards).getElement();
+const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
+render(cardContainer, sortContainer, RenderPosition.BEFOREEND);
+cards.map((card) => renderCard(sortContainerElement, card));
+
+const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
+
+const costPlace = document.querySelector(`.trip-info__cost-value`);
+
+costPlace.textContent = cost;
+
+/*
 render(tripEventsElement, getCardContainerTemplate());
 
 const tripEventListElement = tripEventsElement.querySelector(`.js-trip-days`);
@@ -33,10 +81,6 @@ let cardtListTemlate = createDaysTemplate(cards);
 
 render(tripEventListElement, cardtListTemlate);
 
-const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
-
-const costPlace = document.querySelector(`.trip-info__cost-value`);
-costPlace.textContent = cost;
 
 // TODO: Add filter to check sorting
 
@@ -55,3 +99,4 @@ tripSort.addEventListener(`change`, function () {
   render(tripEventListElement, cardtListTemlate);
 });
 
+*/
