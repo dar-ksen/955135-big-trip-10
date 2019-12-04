@@ -1,4 +1,4 @@
-import { formatDate, getFirst, getLast } from '../utils';
+import { formatDate, getFirst, getLast, createElement } from '../utils';
 
 const getCitiesTemplate = (cards) => {
   const cities = cards.map(({ city }) => city);
@@ -10,7 +10,7 @@ const getCitiesTemplate = (cards) => {
   return cities.map((city) => `${city}`).join(`&mdash`);
 };
 
-export const getInfoElement = (cards) => {
+const getInfoElement = (cards) => {
   const sortingCards = cards.sort((a, b) => a.startTime - b.startTime);
   const citiesTemplate = getCitiesTemplate(sortingCards);
   return (`
@@ -25,3 +25,27 @@ export const getInfoElement = (cards) => {
   </div>
   `);
 };
+
+export default class Info {
+  constructor(cards) {
+    this._cards = cards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getInfoElement(this._cards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
