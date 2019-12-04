@@ -1,5 +1,5 @@
 import { Offers } from '../const';
-
+import { createElement } from '../utils';
 
 const getTime = (time) => {
   const formatterOptionsDate = {
@@ -35,7 +35,7 @@ const getOfferTemplate = (offers) => {
   `).join(`\n`);
 };
 
-export const editCardTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
+const editCardTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
   return (`
@@ -183,3 +183,26 @@ export const editCardTemplate = ({ type, city, pictures, description, startTime,
   </li>
   `);
 };
+
+export default class CardEdit {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return editCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
