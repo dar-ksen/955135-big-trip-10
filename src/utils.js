@@ -25,6 +25,8 @@ export const getFirst = (array) => array[0];
 
 export const getLast = (array) => array[array.length - 1];
 
+export const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,

@@ -1,18 +1,10 @@
-import { getCardTemplate } from './card';
-import { editCardTemplate } from './card-edit';
-import { isFirst, createElement } from '../utils';
+import { createElement } from '../utils';
 
-const getDate = (date) => {
-  return new Intl.DateTimeFormat(`en-US`).format(date);
-};
-
-
-const createDayTemplate = (date, dayCards) => {
+const createDayTemplate = (date) => {
   const targetDate = new Date(date);
   const day = new Intl.DateTimeFormat(`en-US`, { day: `numeric` }).format(targetDate);
   const month = new Intl.DateTimeFormat(`en-US`, { month: `short` }).format(targetDate);
   const year = new Intl.DateTimeFormat(`en-US`, { year: `2-digit` }).format(targetDate);
-  const eventsTemplate = dayCards.map((card) => getCardTemplate(card)).join(`\n`);
 
   return (
     `<li class="trip-days__item  day">
@@ -21,61 +13,21 @@ const createDayTemplate = (date, dayCards) => {
         <time class="day__date" datetime="2019-03-18">${month} ${year}</time>
       </div>
 
-      <ul class="trip-events__list">
-        ${eventsTemplate}
+      <ul class="trip-events__list js-trip-events__list">
       </ul>
      </li>`
   );
 };
 
-const createEditableDayTemplate = (date, dayCards) => {
-  const targetDate = new Date(date);
-  const day = new Intl.DateTimeFormat(`en-US`, { day: `numeric` }).format(targetDate);
-  const month = new Intl.DateTimeFormat(`en-US`, { month: `short` }).format(targetDate);
-  const year = new Intl.DateTimeFormat(`en-US`, { year: `2-digit` }).format(targetDate);
-  const eventsTemplate = dayCards.map((card, index) => isFirst(index)
-    ? editCardTemplate(card)
-    : getCardTemplate(card))
-    .join(`\n`);
-
-  return (
-    `<li class="trip-days__item  day">
-      <div class="day__info">
-        <span class="day__counter">${day}</span>
-        <time class="day__date" datetime="2019-03-18">${month} ${year}</time>
-      </div>
-
-      <ul class="trip-events__list">
-        ${eventsTemplate}
-      </ul>
-     </li>`
-  );
-};
-
-const generateDaysTemplate = (days, cards) => days.map((day, index) => {
-  const dayCards = cards.filter((card) => getDate(card.startTime) === day);
-  return isFirst(index) ? createEditableDayTemplate(day, dayCards) : createDayTemplate(day, dayCards);
-}).join(`\n`);
-
-const createDaysTemplate = (cards) => {
-  const days = Array.from(new Set(cards.map((card) => getDate(card.startTime))));
-  const daysMarkup = generateDaysTemplate(days, cards);
-
-  return (
-    `<ul class="trip-days">
-      ${daysMarkup}
-    </ul>`
-  );
-};
 
 export default class Day {
-  constructor(cards) {
-    this._cards = cards;
+  constructor(date) {
+    this._date = date;
     this._element = null;
   }
 
   getTemplate() {
-    return createDaysTemplate(this._cards);
+    return createDayTemplate(this._date);
   }
 
   getElement() {

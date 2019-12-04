@@ -3,11 +3,13 @@ import MenuComponent from './components/menu';
 import FilterComponent from './components/filter';
 import SortComponent from './components/sort';
 import DayListComponent from './components/day-list';
-import SortCardsComponent from './components/sort-cards';
+import DayComponent from './components/day';
+// TODO: add for sorting
+// import SortCardsComponent from './components/sort-cards';
 import CardComponent from './components/card';
 import CardEditComponent from './components/card-edit';
 
-import { render, RenderPosition } from './utils';
+import { render, RenderPosition, getDate } from './utils';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
@@ -61,10 +63,14 @@ const dayList = new DayListComponent().getElement();
 
 render(tripEventsElement, dayList, RenderPosition.BEFOREEND);
 
-const sortContainer = new SortCardsComponent(cards).getElement();
-const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
-render(dayList, sortContainer, RenderPosition.BEFOREEND);
-cards.map((card) => renderCard(sortContainerElement, card));
+const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
+
+days.map((day) => {
+  const dayItem = new DayComponent(day).getElement();
+  render(dayList, dayItem, RenderPosition.BEFOREEND);
+  const eventList = dayItem.querySelector(`.js-trip-events__list`);
+  cards.filter((card) => getDate(card.startTime) === day).map((card) => renderCard(eventList, card));
+});
 
 const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
 
@@ -72,16 +78,15 @@ const costPlace = document.querySelector(`.trip-info__cost-value`);
 
 costPlace.textContent = cost;
 
+// TODO: Add for sorting
 /*
-render(tripEventsElement, getCardContainerTemplate());
+const sortContainer = new SortCardsComponent(cards).getElement();
+const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
+render(dayList, sortContainer, RenderPosition.BEFOREEND);
+cards.map((card) => renderCard(sortContainerElement, card));
+*/
 
-const tripEventListElement = tripEventsElement.querySelector(`.js-trip-days`);
-
-let cardtListTemlate = createDaysTemplate(cards);
-
-render(tripEventListElement, cardtListTemlate);
-
-
+/*
 // TODO: Add filter to check sorting
 
 const tripSort = document.querySelector(`.js-trip-sort`);
