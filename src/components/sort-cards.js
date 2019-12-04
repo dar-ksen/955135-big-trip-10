@@ -1,22 +1,35 @@
-import { getCardTemplate } from "./card";
-import { editCardTemplate } from "./edit-card";
+import { createElement } from '../utils';
 
-import { isFirst } from '../utils';
-
-export const sortCardTemplate = (cards) => {
-  const cardtListTemlate = cards.map((card, index) => isFirst(index)
-    ? editCardTemplate(card)
-    : getCardTemplate(card)
-  ).join(`\n`);
-
+const sortCardTemplate = () => {
   return (`
   <li class="trip-days__item  day">
     <div class="day__info">
     </div>
 
-    <ul class="trip-events__list">
-      ${cardtListTemlate}
+    <ul class="trip-events__list js-trip-events__list">
     </ul>
- </li>`
+  </li>`
   );
 };
+
+export default class SortCards {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return sortCardTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
