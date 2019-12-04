@@ -1,6 +1,6 @@
 import { getCardTemplate } from './card';
-import { editCardTemplate } from './edit-card';
-import { isFirst } from '../utils';
+import { editCardTemplate } from './card-edit';
+import { isFirst, createElement } from '../utils';
 
 const getDate = (date) => {
   return new Intl.DateTimeFormat(`en-US`).format(date);
@@ -57,7 +57,7 @@ const generateDaysTemplate = (days, cards) => days.map((day, index) => {
   return isFirst(index) ? createEditableDayTemplate(day, dayCards) : createDayTemplate(day, dayCards);
 }).join(`\n`);
 
-export const createDaysTemplate = (cards) => {
+const createDaysTemplate = (cards) => {
   const days = Array.from(new Set(cards.map((card) => getDate(card.startTime))));
   const daysMarkup = generateDaysTemplate(days, cards);
 
@@ -68,3 +68,25 @@ export const createDaysTemplate = (cards) => {
   );
 };
 
+export default class Days {
+  constructor(cards) {
+    this._cards = cards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createDaysTemplate(this._cards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
