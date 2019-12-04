@@ -27,7 +27,9 @@ export const getLast = (array) => array[array.length - 1];
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
+  AFTER: `after`,
+  BEFORE: `before`
 };
 
 export const createElement = (template) => {
@@ -44,6 +46,12 @@ export const render = (container, element, place) => {
       break;
     case RenderPosition.BEFOREEND:
       container.append(element);
+      break;
+    case RenderPosition.AFTER:
+      container.after(element);
+      break;
+    case RenderPosition.BEFORE:
+      container.before(element);
       break;
   }
 };
