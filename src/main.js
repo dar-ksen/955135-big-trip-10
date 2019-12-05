@@ -19,16 +19,16 @@ const renderCard = (cardListElement, card) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      replaceEditToTask();
+      startCardEditing();
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
 
-  const replaceEditToTask = () => {
+  const startCardEditing = () => {
     cardListElement.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
   };
 
-  const replaceTaskToEdit = () => {
+  const stopCardEditing = () => {
     cardListElement.replaceChild(cardEditComponent.getElement(), cardComponent.getElement());
   };
 
@@ -36,14 +36,14 @@ const renderCard = (cardListElement, card) => {
   const editButton = cardComponent.getElement().querySelector(`.event__rollup-btn`);
 
   editButton.addEventListener(`click`, () => {
-    replaceTaskToEdit();
+    stopCardEditing();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   const cardEditComponent = new CardEditComponent(card);
   const editForm = cardEditComponent.getElement().querySelector(`form`);
 
-  editForm.addEventListener(`submit`, replaceEditToTask);
+  editForm.addEventListener(`submit`, startCardEditing);
 
   render(cardListElement, cardComponent.getElement(), RenderPosition.BEFORE_END);
 };
@@ -67,9 +67,9 @@ render(tripEventsElement, dayListComponent.getElement(), RenderPosition.BEFORE_E
 const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
 
 days.map((day) => {
-  const dayItem = new DayComponent(day).getElement();
-  render(dayListElement, dayItem, RenderPosition.BEFORE_END);
-  const eventList = dayItem.querySelector(`.js-trip-events__list`);
+  const dayComponent = new DayComponent(day);
+  render(dayListElement, dayComponent.getElement(), RenderPosition.BEFORE_END);
+  const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
   cards.filter((card) => getDate(card.startTime) === day).map((card) => renderCard(eventList, card));
 });
 
