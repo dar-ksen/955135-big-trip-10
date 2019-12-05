@@ -41,7 +41,7 @@ const renderCard = (cardListElement, card) => {
   });
 
   const cardEditComponent = new CardEditComponent(card);
-  const editForm = cardEditComponent.getElement().querySelector(`form`);
+  const editForm = cardEditComponent.getElement().querySelector(`.js-event--edit`);
 
   editForm.addEventListener(`submit`, startCardEditing);
 
