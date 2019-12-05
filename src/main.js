@@ -45,7 +45,7 @@ const renderCard = (cardListElement, card) => {
 
   editForm.addEventListener(`submit`, replaceEditToTask);
 
-  render(cardListElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(cardListElement, cardComponent.getElement(), RenderPosition.BEFORE_END);
 };
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
@@ -54,20 +54,21 @@ const tripConrolsElement = tripMainElement.querySelector(`.js-trip-controls`);
 const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`.js-trip-controls-heading`);
 const tripEventsElement = document.querySelector(`.js-trip-events`);
 
-render(tripInfoElement, new InfoComponent(cards).getElement(), RenderPosition.AFTERBEGIN);
+render(tripInfoElement, new InfoComponent(cards).getElement(), RenderPosition.AFTER_BEGIN);
 render(tripControlsHeaderElements[0], new MenuComponent().getElement(), RenderPosition.AFTER);
 render(tripControlsHeaderElements[1], new FilterComponent(filterItem).getElement(), RenderPosition.AFTER);
-render(tripEventsElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new SortComponent().getElement(), RenderPosition.BEFORE_END);
 
-const dayList = new DayListComponent().getElement();
+const dayListComponent = new DayListComponent();
+const dayListElement = dayListComponent.getElement();
 
-render(tripEventsElement, dayList, RenderPosition.BEFOREEND);
+render(tripEventsElement, dayListComponent.getElement(), RenderPosition.BEFORE_END);
 
 const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
 
 days.map((day) => {
   const dayItem = new DayComponent(day).getElement();
-  render(dayList, dayItem, RenderPosition.BEFOREEND);
+  render(dayListElement, dayItem, RenderPosition.BEFORE_END);
   const eventList = dayItem.querySelector(`.js-trip-events__list`);
   cards.filter((card) => getDate(card.startTime) === day).map((card) => renderCard(eventList, card));
 });
@@ -82,7 +83,7 @@ costPlace.textContent = cost;
 /*
 const sortContainer = new SortCardsComponent(cards).getElement();
 const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
-render(dayList, sortContainer, RenderPosition.BEFOREEND);
+render(dayList, sortContainer, RenderPosition.BEFORE_END);
 cards.map((card) => renderCard(sortContainerElement, card));
 */
 

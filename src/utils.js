@@ -1,4 +1,4 @@
-export const getTwoDigitFormat = (value) => String(value).padStart(2, `0`);
+const getTwoDigitFormat = (value) => String(value).padStart(2, `0`);
 
 const formatterOptionsTime = {
   hour12: false,
@@ -8,7 +8,7 @@ const formatterOptionsTime = {
 
 const TimeFormatter = new Intl.DateTimeFormat(`en-US`, formatterOptionsTime);
 
-export const formatTime = (date) => TimeFormatter.format(date);
+const formatTime = (date) => TimeFormatter.format(date);
 
 const formatterOptionsDate = {
   day: `numeric`,
@@ -17,36 +17,36 @@ const formatterOptionsDate = {
 
 const DateFormatter = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate);
 
-export const formatDate = (date) => DateFormatter.format(date);
+const formatDate = (date) => DateFormatter.format(date);
 
-export const isFirst = (index) => index === 0;
+const isFirst = (index) => index === 0;
 
-export const getFirst = (array) => array[0];
+const getFirst = (array) => array[0];
 
-export const getLast = (array) => array[array.length - 1];
+const getLast = (array) => array[array.length - 1];
 
-export const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
+const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
 
-export const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`,
+const RenderPosition = {
+  AFTER_BEGIN: `afterbegin`,
+  BEFORE_END: `beforeend`,
   AFTER: `after`,
   BEFORE: `before`
 };
 
-export const createElement = (template) => {
+const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
 
   return newElement.firstElementChild;
 };
 
-export const render = (container, element, place) => {
+const render = (container, element, place) => {
   switch (place) {
-    case RenderPosition.AFTERBEGIN:
+    case RenderPosition.AFTER_BEGIN:
       container.prepend(element);
       break;
-    case RenderPosition.BEFOREEND:
+    case RenderPosition.BEFORE_END:
       container.append(element);
       break;
     case RenderPosition.AFTER:
@@ -57,3 +57,6 @@ export const render = (container, element, place) => {
       break;
   }
 };
+
+export { getTwoDigitFormat, formatTime, formatDate, isFirst,
+  getFirst, getLast, getDate, RenderPosition, createElement, render };
