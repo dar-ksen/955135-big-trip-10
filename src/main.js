@@ -9,7 +9,7 @@ import DayComponent from './components/day';
 import CardComponent from './components/card';
 import CardEditComponent from './components/card-edit';
 
-import { render, RenderPosition, getDate } from './utils';
+import { renderComponent, RenderPosition, getDate } from './utils';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
@@ -45,7 +45,7 @@ const renderCard = (cardListElement, card) => {
 
   editForm.addEventListener(`submit`, startCardEditing);
 
-  render(cardListElement, cardComponent.getElement(), RenderPosition.BEFORE_END);
+  renderComponent(cardListElement, cardComponent, RenderPosition.BEFORE_END);
 };
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
@@ -54,21 +54,21 @@ const tripConrolsElement = tripMainElement.querySelector(`.js-trip-controls`);
 const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`.js-trip-controls-heading`);
 const tripEventsElement = document.querySelector(`.js-trip-events`);
 
-render(tripInfoElement, new InfoComponent(cards).getElement(), RenderPosition.AFTER_BEGIN);
-render(tripControlsHeaderElements[0], new MenuComponent().getElement(), RenderPosition.AFTER);
-render(tripControlsHeaderElements[1], new FilterComponent(filterItem).getElement(), RenderPosition.AFTER);
-render(tripEventsElement, new SortComponent().getElement(), RenderPosition.BEFORE_END);
+renderComponent(tripInfoElement, new InfoComponent(cards), RenderPosition.AFTER_BEGIN);
+renderComponent(tripControlsHeaderElements[0], new MenuComponent(), RenderPosition.AFTER);
+renderComponent(tripControlsHeaderElements[1], new FilterComponent(filterItem), RenderPosition.AFTER);
+renderComponent(tripEventsElement, new SortComponent(), RenderPosition.BEFORE_END);
 
 const dayListComponent = new DayListComponent();
 const dayListElement = dayListComponent.getElement();
 
-render(tripEventsElement, dayListComponent.getElement(), RenderPosition.BEFORE_END);
+renderComponent(tripEventsElement, dayListComponent, RenderPosition.BEFORE_END);
 
 const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
 
 days.map((day) => {
   const dayComponent = new DayComponent(day);
-  render(dayListElement, dayComponent.getElement(), RenderPosition.BEFORE_END);
+  renderComponent(dayListElement, dayComponent, RenderPosition.BEFORE_END);
   const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
   cards.filter((card) => getDate(card.startTime) === day).map((card) => renderCard(eventList, card));
 });
