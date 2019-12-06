@@ -59,5 +59,15 @@ const renderComponent = (container, component, place) => {
   }
 };
 
-export { getTwoDigitFormat, formatTime, formatDate, isFirst,
-  getFirst, getLast, getDate, RenderPosition, createElement, renderComponent };
+export {
+  getTwoDigitFormat,
+  formatTime,
+  formatDate,
+  isFirst,
+  getFirst,
+  getLast,
+  getDate,
+  RenderPosition,
+  createElement,
+  renderComponent
+};
