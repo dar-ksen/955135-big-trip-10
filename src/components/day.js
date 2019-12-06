@@ -2,9 +2,9 @@ import { createElement } from '../utils';
 
 const createDayTemplate = (date) => {
   const targetDate = new Date(date);
-  const day = new Intl.DateTimeFormat(`en-US`, { day: `numeric` }).format(targetDate);
-  const month = new Intl.DateTimeFormat(`en-US`, { month: `short` }).format(targetDate);
-  const year = new Intl.DateTimeFormat(`en-US`, { year: `2-digit` }).format(targetDate);
+  const day = targetDate.toLocaleString(`en-US`, { day: `numeric` });
+  const month = targetDate.toLocaleString(`en-US`, { month: `short` });
+  const year = targetDate.toLocaleString(`en-US`, { year: `2-digit` });
 
   return (
     `<li class="trip-days__item  day">
