@@ -66,7 +66,7 @@ renderComponent(tripEventsElement, dayListComponent, RenderPosition.BEFORE_END);
 
 const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
 
-days.map((day) => {
+days.forEach((day) => {
   const dayComponent = new DayComponent(day);
   renderComponent(dayListElement, dayComponent, RenderPosition.BEFORE_END);
   const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
