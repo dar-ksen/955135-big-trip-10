@@ -1,14 +1,52 @@
-import { getInfoElement } from './components/info';
-import { getMenuTemplate } from './components/menu';
-import { getFiltersTemplate } from './components/filter';
-import { getSortTemplate } from './components/sort';
-import { getCardContainerTemplate } from './components/card-container';
-import { sortCardTemplate } from './components/sort-cards';
+import InfoComponent from './components/info';
+import MenuComponent from './components/menu';
+import FilterComponent from './components/filter';
+import SortComponent from './components/sort';
+import DayListComponent from './components/day-list';
+import DayComponent from './components/day';
+// TODO: add for sorting
+// import SortCardsComponent from './components/sort-cards';
+import CardComponent from './components/card';
+import CardEditComponent from './components/card-edit';
 
-import { createDaysTemplate } from './components/days';
+import { renderComponent, RenderPosition, getDate } from './utils';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
+
+const renderCard = (cardListElement, card) => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      startCardEditing();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const startCardEditing = () => {
+    cardListElement.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
+  };
+
+  const stopCardEditing = () => {
+    cardListElement.replaceChild(cardEditComponent.getElement(), cardComponent.getElement());
+  };
+
+  const cardComponent = new CardComponent(card);
+  const editButton = cardComponent.getElement().querySelector(`.event__rollup-btn`);
+
+  editButton.addEventListener(`click`, () => {
+    stopCardEditing();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  const cardEditComponent = new CardEditComponent(card);
+  const editForm = cardEditComponent.getElement().querySelector(`.js-event--edit`);
+
+  editForm.addEventListener(`submit`, startCardEditing);
+
+  renderComponent(cardListElement, cardComponent, RenderPosition.BEFORE_END);
+};
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
@@ -16,28 +54,40 @@ const tripConrolsElement = tripMainElement.querySelector(`.js-trip-controls`);
 const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`.js-trip-controls-heading`);
 const tripEventsElement = document.querySelector(`.js-trip-events`);
 
+renderComponent(tripInfoElement, new InfoComponent(cards), RenderPosition.AFTER_BEGIN);
+renderComponent(tripControlsHeaderElements[0], new MenuComponent(), RenderPosition.AFTER);
+renderComponent(tripControlsHeaderElements[1], new FilterComponent(filterItem), RenderPosition.AFTER);
+renderComponent(tripEventsElement, new SortComponent(), RenderPosition.BEFORE_END);
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
+const dayListComponent = new DayListComponent();
+const dayListElement = dayListComponent.getElement();
 
-render(tripInfoElement, getInfoElement(cards), `afterbegin`);
-render(tripControlsHeaderElements[0], getMenuTemplate(), `afterend`);
-render(tripControlsHeaderElements[1], getFiltersTemplate(filterItem), `afterend`);
-render(tripEventsElement, getSortTemplate());
-render(tripEventsElement, getCardContainerTemplate());
+renderComponent(tripEventsElement, dayListComponent, RenderPosition.BEFORE_END);
 
-const tripEventListElement = tripEventsElement.querySelector(`.js-trip-days`);
+const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
 
-let cardtListTemlate = createDaysTemplate(cards);
-
-render(tripEventListElement, cardtListTemlate);
+days.forEach((day) => {
+  const dayComponent = new DayComponent(day);
+  renderComponent(dayListElement, dayComponent, RenderPosition.BEFORE_END);
+  const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
+  cards.filter((card) => getDate(card.startTime) === day).forEach((card) => renderCard(eventList, card));
+});
 
 const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
 
 const costPlace = document.querySelector(`.trip-info__cost-value`);
+
 costPlace.textContent = cost;
 
+// TODO: Add for sorting
+/*
+const sortContainer = new SortCardsComponent(cards).getElement();
+const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
+render(dayList, sortContainer, RenderPosition.BEFORE_END);
+cards.map((card) => renderCard(sortContainerElement, card));
+*/
+
+/*
 // TODO: Add filter to check sorting
 
 const tripSort = document.querySelector(`.js-trip-sort`);
@@ -55,3 +105,4 @@ tripSort.addEventListener(`change`, function () {
   render(tripEventListElement, cardtListTemlate);
 });
 
+*/

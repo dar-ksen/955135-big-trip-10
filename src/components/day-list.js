@@ -1,24 +1,18 @@
 import { createElement } from '../utils';
 
-const sortCardTemplate = () => {
+const getCardContainerTemplate = () => {
   return (`
-  <li class="trip-days__item  day">
-    <div class="day__info">
-    </div>
-
-    <ul class="trip-events__list js-trip-events__list">
-    </ul>
-  </li>`
-  );
+    <ul class="trip-days js-trip-days"></ul>
+  `);
 };
 
-export default class SortCards {
+export default class DayList {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return sortCardTemplate();
+    return getCardContainerTemplate();
   }
 
   getElement() {
