@@ -1,4 +1,4 @@
-const CARDS_COUNT = 15;
+const CARDS_COUNT = 0;
 
 const Types = [
   {
