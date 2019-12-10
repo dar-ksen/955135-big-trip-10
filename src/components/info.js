@@ -1,4 +1,6 @@
-import { formatDate, getFirst, getLast, createElement } from '../utils';
+import AbstractComponent from './abstract-component';
+
+import { formatDate, getFirst, getLast } from '../utils';
 
 const getCitiesTemplate = (cards) => {
   const cities = cards.map(({ city }) => city);
@@ -26,26 +28,14 @@ const getInfoElement = (cards) => {
   `);
 };
 
-export default class Info {
+export default class Info extends AbstractComponent {
   constructor(cards) {
+    super();
     this._cards = cards;
-    this._element = null;
   }
 
   getTemplate() {
     return getInfoElement(this._cards);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
