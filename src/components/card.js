@@ -61,7 +61,7 @@ const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
         ${offerTemplate}
       </ul>
 
-      <button class="event__rollup-btn" type="button">
+      <button class="event__rollup-btn js-event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
     </div>

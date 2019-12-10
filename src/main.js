@@ -36,7 +36,7 @@ const renderCard = (cardListElement, card) => {
   };
 
   const cardComponent = new CardComponent(card);
-  const editButton = cardComponent.getElement().querySelector(`.event__rollup-btn`);
+  const editButton = cardComponent.getElement().querySelector(`.js-event__rollup-btn`);
 
   editButton.addEventListener(`click`, () => {
     stopCardEditing();
