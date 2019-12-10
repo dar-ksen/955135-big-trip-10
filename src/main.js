@@ -79,10 +79,14 @@ if (cards.length === 0) {
     const dayComponent = new DayComponent(day);
     renderComponent(dayListElement, dayComponent, RenderPosition.BEFORE_END);
     const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
-    cards.filter((card) => getDate(card.startTime) === day).forEach((card) => renderCard(eventList, card));
+    cards
+      .filter((card) => getDate(card.startTime) === day)
+      .forEach((card) => renderCard(eventList, card));
   });
 
-  const cost = cards.map(({ price }) => price).reduce((sum, price) => sum + price);
+  const cost = cards
+                .map(({ price }) => price)
+                .reduce((sum, price) => sum + price);
 
   const costPlace = document.querySelector(`.trip-info__cost-value`);
 
