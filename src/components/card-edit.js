@@ -1,5 +1,6 @@
+import AbstractComponent from './abstract-component';
+
 import { Offers } from '../const';
-import { createElement } from '../utils';
 
 const getTime = (time) => {
   const formatterOptionsDate = {
@@ -184,25 +185,14 @@ const editCardTemplate = ({ type, city, pictures, description, startTime, endTim
   `);
 };
 
-export default class CardEdit {
+export default class CardEdit extends AbstractComponent {
   constructor(card) {
+    super();
+
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return editCardTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
