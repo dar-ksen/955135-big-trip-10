@@ -27,6 +27,8 @@ const getLast = (array) => array[array.length - 1];
 
 const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
 
+const getUnique = (array) => [...new Set(array)];
+
 const RenderPosition = {
   AFTER_BEGIN: `afterbegin`,
   BEFORE_END: `beforeend`,
@@ -67,6 +69,7 @@ export {
   getFirst,
   getLast,
   getDate,
+  getUnique,
   RenderPosition,
   createElement,
   renderComponent
