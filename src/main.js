@@ -88,7 +88,7 @@ if (cards.length === 0) {
                 .map(({ price }) => price)
                 .reduce((sum, price) => sum + price);
 
-  const costPlace = document.querySelector(`.trip-info__cost-value`);
+  const costPlace = document.querySelector(`.js-trip-info__cost-value`);
 
   costPlace.textContent = cost;
 }
