@@ -12,7 +12,7 @@ import CardComponent from './components/card';
 import CardEditComponent from './components/card-edit';
 
 
-import { renderComponent, RenderPosition, getDate } from './utils';
+import { renderComponent, RenderPosition, getDate, unique } from './utils';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
@@ -73,7 +73,7 @@ if (cards.length === 0) {
 
   renderComponent(tripEventsElement, dayListComponent, RenderPosition.BEFORE_END);
 
-  const days = [...new Set(cards.map((card) => getDate(card.startTime)))];
+  const days = unique(cards.map((card) => getDate(card.startTime)));
 
   days.forEach((day) => {
     const dayComponent = new DayComponent(day);
