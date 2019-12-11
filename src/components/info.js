@@ -13,6 +13,10 @@ const getCitiesTemplate = (cards) => {
 };
 
 const getInfoElement = (cards) => {
+  if (cards.length === 0) {
+    return ``;
+  }
+
   const sortingCards = cards.sort((a, b) => a.startTime - b.startTime);
   const citiesTemplate = getCitiesTemplate(sortingCards);
   return (`
