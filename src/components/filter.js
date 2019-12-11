@@ -16,7 +16,7 @@ const getFilterTemplate = (filter, isChecked) => {
 const getFiltersTemplate = (filters) => {
   const filtersTemplate = filters.map((filter, index) => getFilterTemplate(filter, isFirst(index))).join(`\n`);
   return (`
-  <form class="trip-filters  trip-filters--hidden" action="#" method="get">
+  <form class="trip-filters" action="#" method="get">
     ${filtersTemplate}
 
     <button class="visually-hidden" type="submit">Accept filter</button>
