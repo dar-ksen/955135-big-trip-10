@@ -13,7 +13,7 @@ import CardEditComponent from './components/card-edit';
 
 
 import { getDate, getUnique } from './utils/common';
-import { renderComponent, RenderPosition } from './utils/render';
+import { renderComponent, RenderPosition, replace } from './utils/render';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
@@ -28,13 +28,10 @@ const renderCard = (cardListElement, card) => {
     }
   };
 
-  const startCardEditing = () => {
-    cardListElement.replaceChild(cardComponent.getElement(), cardEditComponent.getElement());
-  };
+  const startCardEditing = () => replace(cardComponent, cardEditComponent);
 
-  const stopCardEditing = () => {
-    cardListElement.replaceChild(cardEditComponent.getElement(), cardComponent.getElement());
-  };
+  const stopCardEditing = () => replace(cardEditComponent, cardComponent);
+
 
   const cardComponent = new CardComponent(card);
   cardComponent.setEditButtonClickHandler(() => {
