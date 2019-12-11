@@ -195,4 +195,10 @@ export default class CardEdit extends AbstractComponent {
   getTemplate() {
     return editCardTemplate(this._card);
   }
+
+  setSubmitHandler(handler) {
+    this.getElement()
+      .querySelector(`.js-event--edit`)
+      .addEventListener(`submit`, handler);
+  }
 }
