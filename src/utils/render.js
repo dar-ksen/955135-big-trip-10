@@ -24,7 +24,7 @@ const replace = (newComponent, oldComponent) => {
   }
 };
 
-const renderComponent = (container, component, place) => {
+const renderComponent = (container, component, place = RenderPosition.BEFORE_END) => {
   const element = component.getElement();
   switch (place) {
     case RenderPosition.AFTER_BEGIN:

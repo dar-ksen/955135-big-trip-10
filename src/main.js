@@ -43,7 +43,7 @@ const renderCard = (cardListElement, card) => {
 
   cardEditComponent.setSubmitHandler(startCardEditing);
 
-  renderComponent(cardListElement, cardComponent, RenderPosition.BEFORE_END);
+  renderComponent(cardListElement, cardComponent);
 };
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
@@ -58,21 +58,21 @@ const tripEventsElement = document.querySelector(`.js-trip-events`);
 
 if (cards.length === 0) {
   const noCardsMessageComponent = new NoCardsMessageComponent();
-  renderComponent(tripEventsElement, noCardsMessageComponent, RenderPosition.BEFORE_END);
+  renderComponent(tripEventsElement, noCardsMessageComponent);
 } else {
   renderComponent(tripInfoElement, new InfoComponent(cards), RenderPosition.AFTER_BEGIN);
-  renderComponent(tripEventsElement, new SortComponent(), RenderPosition.BEFORE_END);
+  renderComponent(tripEventsElement, new SortComponent());
 
   const dayListComponent = new DayListComponent();
   const dayListElement = dayListComponent.getElement();
 
-  renderComponent(tripEventsElement, dayListComponent, RenderPosition.BEFORE_END);
+  renderComponent(tripEventsElement, dayListComponent);
 
   const days = getUnique(cards.map((card) => getDate(card.startTime)));
 
   days.forEach((day) => {
     const dayComponent = new DayComponent(day);
-    renderComponent(dayListElement, dayComponent, RenderPosition.BEFORE_END);
+    renderComponent(dayListElement, dayComponent);
     const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
     cards
       .filter((card) => getDate(card.startTime) === day)
