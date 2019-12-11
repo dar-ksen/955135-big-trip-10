@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 
-import { formatTime, getTwoDigitFormat } from '../utils';
+import { formatTime, getTwoDigitFormat } from '../utils/common';
 import { Offers } from '../const';
 
 const getDuration = (start, end) => {

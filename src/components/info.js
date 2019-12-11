@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 
-import { formatDate, getFirst, getLast } from '../utils';
+import { formatDate, getFirst, getLast } from '../utils/common';
 
 const getCitiesTemplate = (cards) => {
   const cities = cards.map(({ city }) => city);

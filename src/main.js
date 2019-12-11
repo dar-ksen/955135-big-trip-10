@@ -12,7 +12,8 @@ import CardComponent from './components/card';
 import CardEditComponent from './components/card-edit';
 
 
-import { renderComponent, RenderPosition, getDate, getUnique } from './utils';
+import { getDate, getUnique } from './utils/common';
+import { renderComponent, RenderPosition } from './utils/render';
 
 import { filterItem } from './mock/filter';
 import { cards } from './mock/card';
