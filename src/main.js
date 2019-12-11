@@ -37,17 +37,14 @@ const renderCard = (cardListElement, card) => {
   };
 
   const cardComponent = new CardComponent(card);
-  const editButton = cardComponent.getElement().querySelector(`.js-event__rollup-btn`);
-
-  editButton.addEventListener(`click`, () => {
+  cardComponent.setEditButtonClickHandler(() => {
     stopCardEditing();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   const cardEditComponent = new CardEditComponent(card);
-  const editForm = cardEditComponent.getElement().querySelector(`.js-event--edit`);
 
-  editForm.addEventListener(`submit`, startCardEditing);
+  cardEditComponent.setSubmitHandler(startCardEditing);
 
   renderComponent(cardListElement, cardComponent, RenderPosition.BEFORE_END);
 };
