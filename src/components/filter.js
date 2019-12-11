@@ -1,4 +1,6 @@
-import { isFirst, createElement } from '../utils';
+import AbstractComponent from './abstract-component';
+
+import { isFirst } from '../utils/common';
 
 const getFilterTemplate = (filter, isChecked) => {
   const { name, title } = filter;
@@ -14,7 +16,7 @@ const getFilterTemplate = (filter, isChecked) => {
 const getFiltersTemplate = (filters) => {
   const filtersTemplate = filters.map((filter, index) => getFilterTemplate(filter, isFirst(index))).join(`\n`);
   return (`
-  <form class="trip-filters  trip-filters--hidden" action="#" method="get">
+  <form class="trip-filters" action="#" method="get">
     ${filtersTemplate}
 
     <button class="visually-hidden" type="submit">Accept filter</button>
@@ -22,25 +24,14 @@ const getFiltersTemplate = (filters) => {
   `);
 };
 
-export default class Filter {
+export default class Filter extends AbstractComponent {
   constructor(filters) {
+    super();
+
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return getFiltersTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
