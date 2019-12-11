@@ -12,6 +12,18 @@ const createElement = (template) => {
   return newElement.firstElementChild;
 };
 
+const replace = (newComponent, oldComponent) => {
+  const parentElement = oldComponent.getElement().parentElement;
+  const newElement = newComponent.getElement();
+  const oldElement = oldComponent.getElement();
+
+  const areElementsAvailable = Boolean(parentElement && newElement && oldElement);
+
+  if (areElementsAvailable && parentElement.contains(oldElement)) {
+    parentElement.replaceChild(newElement, oldElement);
+  }
+};
+
 const renderComponent = (container, component, place) => {
   const element = component.getElement();
   switch (place) {
@@ -33,5 +45,6 @@ const renderComponent = (container, component, place) => {
 export {
   RenderPosition,
   createElement,
+  replace,
   renderComponent
 };
