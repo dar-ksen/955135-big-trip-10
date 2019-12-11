@@ -80,4 +80,10 @@ export default class Card extends AbstractComponent {
   getTemplate() {
     return getCardTemplate(this._card);
   }
+
+  setEditButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.js-event__rollup-btn`)
+      .addEventListener(`click`, handler);
+  }
 }
