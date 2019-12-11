@@ -90,31 +90,3 @@ if (cards.length === 0) {
 
   costPlace.textContent = cost;
 }
-
-// TODO: Add for sorting
-/*
-const sortContainer = new SortCardsComponent(cards).getElement();
-const sortContainerElement = sortContainer.querySelector(`.js-trip-events__list`);
-render(dayList, sortContainer, RenderPosition.BEFORE_END);
-cards.map((card) => renderCard(sortContainerElement, card));
-*/
-
-/*
-// TODO: Add filter to check sorting
-
-const tripSort = document.querySelector(`.js-trip-sort`);
-
-const chooseSort = {
-  'sort-event': () => createDaysTemplate(cards),
-  'sort-time': () => sortCardTemplate(cards.slice().sort((a, b) => a.startTime - b.startTime)),
-  'sort-price': () => sortCardTemplate(cards.slice().sort((a, b) => a.price - b.price)),
-};
-
-tripSort.addEventListener(`change`, function () {
-  const checked = tripSort.querySelector(`input:checked`).id;
-  tripEventListElement.textContent = ``;
-  cardtListTemlate = chooseSort[checked]();
-  render(tripEventListElement, cardtListTemlate);
-});
-
-*/
