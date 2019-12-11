@@ -1,4 +1,3 @@
-
 import SortComponent from '../components/sort';
 import DayListComponent from '../components/day-list';
 import DayComponent from '../components/day';
@@ -45,7 +44,7 @@ export default class TripController {
     this._container = container;
 
     this._noCardsMessageComponent = new NoCardsMessageComponent();
-    this._SortComponent = new SortComponent();
+    this._sortComponent = new SortComponent();
     this._dayListComponent = new DayListComponent();
   }
 
@@ -57,7 +56,7 @@ export default class TripController {
       return;
     }
 
-    renderComponent(this._container, this._SortComponent);
+    renderComponent(this._container, this._sortComponent);
 
     const dayListElement = this._dayListComponent.getElement();
 
@@ -73,6 +72,5 @@ export default class TripController {
         .filter((card) => getDate(card.startTime) === day)
         .forEach((card) => renderCard(eventList, card));
     });
-
   }
 }
