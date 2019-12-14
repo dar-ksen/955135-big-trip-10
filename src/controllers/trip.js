@@ -12,6 +12,12 @@ import EventEditComponent from '../components/event-edit';
 
 import { renderComponent, replace } from '../utils/render';
 
+const sortByDurationInDescendingOrder = (a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime);
+
+const sortByPriceInDescendingOrder = (a, b) => b.price - a.price;
+
+const sortPurely = (collection, iterate) => collection.slice().sort(iterate);
+
 const renderEvent = (eventListElement, event) => {
   const onEscKeyDown = (evt) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
@@ -90,17 +96,19 @@ export default class TripController {
       let sortedEvent = [];
 
       switch (sortType) {
-        case SortType.TIME:
-          sortedEvent = events.slice().sort((a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime));
+        case SortType.TIME: {
+          sortedEvent = sortPurely(events, sortByDurationInDescendingOrder);
           break;
-        case SortType.PRICE:
-          sortedEvent = events.slice().sort((a, b) => b.price - a.price);
+        }
+        case SortType.PRICE: {
+          sortedEvent = sortPurely(events, sortByPriceInDescendingOrder);
           break;
+        }
         case SortType.DEFAULT:
+        default : {
           sortedEvent = events;
           break;
-        default :
-          sortedEvent = events;
+        }
       }
 
       dayListElement.innerHTML = ``;
