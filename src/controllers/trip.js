@@ -32,8 +32,8 @@ const renderEvent = (eventListElement, event) => {
 
   const stopEventEditing = () => replace(eventEditComponent, eventComponent);
 
-
   const eventComponent = new EventComponent(event);
+
   eventComponent.setEditButtonClickHandler(() => {
     stopEventEditing();
     document.addEventListener(`keydown`, onEscKeyDown);
@@ -77,8 +77,6 @@ export default class TripController {
   }
 
   render(events) {
-
-
     if (events.length === 0) {
       renderComponent(this._container, this._noEventsMessageComponent);
       return;
