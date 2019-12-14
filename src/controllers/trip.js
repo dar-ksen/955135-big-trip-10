@@ -86,7 +86,7 @@ export default class TripController {
 
     renderDays(dayListElement, events);
 
-    this._sortComponent.setSortTypeChangeHandlet((sortType) => {
+    this._sortComponent.setSortTypeChangeHandler((sortType) => {
       let sortedEvent = [];
 
       switch (sortType) {

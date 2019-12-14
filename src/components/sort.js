@@ -66,7 +66,7 @@ class Sort extends AbstractComponent {
     return getSortTemplate();
   }
 
-  setSortTypeChangeHandlet(handler) {
+  setSortTypeChangeHandler(handler) {
     this.getElement().addEventListener(`change`, () => {
       const sortType = this.getElement()
                         .querySelector(`input:checked`)
