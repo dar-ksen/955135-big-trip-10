@@ -36,7 +36,7 @@ const getOfferTemplate = (offers) => {
   `).join(`\n`);
 };
 
-const editCardTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
+const editEventTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
   return (`
@@ -185,15 +185,15 @@ const editCardTemplate = ({ type, city, pictures, description, startTime, endTim
   `);
 };
 
-export default class CardEdit extends AbstractComponent {
-  constructor(card) {
+export default class EventEdit extends AbstractComponent {
+  constructor(event) {
     super();
 
-    this._card = card;
+    this._event = event;
   }
 
   getTemplate() {
-    return editCardTemplate(this._card);
+    return editEventTemplate(this._event);
   }
 
   setSubmitHandler(handler) {

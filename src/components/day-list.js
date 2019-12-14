@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 
-const getCardContainerTemplate = () => {
+const getDayContainerTemplate = () => {
   return (`
     <ul class="trip-days js-trip-days"></ul>
   `);
@@ -8,6 +8,6 @@ const getCardContainerTemplate = () => {
 
 export default class DayList extends AbstractComponent {
   getTemplate() {
-    return getCardContainerTemplate();
+    return getDayContainerTemplate();
   }
 }

@@ -6,7 +6,7 @@ import TripController from './controllers/trip';
 import { renderComponent, RenderPosition } from './utils/render';
 
 import { filterItem } from './mock/filter';
-import { cards } from './mock/card';
+import { events } from './mock/evets';
 
 const tripMainElement = document.querySelector(`.js-trip-main`);
 const tripInfoElement = tripMainElement.querySelector(`.js-trip-info`);
@@ -15,15 +15,15 @@ const tripControlsHeaderElements = tripConrolsElement.querySelectorAll(`.js-trip
 
 renderComponent(tripControlsHeaderElements[0], new MenuComponent(), RenderPosition.AFTER);
 renderComponent(tripControlsHeaderElements[1], new FilterComponent(filterItem), RenderPosition.AFTER);
-renderComponent(tripInfoElement, new InfoComponent(cards), RenderPosition.AFTER_BEGIN);
+renderComponent(tripInfoElement, new InfoComponent(events), RenderPosition.AFTER_BEGIN);
 
 const tripEventsElement = document.querySelector(`.js-trip-events`);
 
 const tripController = new TripController(tripEventsElement);
 
-tripController.render(cards);
+tripController.render(events);
 
-const cost = cards
+const cost = events
               .map(({ price }) => price)
               .reduce((sum, price) => sum + price);
 

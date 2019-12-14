@@ -1,80 +1,80 @@
 import SortComponent, { SortType } from '../components/sort';
 import DayListComponent from '../components/day-list';
 import DayComponent from '../components/day';
-import SortCardsComponent from '../components/sort-cards';
+import SortEventsComponent from '../components/sort-events';
 
-import NoCardsMessageComponent from '../components/no-cards-message';
+import NoEventsMessageComponent from '../components/no-events-message';
 
 import { getDate, getUnique } from '../utils/common';
 
-import CardComponent from '../components/card';
-import CardEditComponent from '../components/card-edit';
+import EventComponent from '../components/event';
+import EventEditComponent from '../components/event-edit';
 
 import { renderComponent, replace } from '../utils/render';
 
-const renderCard = (cardListElement, card) => {
+const renderEvent = (eventListElement, event) => {
   const onEscKeyDown = (evt) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      startCardEditing();
+      startEventEditing();
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
 
-  const startCardEditing = () => replace(cardComponent, cardEditComponent);
+  const startEventEditing = () => replace(eventComponent, eventEditComponent);
 
-  const stopCardEditing = () => replace(cardEditComponent, cardComponent);
+  const stopEventEditing = () => replace(eventEditComponent, eventComponent);
 
 
-  const cardComponent = new CardComponent(card);
-  cardComponent.setEditButtonClickHandler(() => {
-    stopCardEditing();
+  const eventComponent = new EventComponent(event);
+  eventComponent.setEditButtonClickHandler(() => {
+    stopEventEditing();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  const cardEditComponent = new CardEditComponent(card);
+  const eventEditComponent = new EventEditComponent(event);
 
-  cardEditComponent.setSubmitHandler(startCardEditing);
+  eventEditComponent.setSubmitHandler(startEventEditing);
 
-  renderComponent(cardListElement, cardComponent);
+  renderComponent(eventListElement, eventComponent);
 };
 
-const renderDays = (dayListElement, cards) => {
-  const days = getUnique(cards.map((card) => getDate(card.startTime)));
+const renderDays = (dayListElement, events) => {
+  const days = getUnique(events.map((event) => getDate(event.startTime)));
 
   days.forEach((day) => {
     const dayComponent = new DayComponent(day);
     renderComponent(dayListElement, dayComponent);
     const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
-    cards
-      .filter((card) => getDate(card.startTime) === day)
-      .forEach((card) => renderCard(eventList, card));
+    events
+      .filter((event) => getDate(event.startTime) === day)
+      .forEach((event) => renderEvent(eventList, event));
   });
 };
 
-const renderSortCards = (dayListElement, cards) => {
-  const sortCardsComponent = new SortCardsComponent();
-  renderComponent(dayListElement, sortCardsComponent);
-  const eventList = sortCardsComponent.getElement().querySelector(`.js-trip-events__list`);
-  cards
-    .forEach((card) => renderCard(eventList, card));
+const renderSortEvents = (dayListElement, events) => {
+  const sortEventsComponent = new SortEventsComponent();
+  renderComponent(dayListElement, sortEventsComponent);
+  const eventList = sortEventsComponent.getElement().querySelector(`.js-trip-events__list`);
+  events
+    .forEach((event) => renderEvent(eventList, event));
 };
 
 export default class TripController {
   constructor(container) {
     this._container = container;
 
-    this._noCardsMessageComponent = new NoCardsMessageComponent();
+    this._noEventsMessageComponent = new NoEventsMessageComponent();
     this._sortComponent = new SortComponent();
     this._dayListComponent = new DayListComponent();
   }
 
-  render(cards) {
+  render(events) {
 
 
-    if (cards.length === 0) {
-      renderComponent(this._container, this._noCardsMessageComponent);
+    if (events.length === 0) {
+      renderComponent(this._container, this._noEventsMessageComponent);
       return;
     }
 
@@ -84,31 +84,31 @@ export default class TripController {
 
     renderComponent(this._container, this._dayListComponent);
 
-    renderDays(dayListElement, cards);
+    renderDays(dayListElement, events);
 
     this._sortComponent.setSortTypeChangeHandlet((sortType) => {
-      let sortedCard = [];
+      let sortedEvent = [];
 
       switch (sortType) {
         case SortType.TIME:
-          sortedCard = cards.slice().sort((a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime));
+          sortedEvent = events.slice().sort((a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime));
           break;
         case SortType.PRICE:
-          sortedCard = cards.slice().sort((a, b) => b.price - a.price);
+          sortedEvent = events.slice().sort((a, b) => b.price - a.price);
           break;
         case SortType.DEFAULT:
-          sortedCard = cards;
+          sortedEvent = events;
           break;
         default :
-          sortedCard = cards;
+          sortedEvent = events;
       }
 
       dayListElement.innerHTML = ``;
 
       if (sortType === SortType.DEFAULT) {
-        renderDays(dayListElement, sortedCard);
+        renderDays(dayListElement, sortedEvent);
       } else {
-        renderSortCards(dayListElement, sortedCard);
+        renderSortEvents(dayListElement, sortedEvent);
       }
 
     });

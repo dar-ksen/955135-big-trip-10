@@ -1,4 +1,4 @@
-const CARDS_COUNT = 15;
+const EVENTS_COUNT = 15;
 
 const Types = [
   {
@@ -115,7 +115,7 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-const generateCard = () => {
+const generateEvent = () => {
   const startTime = getRandomDate();
   const duration = getRandomIntegerNumber(30, 120) * 60 * 1000;
   const endTime = new Date(startTime.valueOf() + duration);
@@ -132,12 +132,12 @@ const generateCard = () => {
   };
 };
 
-const generateCards = (count) => {
+const generateEvents = (count) => {
   return new Array(count)
     .fill(``)
-    .map(generateCard);
+    .map(generateEvent);
 };
 
-const cards = generateCards(CARDS_COUNT);
+const events = generateEvents(EVENTS_COUNT);
 
-export { cards };
+export { events };
