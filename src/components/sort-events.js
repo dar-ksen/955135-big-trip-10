@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 
-const sortCardTemplate = () => {
+const sortEventsTemplate = () => {
   return (`
   <li class="trip-days__item  day">
     <div class="day__info">
@@ -12,8 +12,8 @@ const sortCardTemplate = () => {
   );
 };
 
-export default class SortCards extends AbstractComponent {
+export default class SortEvents extends AbstractComponent {
   getTemplate() {
-    return sortCardTemplate();
+    return sortEventsTemplate();
   }
 }

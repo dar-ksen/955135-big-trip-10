@@ -29,7 +29,7 @@ const getAvailableOffersTemplate = (offers, availableOfferNames) => {
    </li>`).join(`\n`);
 };
 
-const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
+const getEventTemplate = ({ type, city, startTime, endTime, price, offers }) => {
   const availableOfferNames = Object.entries(offers)
   .filter(([, isOfferAvailable]) => isOfferAvailable)
   .map(([offerName]) => offerName);
@@ -70,15 +70,15 @@ const getCardTemplate = ({ type, city, startTime, endTime, price, offers }) => {
   </li>`);
 };
 
-export default class Card extends AbstractComponent {
-  constructor(card) {
+export default class Event extends AbstractComponent {
+  constructor(event) {
     super();
 
-    this._card = card;
+    this._event = event;
   }
 
   getTemplate() {
-    return getCardTemplate(this._card);
+    return getEventTemplate(this._event);
   }
 
   setEditButtonClickHandler(handler) {
