@@ -17,16 +17,16 @@ const getInfoElement = (events) => {
     return ``;
   }
 
-  const sortingEvents = events.sort((a, b) => a.startTime - b.startTime);
-  const citiesTemplate = getCitiesTemplate(sortingEvents);
+  const sortedEvents = events.sort((a, b) => a.startTime - b.startTime);
+  const citiesTemplate = getCitiesTemplate(sortedEvents);
   return (`
   <div class="trip-info__main">
     <h1 class="trip-info__title">${citiesTemplate}</h1>
 
     <p class="trip-info__dates">
-    ${formatDate(getFirst(sortingEvents).startTime)}
+    ${formatDate(getFirst(sortedEvents).startTime)}
     &nbsp;&mdash;&nbsp;
-    ${formatDate(getLast(sortingEvents).endTime)}
+    ${formatDate(getLast(sortedEvents).endTime)}
     </p>
   </div>
   `);
