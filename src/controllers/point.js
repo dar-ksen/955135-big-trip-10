@@ -2,36 +2,71 @@ import { renderComponent, replace } from '../utils/render';
 import EventComponent from '../components/event';
 import EventEditComponent from '../components/event-edit';
 
+const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`,
+};
+
 export default class PointController {
-  constructor(container) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
+
+    this._mode = Mode.DEFAULT;
+    this._eventComponent = null;
+    this._eventEditComponent = null;
+
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(pointData) {
-    const onEscKeyDown = (evt) => {
-      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+    const oldEventComponent = this._eventComponent;
+    const oldEventEditComponent = this._eventEditComponent;
 
-      if (isEscKey) {
-        startEventEditing();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
+    this._eventComponent = new EventComponent(pointData);
 
-    const startEventEditing = () => replace(eventComponent, eventEditComponent);
+    this._eventEditComponent = new EventEditComponent(pointData);
 
-    const stopEventEditing = () => replace(eventEditComponent, eventComponent);
-
-    const eventComponent = new EventComponent(pointData);
-
-    eventComponent.setEditButtonClickHandler(() => {
-      stopEventEditing();
-      document.addEventListener(`keydown`, onEscKeyDown);
+    this._eventComponent.setEditButtonClickHandler(() => {
+      this._startEventEditing();
+      document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    const eventEditComponent = new EventEditComponent(pointData);
+    this._eventEditComponent.setSubmitHandler(() => this._stopEventEditing());
 
-    eventEditComponent.setSubmitHandler(startEventEditing);
+    if (oldEventEditComponent && oldEventComponent) {
+      replace(this._eventComponent, oldEventComponent);
+      replace(this._eventEditComponent, oldEventEditComponent);
+    } else {
+      renderComponent(this._container, this._eventComponent);
+    }
+  }
 
-    renderComponent(this._container, eventComponent);
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._stopEventEditing();
+    }
+  }
+
+  _startEventEditing() {
+    this._onViewChange();
+
+    replace(this._eventEditComponent, this._eventComponent);
+    this._mode = Mode.EDIT;
+  }
+
+  _stopEventEditing() {
+    replace(this._eventComponent, this._eventEditComponent);
+    this._mode = Mode.DEFAULT;
+  }
+
+  _onEscKeyDown(evt) {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      this._stopEventEditing();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    }
   }
 }
