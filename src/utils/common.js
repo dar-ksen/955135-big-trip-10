@@ -29,6 +29,14 @@ const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
 
 const getUnique = (array) => [...new Set(array)];
 
+// Sorting
+
+const sortByDurationInDescendingOrder = (a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime);
+
+const sortByPriceInDescendingOrder = (a, b) => b.price - a.price;
+
+const sortPurely = (collection, iterate) => collection.slice().sort(iterate);
+
 export {
   getTwoDigitFormat,
   formatTime,
@@ -38,4 +46,7 @@ export {
   getLast,
   getDate,
   getUnique,
+  sortByDurationInDescendingOrder,
+  sortByPriceInDescendingOrder,
+  sortPurely
 };
