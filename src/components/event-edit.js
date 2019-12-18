@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
 
 import { Offers } from '../const';
 
@@ -36,9 +36,11 @@ const getOfferTemplate = (offers) => {
   `).join(`\n`);
 };
 
-const editEventTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
+const editEventTemplate = (pointData) => {
+  const { type, city, pictures, description, startTime, endTime, price, offers, isFavored } = pointData;
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
+  const isFavorite = isFavored ? `checked` : ``;
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit js-event--edit" action="#" method="post">
@@ -146,7 +148,7 @@ const editEventTemplate = ({ type, city, pictures, description, startTime, endTi
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
 
-        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite}>
         <label class="event__favorite-btn" for="event-favorite-1">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -185,11 +187,13 @@ const editEventTemplate = ({ type, city, pictures, description, startTime, endTi
   `);
 };
 
-export default class EventEdit extends AbstractComponent {
+export default class EventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
 
     this._event = event;
+
+    // this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -201,4 +205,17 @@ export default class EventEdit extends AbstractComponent {
       .querySelector(`.js-event--edit`)
       .addEventListener(`submit`, handler);
   }
+
+  setInputFavoriteChangeHandler(handler) {
+    this.getElement()
+      .querySelector(`.js-event__favorite-checkbox`)
+        .addEventListener(`change`, handler);
+  }
+
+  /*
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+  */
+
 }

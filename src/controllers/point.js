@@ -35,6 +35,12 @@ export default class PointController {
 
     this._eventEditComponent.setSubmitHandler(() => this._stopEventEditing());
 
+    this._eventEditComponent.setInputFavoriteChangeHandler(() => {
+      this._onDataChange(this, pointData, Object.assign({}, pointData, {
+        isFavored: !pointData.isFavored,
+      }));
+    });
+
     if (oldEventEditComponent && oldEventComponent) {
       replace(this._eventComponent, oldEventComponent);
       replace(this._eventEditComponent, oldEventEditComponent);

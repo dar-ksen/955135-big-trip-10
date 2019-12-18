@@ -92,6 +92,7 @@ export default class TripController {
     this._points = [].concat(this._points.slice(0, index), newData, this._points.slice(index + 1));
 
     pointController.render(this._points[index]);
+    // console.log(this._points.map((point) => point.isFavorite));
   }
 
   _onViewChange() {

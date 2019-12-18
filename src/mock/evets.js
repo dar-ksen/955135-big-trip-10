@@ -129,7 +129,7 @@ const generateEvent = () => {
     endTime,
     price: getRandomIntegerNumber(50, 100),
     offers: getOfferState(),
-    isFavorite: false,
+    isFavored: false,
   };
 };
 
