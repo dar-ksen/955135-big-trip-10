@@ -12,7 +12,7 @@ const createElement = (template) => {
   return newElement.firstElementChild;
 };
 
-const replace = (newComponent, oldComponent) => {
+const replaceComponent = (newComponent, oldComponent) => {
   const parentElement = oldComponent.getElement().parentElement;
   const newElement = newComponent.getElement();
   const oldElement = oldComponent.getElement();
@@ -50,7 +50,7 @@ const renderComponent = (container, component, place = RenderPosition.BEFORE_END
 export {
   RenderPosition,
   createElement,
-  replace,
+  replaceComponent,
   remove,
   renderComponent
 };

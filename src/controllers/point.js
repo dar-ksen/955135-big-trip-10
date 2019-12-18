@@ -1,4 +1,4 @@
-import { renderComponent, replace } from '../utils/render';
+import { renderComponent, replaceComponent } from '../utils/render';
 import PointComponent from '../components/point';
 import PointEditComponent from '../components/point-edit';
 
@@ -40,8 +40,8 @@ class PointController {
     });
 
     if (oldPointEditComponent && oldPointComponent) {
-      replace(this._pointComponent, oldPointComponent);
-      replace(this._pointEditComponent, oldPointEditComponent);
+      replaceComponent(this._pointComponent, oldPointComponent);
+      replaceComponent(this._pointEditComponent, oldPointEditComponent);
     } else {
       renderComponent(this._container, this._pointComponent);
     }
@@ -56,12 +56,12 @@ class PointController {
   _startEventEditing() {
     this._onViewChange();
 
-    replace(this._pointEditComponent, this._pointComponent);
+    replaceComponent(this._pointEditComponent, this._pointComponent);
     this._mode = Mode.EDIT;
   }
 
   _stopEventEditing() {
-    replace(this._pointComponent, this._pointEditComponent);
+    replaceComponent(this._pointComponent, this._pointEditComponent);
     this._mode = Mode.DEFAULT;
   }
 
