@@ -6,7 +6,7 @@ const Cities = [
   `Praha`
 ];
 
-const Types = [
+const TypesOfTransfer = [
   {
     id: `taxi`,
     title: `Taxi`,
@@ -42,6 +42,9 @@ const Types = [
     title: `Flight`,
     placeholder: `to`
   },
+];
+
+const TypesOfActivity = [
   {
     id: `check-in`,
     title: `Check`,
@@ -58,6 +61,8 @@ const Types = [
     placeholder: `at`
   },
 ];
+
+const Types = [...TypesOfTransfer, ...TypesOfActivity];
 
 const Offers = {
   luggage:
@@ -89,6 +94,8 @@ const Offers = {
 
 export {
   Cities,
+  TypesOfTransfer,
+  TypesOfActivity,
   Types,
   Offers
 };
