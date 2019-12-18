@@ -1,51 +1,51 @@
 import { renderComponent, replace } from '../utils/render';
-import EventComponent from '../components/event';
-import EventEditComponent from '../components/event-edit';
+import PointComponent from '../components/point';
+import PointEditComponent from '../components/point-edit';
 
 const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
 };
 
-export default class PointController {
+class PointController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
 
     this._mode = Mode.DEFAULT;
-    this._eventComponent = null;
-    this._eventEditComponent = null;
+    this._pointComponent = null;
+    this._pointEditComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(pointData) {
-    const oldEventComponent = this._eventComponent;
-    const oldEventEditComponent = this._eventEditComponent;
+    const oldPointComponent = this._pointComponent;
+    const oldPointEditComponent = this._pointEditComponent;
 
-    this._eventComponent = new EventComponent(pointData);
+    this._pointComponent = new PointComponent(pointData);
 
-    this._eventEditComponent = new EventEditComponent(pointData);
+    this._pointEditComponent = new PointEditComponent(pointData);
 
-    this._eventComponent.setEditButtonClickHandler(() => {
+    this._pointComponent.setEditButtonClickHandler(() => {
       this._startEventEditing();
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._eventEditComponent.setSubmitHandler(() => this._stopEventEditing());
+    this._pointEditComponent.setSubmitHandler(() => this._stopEventEditing());
 
-    this._eventEditComponent.setInputFavoriteChangeHandler(() => {
+    this._pointEditComponent.setInputFavoriteChangeHandler(() => {
       this._onDataChange(this, pointData, Object.assign({}, pointData, {
         isFavored: !pointData.isFavored,
       }));
     });
 
-    if (oldEventEditComponent && oldEventComponent) {
-      replace(this._eventComponent, oldEventComponent);
-      replace(this._eventEditComponent, oldEventEditComponent);
+    if (oldPointEditComponent && oldPointComponent) {
+      replace(this._pointComponent, oldPointComponent);
+      replace(this._pointEditComponent, oldPointEditComponent);
     } else {
-      renderComponent(this._container, this._eventComponent);
+      renderComponent(this._container, this._pointComponent);
     }
   }
 
@@ -58,12 +58,12 @@ export default class PointController {
   _startEventEditing() {
     this._onViewChange();
 
-    replace(this._eventEditComponent, this._eventComponent);
+    replace(this._pointEditComponent, this._pointComponent);
     this._mode = Mode.EDIT;
   }
 
   _stopEventEditing() {
-    replace(this._eventComponent, this._eventEditComponent);
+    replace(this._pointComponent, this._pointEditComponent);
     this._mode = Mode.DEFAULT;
   }
 
@@ -76,3 +76,5 @@ export default class PointController {
     }
   }
 }
+
+export { PointController as default };

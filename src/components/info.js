@@ -17,29 +17,30 @@ const getInfoElement = (events) => {
     return ``;
   }
 
-  const sortedEvents = events.sort((a, b) => a.startTime - b.startTime);
-  const citiesTemplate = getCitiesTemplate(sortedEvents);
+  const sortedPoints = events.sort((a, b) => a.startTime - b.startTime);
+  const citiesTemplate = getCitiesTemplate(sortedPoints);
   return (`
   <div class="trip-info__main">
     <h1 class="trip-info__title">${citiesTemplate}</h1>
 
     <p class="trip-info__dates">
-    ${formatDate(getFirst(sortedEvents).startTime)}
+    ${formatDate(getFirst(sortedPoints).startTime)}
     &nbsp;&mdash;&nbsp;
-    ${formatDate(getLast(sortedEvents).endTime)}
+    ${formatDate(getLast(sortedPoints).endTime)}
     </p>
   </div>
   `);
 };
 
-export default class Info extends AbstractComponent {
-  constructor(events) {
+class Info extends AbstractComponent {
+  constructor(points) {
     super();
-    this._events = events;
+    this._points = points;
   }
 
   getTemplate() {
-    return getInfoElement(this._events);
+    return getInfoElement(this._points);
   }
 }
 
+export { Info as default };

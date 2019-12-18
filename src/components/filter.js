@@ -24,7 +24,7 @@ const getFiltersTemplate = (filters) => {
   `);
 };
 
-export default class Filter extends AbstractComponent {
+class Filter extends AbstractComponent {
   constructor(filters) {
     super();
 
@@ -35,3 +35,5 @@ export default class Filter extends AbstractComponent {
     return getFiltersTemplate(this._filters);
   }
 }
+
+export { Filter as default };

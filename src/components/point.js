@@ -29,7 +29,7 @@ const getAvailableOffersTemplate = (offers, availableOfferNames) => {
    </li>`).join(`\n`);
 };
 
-const getEventTemplate = ({ type, city, startTime, endTime, price, offers }) => {
+const getPointTemplate = ({ type, city, startTime, endTime, price, offers }) => {
   const availableOfferNames = Object.entries(offers)
   .filter(([, isOfferAvailable]) => isOfferAvailable)
   .map(([offerName]) => offerName);
@@ -70,15 +70,15 @@ const getEventTemplate = ({ type, city, startTime, endTime, price, offers }) => 
   </li>`);
 };
 
-export default class Event extends AbstractComponent {
-  constructor(event) {
+class Point extends AbstractComponent {
+  constructor(pointData) {
     super();
 
-    this._event = event;
+    this._pointData = pointData;
   }
 
   getTemplate() {
-    return getEventTemplate(this._event);
+    return getPointTemplate(this._pointData);
   }
 
   setEditButtonClickHandler(handler) {
@@ -87,3 +87,5 @@ export default class Event extends AbstractComponent {
       .addEventListener(`click`, handler);
   }
 }
+
+export { Point as default };

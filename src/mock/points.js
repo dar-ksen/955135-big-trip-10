@@ -1,4 +1,4 @@
-const EVENTS_COUNT = 5;
+const POINTS_COUNT = 5;
 
 const Types = [
   {
@@ -115,7 +115,7 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-const generateEvent = () => {
+const generatePoint = () => {
   const startTime = getRandomDate();
   const duration = getRandomIntegerNumber(30, 120) * 60 * 1000;
   const endTime = new Date(startTime.valueOf() + duration);
@@ -133,12 +133,12 @@ const generateEvent = () => {
   };
 };
 
-const generateEvents = (count) => {
+const generatePoints = (count) => {
   return new Array(count)
     .fill(``)
-    .map(generateEvent);
+    .map(generatePoint);
 };
 
-const events = generateEvents(EVENTS_COUNT);
+const points = generatePoints(POINTS_COUNT);
 
-export { events };
+export { points };

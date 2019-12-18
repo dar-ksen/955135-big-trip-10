@@ -9,8 +9,10 @@ const getMenuTemplate = () => {
   `);
 };
 
-export default class Menu extends AbstractComponent {
+class Menu extends AbstractComponent {
   getTemplate() {
     return getMenuTemplate(this);
   }
 }
+
+export { Menu as default };

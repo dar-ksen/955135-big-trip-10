@@ -1,10 +1,10 @@
 import SortComponent, { SortType } from '../components/sort';
 import DayListComponent from '../components/day-list';
 import DayComponent from '../components/day';
-import SortEventsComponent from '../components/sort-events';
+import SortPointsComponent from '../components/sort-points';
 import PointController from './point.js';
 
-import NoEventsMessageComponent from '../components/no-events-message';
+import NoPointsMessageComponent from '../components/no-points-message';
 
 import {
   getDate,
@@ -24,7 +24,7 @@ const renderPoints = (eventList, points, onDataChange, onViewChange) => {
   });
 };
 
-export default class TripController {
+class TripController {
   constructor(container) {
     this._container = container;
     this._points = [];
@@ -35,7 +35,7 @@ export default class TripController {
     this._onViewChange = this._onViewChange.bind(this);
 
 
-    this._noEventsMessageComponent = new NoEventsMessageComponent();
+    this._noPointsMessageComponent = new NoPointsMessageComponent();
     this._sortComponent = new SortComponent();
     this._dayListComponent = new DayListComponent();
 
@@ -46,7 +46,7 @@ export default class TripController {
     this._points = points;
 
     if (this._points.length === 0) {
-      renderComponent(this._container, this._noEventsMessageComponent);
+      renderComponent(this._container, this._noPointsMessageComponent);
       return;
     }
 
@@ -58,9 +58,9 @@ export default class TripController {
 
   _renderSortEvents(points) {
     const dayListElement = this._dayListComponent.getElement();
-    const sortEventsComponent = new SortEventsComponent();
-    renderComponent(dayListElement, sortEventsComponent);
-    const eventList = sortEventsComponent.getElement().querySelector(`.js-trip-events__list`);
+    const sortPointsComponent = new SortPointsComponent();
+    renderComponent(dayListElement, sortPointsComponent);
+    const eventList = sortPointsComponent.getElement().querySelector(`.js-trip-events__list`);
     const newTasks = renderPoints(eventList, points, this._onDataChange, this._onViewChange);
     this._showedPointControllers = this._showedPointControllers.concat(newTasks);
   }
@@ -133,3 +133,5 @@ export default class TripController {
   }
 
 }
+
+export { TripController as default };

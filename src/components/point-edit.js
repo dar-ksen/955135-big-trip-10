@@ -36,7 +36,7 @@ const getOfferTemplate = (offers) => {
   `).join(`\n`);
 };
 
-const editEventTemplate = (pointData) => {
+const editPointTemplate = (pointData) => {
   const { type, city, pictures, description, startTime, endTime, price, offers, isFavored } = pointData;
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
@@ -187,17 +187,17 @@ const editEventTemplate = (pointData) => {
   `);
 };
 
-export default class EventEdit extends AbstractSmartComponent {
-  constructor(event) {
+class PointEdit extends AbstractSmartComponent {
+  constructor(pointData) {
     super();
 
-    this._event = event;
+    this._pointData = pointData;
 
     // this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return editEventTemplate(this._event);
+    return editPointTemplate(this._pointData);
   }
 
   setSubmitHandler(handler) {
@@ -219,3 +219,5 @@ export default class EventEdit extends AbstractSmartComponent {
   */
 
 }
+
+export { PointEdit as default };
