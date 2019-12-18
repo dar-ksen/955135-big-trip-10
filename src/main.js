@@ -17,9 +17,9 @@ renderComponent($controlHeader[0], new MenuComponent(), RenderPosition.AFTER);
 renderComponent($controlHeader[1], new FilterComponent(filterItem), RenderPosition.AFTER);
 renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
 
-const $events = document.querySelector(`.js-trip-events`);
+const $event = document.querySelector(`.js-trip-events`);
 
-const tripController = new TripController($events);
+const tripController = new TripController($event);
 
 tripController.render(points);
 
