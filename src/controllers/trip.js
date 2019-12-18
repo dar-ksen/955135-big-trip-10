@@ -57,27 +57,29 @@ class TripController {
   }
 
   _renderSortEvents(points) {
-    const dayListElement = this._dayListComponent.getElement();
+    const $dayList = this._dayListComponent.getElement();
     const sortPointsComponent = new SortPointsComponent();
-    renderComponent(dayListElement, sortPointsComponent);
-    const eventList = sortPointsComponent.getElement().querySelector(`.js-trip-events__list`);
-    const newTasks = renderPoints(eventList, points, this._onDataChange, this._onViewChange);
+
+    renderComponent($dayList, sortPointsComponent);
+
+    const $pointList = sortPointsComponent.getElement().querySelector(`.js-trip-events__list`);
+    const newTasks = renderPoints($pointList, points, this._onDataChange, this._onViewChange);
     this._showedPointControllers = this._showedPointControllers.concat(newTasks);
   }
 
   _renderDays(points) {
-    const dayListElement = this._dayListComponent.getElement();
+    const $dayList = this._dayListComponent.getElement();
 
     const days = getUnique(points.map((point) => getDate(point.startTime)));
 
     days.forEach((day) => {
       const dayComponent = new DayComponent(day);
-      renderComponent(dayListElement, dayComponent);
+      renderComponent($dayList, dayComponent);
 
-      const eventList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
+      const $pointList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
 
       const dayPoints = points.filter((point) => getDate(point.startTime) === day);
-      const newTasks = renderPoints(eventList, dayPoints, this._onDataChange, this._onViewChange);
+      const newTasks = renderPoints($pointList, dayPoints, this._onDataChange, this._onViewChange);
       this._showedPointControllers = this._showedPointControllers.concat(newTasks);
     });
   }
@@ -102,7 +104,7 @@ class TripController {
   _onSortTypeChange(sortType) {
     let sortedEvent = [];
 
-    const dayListElement = this._dayListComponent.getElement();
+    const $dayList = this._dayListComponent.getElement();
 
     switch (sortType) {
       case SortType.TIME: {
@@ -122,7 +124,7 @@ class TripController {
 
     this._showedPointControllers = [];
 
-    dayListElement.innerHTML = ``;
+    $dayList.innerHTML = ``;
 
     if (sortType === SortType.DEFAULT) {
       this._renderDays(sortedEvent);
