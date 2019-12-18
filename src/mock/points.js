@@ -1,65 +1,6 @@
+import { Cities, Types } from '../const';
+
 const POINTS_COUNT = 5;
-
-const Types = [
-  {
-    id: `taxi`,
-    title: `Taxi`,
-    placeholder: `to`
-  },
-  {
-    id: `bus`,
-    title: `Bus`,
-    placeholder: `to`
-  },
-  {
-    id: `train`,
-    title: `Train`,
-    placeholder: `to`
-  },
-  {
-    id: `ship`,
-    title: `Ship`,
-    placeholder: `to`
-  },
-  {
-    id: `transport`,
-    title: `Transport`,
-    placeholder: `to`
-  },
-  {
-    id: `drive`,
-    title: `Drive`,
-    placeholder: `to`
-  },
-  {
-    id: `flight`,
-    title: `Flight`,
-    placeholder: `to`
-  },
-  {
-    id: `check-in`,
-    title: `Check`,
-    placeholder: `into`
-  },
-  {
-    id: `sightseeing`,
-    title: `Sightseeing`,
-    placeholder: `at`
-  },
-  {
-    id: `restaurant`,
-    title: `Restaurant`,
-    placeholder: `at`
-  },
-];
-
-const Cities = [
-  `Amsterdam`,
-  `Geneva`,
-  `Barcelona`,
-  `Dresden`,
-  `Praha`
-];
 
 const DescriptionsItems = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
