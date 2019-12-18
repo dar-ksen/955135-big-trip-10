@@ -36,9 +36,7 @@ class PointController {
     this._pointEditComponent.setSubmitHandler(() => this._stopEventEditing());
 
     this._pointEditComponent.setInputFavoriteChangeHandler(() => {
-      this._onDataChange(this, pointData, Object.assign({}, pointData, {
-        isFavored: !pointData.isFavored,
-      }));
+      this._onDataChange(this, pointData, { ...pointData, isFavored: !pointData.isFavored });
     });
 
     if (oldPointEditComponent && oldPointComponent) {
