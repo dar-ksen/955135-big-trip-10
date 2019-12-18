@@ -1,6 +1,7 @@
 import AbstractSmartComponent from './abstract-smart-component';
 
-import { Offers } from '../const';
+import { Cities, Offers, Types } from '../const';
+
 
 const getTime = (time) => {
   const formatterOptionsDate = {
@@ -15,6 +16,8 @@ const getTime = (time) => {
   const date = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate).format(time);
   return `${date.replace(`,`, ``)}`;
 };
+
+const getCitiesTemplate = (cities) => cities.map((city) => `<option value="${city}"></option>`).join(`\n`);
 
 const getPicturesTemplate = (pictures) => {
   return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
@@ -36,10 +39,13 @@ const getOfferTemplate = (offers) => {
   `).join(`\n`);
 };
 
-const editPointTemplate = (pointData) => {
-  const { type, city, pictures, description, startTime, endTime, price, offers, isFavored } = pointData;
+const editPointTemplate = (pointData, options = {}) => {
+  const { city, pictures, description, startTime, endTime, price, offers, isFavored } = pointData;
+  const { type } = options;
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
+  const citiesTemplate = getCitiesTemplate(Cities);
+
   const isFavorite = isFavored ? `checked` : ``;
   return (`
   <li class="trip-events__item">
@@ -52,7 +58,7 @@ const editPointTemplate = (pointData) => {
           </label>
           <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
-          <div class="event__type-list">
+          <div class="event__type-list js-event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Transfer</legend>
 
@@ -119,9 +125,7 @@ const editPointTemplate = (pointData) => {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
           <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
+            ${citiesTemplate}
           </datalist>
         </div>
 
@@ -192,12 +196,17 @@ class PointEdit extends AbstractSmartComponent {
     super();
 
     this._pointData = pointData;
+    this._type = { ...pointData.type };
 
-    // this._subscribeOnEvents();
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return editPointTemplate(this._pointData);
+    const options = {
+      type: this._type,
+    };
+
+    return editPointTemplate(this._pointData, options);
   }
 
   setSubmitHandler(handler) {
@@ -212,11 +221,21 @@ class PointEdit extends AbstractSmartComponent {
         .addEventListener(`change`, handler);
   }
 
-  /*
   recoveryListeners() {
     this._subscribeOnEvents();
   }
-  */
+
+  _subscribeOnEvents() {
+    const $type = this.getElement().querySelector(`.js-event__type-list`);
+
+    $type.addEventListener(`change`, () => {
+      const value = $type
+        .querySelector(`input:checked`)
+        .value;
+      this._type = Types.find(({ id }) => id === value);
+      this.rerender();
+    });
+  }
 
 }
 
