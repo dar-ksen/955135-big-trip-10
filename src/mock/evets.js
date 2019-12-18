@@ -1,4 +1,4 @@
-const EVENTS_COUNT = 15;
+const EVENTS_COUNT = 5;
 
 const Types = [
   {
@@ -123,12 +123,13 @@ const generateEvent = () => {
   return {
     type: getRandomArrayItem(Types),
     city: getRandomArrayItem(Cities),
-    pictures: new Array(COUNT_PICTURE).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+    pictures: new Array(getRandomIntegerNumber(1, COUNT_PICTURE)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
     description: getRandomDescription(),
     startTime,
     endTime,
     price: getRandomIntegerNumber(50, 100),
     offers: getOfferState(),
+    isFavorite: false,
   };
 };
 
