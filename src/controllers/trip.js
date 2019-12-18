@@ -15,6 +15,8 @@ import {
 
 import { renderComponent } from '../utils/render';
 
+const replace = (collection, replacement, index) => [...collection.slice(0, index), replacement, ...collection.slice(index + 1)];
+
 const renderPoints = (eventList, points, onDataChange, onViewChange) => {
   return points.map((pointData) => {
     const pointController = new PointController(eventList, onDataChange, onViewChange);
@@ -84,17 +86,12 @@ class TripController {
     });
   }
 
-  _onDataChange(pointController, oldData, newData) {
-    const index = this._points.findIndex((it) => it === oldData);
-
-    if (index === -1) {
-      return;
-    }
-
-    this._points = [].concat(this._points.slice(0, index), newData, this._points.slice(index + 1));
+  _onDataChange(pointController, replaceablePoint, replacementPoint) {
+    const index = this._points.findIndex((it) => it === replaceablePoint);
+    this._points = replace(this._points, replacementPoint, index);
 
     pointController.render(this._points[index]);
-    // console.log(this._points.map((point) => point.isFavorite));
+    // console.log(this._points.map((point) => point.isFavored));
   }
 
   _onViewChange() {
