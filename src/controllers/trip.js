@@ -65,8 +65,8 @@ class TripController {
     renderComponent($dayList, sortPointsComponent);
 
     const $pointList = sortPointsComponent.getElement().querySelector(`.js-trip-events__list`);
-    const newTasks = renderPoints($pointList, points, this._onDataChange, this._onViewChange);
-    this._showedPointControllers = [...this._showedPointControllers, ...newTasks];
+    const additionalPointControllers = renderPoints($pointList, points, this._onDataChange, this._onViewChange);
+    this._showedPointControllers = [...this._showedPointControllers, ...additionalPointControllers];
   }
 
   _renderDays(points) {
@@ -81,8 +81,8 @@ class TripController {
       const $pointList = dayComponent.getElement().querySelector(`.js-trip-events__list`);
 
       const dayPoints = points.filter((point) => getDate(point.startTime) === day);
-      const newTasks = renderPoints($pointList, dayPoints, this._onDataChange, this._onViewChange);
-      this._showedPointControllers = [...this._showedPointControllers, ...newTasks];
+      const additionalPointControllers = renderPoints($pointList, dayPoints, this._onDataChange, this._onViewChange);
+      this._showedPointControllers = [...this._showedPointControllers, ...additionalPointControllers];
     });
   }
 
