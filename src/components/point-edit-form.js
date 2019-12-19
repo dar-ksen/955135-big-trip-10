@@ -1,6 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component';
 
-import { Cities, Offers, TypesOfTransfer, TypesOfActivity, Types } from '../const';
+import { Cities, Offers, transferTypes, activityTypes, Types } from '../const';
 
 
 const getTime = (time) => {
@@ -51,8 +51,8 @@ const editPointTemplate = (pointData, options = {}) => {
   const { city, pictures, description, startTime, endTime, price, offers, isFavored } = pointData;
   const { type } = options;
 
-  const typeOfTransferListTemplate = getTypeListTemplate(TypesOfTransfer, type);
-  const typeOfActivityListTemplate = getTypeListTemplate(TypesOfActivity, type);
+  const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
+  const typeOfActivityListTemplate = getTypeListTemplate(activityTypes, type);
 
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
@@ -166,11 +166,7 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    const options = {
-      type: this._type,
-    };
-
-    return editPointTemplate(this._pointData, options);
+    return editPointTemplate(this._pointData, { type: this._type });
   }
 
   setSubmitHandler(handler) {
