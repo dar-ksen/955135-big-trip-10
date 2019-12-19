@@ -35,6 +35,8 @@ const sortByDurationInDescendingOrder = (a, b) => (b.endTime - b.startTime) - (a
 
 const sortByPriceInDescendingOrder = (a, b) => b.price - a.price;
 
+const sortByStartTimeInAscendingOrder = (a, b) => a.startTime - b.startTime;
+
 const sortPurely = (collection, iterate) => collection.slice().sort(iterate);
 
 export {
@@ -48,5 +50,6 @@ export {
   getUnique,
   sortByDurationInDescendingOrder,
   sortByPriceInDescendingOrder,
+  sortByStartTimeInAscendingOrder,
   sortPurely
 };

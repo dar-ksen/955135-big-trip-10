@@ -1,6 +1,6 @@
 import AbstractComponent from './abstract-component';
 
-import { formatDate, getFirst, getLast } from '../utils/common';
+import { formatDate, getFirst, getLast, sortPurely, sortByStartTimeInAscendingOrder } from '../utils/common';
 
 const getCitiesTemplate = (events) => {
   const cities = events.map(({ city }) => city);
@@ -12,12 +12,12 @@ const getCitiesTemplate = (events) => {
   return cities.map((city) => `${city}`).join(`&mdash`);
 };
 
-const getInfoElement = (events) => {
-  if (events.length === 0) {
+const getInfoElement = (points) => {
+  if (points.length === 0) {
     return ``;
   }
 
-  const sortedPoints = events.sort((a, b) => a.startTime - b.startTime);
+  const sortedPoints = sortPurely(points, sortByStartTimeInAscendingOrder);
   const citiesTemplate = getCitiesTemplate(sortedPoints);
   return (`
   <div class="trip-info__main">
