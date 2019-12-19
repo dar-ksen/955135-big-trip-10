@@ -11,10 +11,10 @@ import { points } from './mock/points';
 const $main = document.querySelector(`.js-trip-main`);
 const $info = $main.querySelector(`.js-trip-info`);
 const $control = $main.querySelector(`.js-trip-controls`);
-const $controlHeader = $control.querySelectorAll(`.js-trip-controls-heading`);
+const $controlHeaders = $control.querySelectorAll(`.js-trip-controls-heading`);
 
-renderComponent($controlHeader[0], new MenuComponent(), RenderPosition.AFTER);
-renderComponent($controlHeader[1], new FilterComponent(filterItem), RenderPosition.AFTER);
+renderComponent($controlHeaders[0], new MenuComponent(), RenderPosition.AFTER);
+renderComponent($controlHeaders[1], new FilterComponent(filterItem), RenderPosition.AFTER);
 renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
 
 const $event = document.querySelector(`.js-trip-events`);
