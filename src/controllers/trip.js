@@ -91,11 +91,10 @@ class TripController {
     this._points = replace(this._points, replacementPoint, index);
 
     pointController.render(this._points[index]);
-    // console.log(this._points.map((point) => point.isFavored));
   }
 
   _onViewChange() {
-    this._showedPointControllers.forEach((point) => point.setDefaultView());
+    this._showedPointControllers.forEach((controller) => controller.setDefaultView());
   }
 
   _onSortTypeChange(sortType) {
