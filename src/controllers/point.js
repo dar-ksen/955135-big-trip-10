@@ -1,6 +1,6 @@
 import { renderComponent, replaceComponent } from '../utils/render';
 import PointComponent from '../components/point';
-import PointEditComponent from '../components/point-edit';
+import PointEditFormComponent from '../components/point-edit-form';
 
 const Mode = {
   DEFAULT: `default`,
@@ -26,22 +26,22 @@ class PointController {
 
     this._pointComponent = new PointComponent(pointData);
 
-    this._pointEditComponent = new PointEditComponent(pointData);
+    this._pointEditFormComponent = new PointEditFormComponent(pointData);
 
     this._pointComponent.setEditButtonClickHandler(() => {
       this._startEventEditing();
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._pointEditComponent.setSubmitHandler(() => this._stopEventEditing());
+    this._pointEditFormComponent.setSubmitHandler(() => this._stopEventEditing());
 
-    this._pointEditComponent.setInputFavoriteChangeHandler(() => {
+    this._pointEditFormComponent.setInputFavoriteChangeHandler(() => {
       this._onDataChange(this, pointData, { ...pointData, isFavored: !pointData.isFavored });
     });
 
     if (oldPointEditComponent && oldPointComponent) {
       replaceComponent(this._pointComponent, oldPointComponent);
-      replaceComponent(this._pointEditComponent, oldPointEditComponent);
+      replaceComponent(this._pointEditFormComponent, oldPointEditComponent);
     } else {
       renderComponent(this._container, this._pointComponent);
     }
@@ -56,12 +56,12 @@ class PointController {
   _startEventEditing() {
     this._onViewChange();
 
-    replaceComponent(this._pointEditComponent, this._pointComponent);
+    replaceComponent(this._pointEditFormComponent, this._pointComponent);
     this._mode = Mode.EDIT;
   }
 
   _stopEventEditing() {
-    replaceComponent(this._pointComponent, this._pointEditComponent);
+    replaceComponent(this._pointComponent, this._pointEditFormComponent);
     this._mode = Mode.DEFAULT;
   }
 

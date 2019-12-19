@@ -58,7 +58,7 @@ const editPointTemplate = (pointData, options = {}) => {
   const offerTemplate = getOfferTemplate(offers);
   const citiesTemplate = getCitiesTemplate(Cities);
 
-  const isFavorite = isFavored ? `checked` : ``;
+  const favoredPoint = isFavored ? `checked` : ``;
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit js-event--edit" action="#" method="post">
@@ -116,7 +116,7 @@ const editPointTemplate = (pointData, options = {}) => {
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
 
-        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite}>
+        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
         <label class="event__favorite-btn" for="event-favorite-1">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -155,7 +155,7 @@ const editPointTemplate = (pointData, options = {}) => {
   `);
 };
 
-class PointEdit extends AbstractSmartComponent {
+class PointEditForm extends AbstractSmartComponent {
   constructor(pointData) {
     super();
 
@@ -203,4 +203,4 @@ class PointEdit extends AbstractSmartComponent {
 
 }
 
-export { PointEdit as default };
+export { PointEditForm as default };
