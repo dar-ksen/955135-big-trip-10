@@ -1,12 +1,16 @@
 import AbstractComponent from './abstract-component';
 
-import { formatDate, getFirst, getLast, sortPurely, sortByStartTimeInAscendingOrder } from '../utils/common';
+import { formatDate } from '../utils/common';
+
+import { ArrayUtils } from '../utils/array';
+
+const sortByStartTimeInAscendingOrder = (a, b) => a.startTime - b.startTime;
 
 const getCitiesTemplate = (events) => {
   const cities = events.map(({ city }) => city);
   if (cities.length > 3) {
-    const sourceCity = getFirst(cities);
-    const destinationCity = getLast(cities);
+    const sourceCity = ArrayUtils.getFirst(cities);
+    const destinationCity = ArrayUtils.getLast(cities);
     return `${sourceCity} &mdash; ... &mdash; ${destinationCity}`;
   }
   return cities.map((city) => `${city}`).join(`&mdash`);
@@ -17,16 +21,16 @@ const getInfoElement = (points) => {
     return ``;
   }
 
-  const sortedPoints = sortPurely(points, sortByStartTimeInAscendingOrder);
+  const sortedPoints = ArrayUtils.sortPurely(points, sortByStartTimeInAscendingOrder);
   const citiesTemplate = getCitiesTemplate(sortedPoints);
   return (`
   <div class="trip-info__main">
     <h1 class="trip-info__title">${citiesTemplate}</h1>
 
     <p class="trip-info__dates">
-    ${formatDate(getFirst(sortedPoints).startTime)}
+    ${formatDate(ArrayUtils.getFirst(sortedPoints).startTime)}
     &nbsp;&mdash;&nbsp;
-    ${formatDate(getLast(sortedPoints).endTime)}
+    ${formatDate(ArrayUtils.getLast(sortedPoints).endTime)}
     </p>
   </div>
   `);

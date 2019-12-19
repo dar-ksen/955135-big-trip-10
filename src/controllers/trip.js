@@ -6,14 +6,14 @@ import PointController from './point.js';
 
 import NoPointsMessageComponent from '../components/no-points-message';
 
-import {
-  getDate,
-  getUnique,
-  sortByDurationInDescendingOrder,
-  sortByPriceInDescendingOrder,
-  sortPurely } from '../utils/common';
+import { getDate } from '../utils/common';
+import { ArrayUtils } from '../utils/array';
 
 import { renderComponent } from '../utils/render';
+
+const sortByDurationInDescendingOrder = (a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime);
+
+const sortByPriceInDescendingOrder = (a, b) => b.price - a.price;
 
 const replace = (collection, replacement, index) => [...collection.slice(0, index), replacement, ...collection.slice(index + 1)];
 
@@ -72,7 +72,7 @@ class TripController {
   _renderDays(points) {
     const $dayList = this._dayListComponent.getElement();
 
-    const days = getUnique(points.map((point) => getDate(point.startTime)));
+    const days = ArrayUtils.getUnique(points.map((point) => getDate(point.startTime)));
 
     days.forEach((day) => {
       const dayComponent = new DayComponent(day);
@@ -104,11 +104,11 @@ class TripController {
 
     switch (sortType) {
       case SortType.TIME: {
-        sortedEvent = sortPurely(this._points, sortByDurationInDescendingOrder);
+        sortedEvent = ArrayUtils.sortPurely(this._points, sortByDurationInDescendingOrder);
         break;
       }
       case SortType.PRICE: {
-        sortedEvent = sortPurely(this._points, sortByPriceInDescendingOrder);
+        sortedEvent = ArrayUtils.sortPurely(this._points, sortByPriceInDescendingOrder);
         break;
       }
       case SortType.DEFAULT:
