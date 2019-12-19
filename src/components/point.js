@@ -71,14 +71,14 @@ const getPointTemplate = ({ type, city, startTime, endTime, price, offers }) => 
 };
 
 class Point extends AbstractComponent {
-  constructor(pointData) {
+  constructor(point) {
     super();
 
-    this._pointData = pointData;
+    this._point = point;
   }
 
   getTemplate() {
-    return getPointTemplate(this._pointData);
+    return getPointTemplate(this._point);
   }
 
   setEditButtonClickHandler(handler) {

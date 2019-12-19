@@ -47,8 +47,8 @@ const getOfferTemplate = (offers) => {
   `).join(`\n`);
 };
 
-const editPointTemplate = (pointData, options = {}) => {
-  const { city, pictures, description, startTime, endTime, price, offers, isFavored } = pointData;
+const editPointTemplate = (point, options = {}) => {
+  const { city, pictures, description, startTime, endTime, price, offers, isFavored } = point;
   const { type } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
@@ -156,17 +156,17 @@ const editPointTemplate = (pointData, options = {}) => {
 };
 
 class PointEditForm extends AbstractSmartComponent {
-  constructor(pointData) {
+  constructor(point) {
     super();
 
-    this._pointData = pointData;
-    this._type = { ...pointData.type };
+    this._point = point;
+    this._type = { ...point.type };
 
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return editPointTemplate(this._pointData, { type: this._type });
+    return editPointTemplate(this._point, { type: this._type });
   }
 
   setSubmitHandler(handler) {
