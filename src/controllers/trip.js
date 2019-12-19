@@ -87,7 +87,7 @@ class TripController {
   }
 
   _onDataChange(pointController, replaceablePoint, replacementPoint) {
-    const index = this._points.findIndex((it) => it === replaceablePoint);
+    const index = this._points.findIndex((point) => point === replaceablePoint);
     this._points = replace(this._points, replacementPoint, index);
 
     pointController.render(this._points[index]);
@@ -95,7 +95,7 @@ class TripController {
   }
 
   _onViewChange() {
-    this._showedPointControllers.forEach((it) => it.setDefaultView());
+    this._showedPointControllers.forEach((point) => point.setDefaultView());
   }
 
   _onSortTypeChange(sortType) {
