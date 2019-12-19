@@ -18,9 +18,9 @@ const getTime = (time) => {
 };
 
 const getTypeListTemplate = (types, activeType) => types.map((type) => {
-  const isChecked = activeType.id === type.id ? `checked` : ``;
+  const checkedType = activeType.id === type.id ? `checked` : ``;
   return `<div class="event__type-item">
-            <input id="event-type-${type.id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.id}" ${isChecked}>
+            <input id="event-type-${type.id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.id}" ${checkedType}>
             <label class="event__type-label  event__type-label--${type.id}" for="event-type-${type.id}-1">${type.title}</label>
           </div>`;
 }).join(`\n`);
