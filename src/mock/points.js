@@ -1,4 +1,4 @@
-import { Cities, Types } from '../const';
+import { cities, types } from '../const';
 
 const POINTS_COUNT = 5;
 
@@ -62,8 +62,8 @@ const generatePoint = () => {
   const endTime = new Date(startTime.valueOf() + duration);
 
   return {
-    type: getRandomArrayItem(Types),
-    city: getRandomArrayItem(Cities),
+    type: getRandomArrayItem(types),
+    city: getRandomArrayItem(cities),
     pictures: new Array(getRandomIntegerNumber(1, COUNT_PICTURE)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
     description: getRandomDescription(),
     startTime,

@@ -1,6 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component';
 
-import { Cities, Offers, transferTypes, activityTypes, Types } from '../const';
+import { cities, offerList, transferTypes, activityTypes, types } from '../const';
 
 
 const getTime = (time) => {
@@ -17,7 +17,7 @@ const getTime = (time) => {
   return `${date.replace(`,`, ``)}`;
 };
 
-const getTypeListTemplate = (types, activeType) => types.map((type) => {
+const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
   const checkedType = activeType.id === type.id ? `checked` : ``;
   return `<div class="event__type-item">
             <input id="event-type-${type.id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.id}" ${checkedType}>
@@ -25,7 +25,7 @@ const getTypeListTemplate = (types, activeType) => types.map((type) => {
           </div>`;
 }).join(`\n`);
 
-const getCitiesTemplate = (cities) => cities.map((city) => `<option value="${city}"></option>`).join(`\n`);
+const getCitiesTemplate = (cityList) => cityList.map((city) => `<option value="${city}"></option>`).join(`\n`);
 
 const getPicturesTemplate = (pictures) => {
   return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
@@ -39,9 +39,9 @@ const getOfferTemplate = (offers) => {
       <div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer}-1" type="checkbox" name="event-offer-${offer}" ${isChecked(offer)}>
         <label class="event__offer-label" for="event-offer-${offer}-1">
-        <span class="event__offer-title">${Offers[offer].title}</span>
+        <span class="event__offer-title">${offerList[offer].title}</span>
         &plus;
-        &euro;&nbsp;<span class="event__offer-price">${Offers[offer].price}</span>
+        &euro;&nbsp;<span class="event__offer-price">${offerList[offer].price}</span>
         </label>
       </div>
   `).join(`\n`);
@@ -56,7 +56,7 @@ const editPointTemplate = (point, options = {}) => {
 
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
-  const citiesTemplate = getCitiesTemplate(Cities);
+  const citiesTemplate = getCitiesTemplate(cities);
 
   const favoredPoint = isFavored ? `checked` : ``;
   return (`
@@ -192,7 +192,7 @@ class PointEditForm extends AbstractSmartComponent {
       const value = $type
         .querySelector(`input:checked`)
         .value;
-      this._type = Types.find(({ id }) => id === value);
+      this._type = types.find(({ id }) => id === value);
       this.rerender();
     });
   }

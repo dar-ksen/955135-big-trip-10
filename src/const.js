@@ -1,4 +1,4 @@
-const Cities = [
+const cities = [
   `Amsterdam`,
   `Geneva`,
   `Barcelona`,
@@ -62,9 +62,9 @@ const activityTypes = [
   },
 ];
 
-const Types = [...transferTypes, ...activityTypes];
+const types = [...transferTypes, ...activityTypes];
 
-const Offers = {
+const offerList = {
   luggage:
   {
     title: `Add luggage`,
@@ -93,9 +93,9 @@ const Offers = {
 };
 
 export {
-  Cities,
+  cities,
   transferTypes,
   activityTypes,
-  Types,
-  Offers
+  types,
+  offerList
 };
