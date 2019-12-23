@@ -20,7 +20,7 @@ const createDayTemplate = (date) => {
 };
 
 
-export default class Day extends AbstractComponent {
+class Day extends AbstractComponent {
   constructor(date) {
     super();
     this._date = date;
@@ -30,3 +30,5 @@ export default class Day extends AbstractComponent {
     return createDayTemplate(this._date);
   }
 }
+
+export { Day as default };

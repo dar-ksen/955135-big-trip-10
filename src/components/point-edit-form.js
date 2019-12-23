@@ -1,6 +1,7 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
 
-import { Offers } from '../const';
+import { cities, offerList, transferTypes, activityTypes, types } from '../const';
+
 
 const getTime = (time) => {
   const formatterOptionsDate = {
@@ -16,6 +17,16 @@ const getTime = (time) => {
   return `${date.replace(`,`, ``)}`;
 };
 
+const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
+  const checkedType = activeType.id === type.id ? `checked` : ``;
+  return `<div class="event__type-item">
+            <input id="event-type-${type.id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.id}" ${checkedType}>
+            <label class="event__type-label  event__type-label--${type.id}" for="event-type-${type.id}-1">${type.title}</label>
+          </div>`;
+}).join(`\n`);
+
+const getCitiesTemplate = (cityList) => cityList.map((city) => `<option value="${city}"></option>`).join(`\n`);
+
 const getPicturesTemplate = (pictures) => {
   return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
 };
@@ -28,17 +39,26 @@ const getOfferTemplate = (offers) => {
       <div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer}-1" type="checkbox" name="event-offer-${offer}" ${isChecked(offer)}>
         <label class="event__offer-label" for="event-offer-${offer}-1">
-        <span class="event__offer-title">${Offers[offer].title}</span>
+        <span class="event__offer-title">${offerList[offer].title}</span>
         &plus;
-        &euro;&nbsp;<span class="event__offer-price">${Offers[offer].price}</span>
+        &euro;&nbsp;<span class="event__offer-price">${offerList[offer].price}</span>
         </label>
       </div>
   `).join(`\n`);
 };
 
-const editEventTemplate = ({ type, city, pictures, description, startTime, endTime, price, offers }) => {
+const editPointTemplate = (point, options = {}) => {
+  const { city, pictures, description, startTime, endTime, price, offers, isFavored } = point;
+  const { type } = options;
+
+  const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
+  const typeOfActivityListTemplate = getTypeListTemplate(activityTypes, type);
+
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
+  const citiesTemplate = getCitiesTemplate(cities);
+
+  const favoredPoint = isFavored ? `checked` : ``;
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit js-event--edit" action="#" method="post">
@@ -50,63 +70,15 @@ const editEventTemplate = ({ type, city, pictures, description, startTime, endTi
           </label>
           <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
-          <div class="event__type-list">
+          <div class="event__type-list js-event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Transfer</legend>
-
-              <div class="event__type-item">
-                <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-                <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-                <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-                <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-transport-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
-                <label class="event__type-label  event__type-label--transport" for="event-type-transport-1">Transport</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-                <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-                <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-              </div>
+              ${typeOfTransferListTemplate}
             </fieldset>
 
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Activity</legend>
-
-              <div class="event__type-item">
-                <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-                <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-                <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-              </div>
+              ${typeOfActivityListTemplate}
             </fieldset>
           </div>
         </div>
@@ -117,9 +89,7 @@ const editEventTemplate = ({ type, city, pictures, description, startTime, endTi
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
           <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
+            ${citiesTemplate}
           </datalist>
         </div>
 
@@ -146,7 +116,7 @@ const editEventTemplate = ({ type, city, pictures, description, startTime, endTi
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
 
-        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
         <label class="event__favorite-btn" for="event-favorite-1">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -185,15 +155,18 @@ const editEventTemplate = ({ type, city, pictures, description, startTime, endTi
   `);
 };
 
-export default class EventEdit extends AbstractComponent {
-  constructor(event) {
+class PointEditForm extends AbstractSmartComponent {
+  constructor(point) {
     super();
 
-    this._event = event;
+    this._point = point;
+    this._type = { ...point.type };
+
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return editEventTemplate(this._event);
+    return editPointTemplate(this._point, { type: this._type });
   }
 
   setSubmitHandler(handler) {
@@ -201,4 +174,29 @@ export default class EventEdit extends AbstractComponent {
       .querySelector(`.js-event--edit`)
       .addEventListener(`submit`, handler);
   }
+
+  setInputFavoriteChangeHandler(handler) {
+    this.getElement()
+      .querySelector(`.js-event__favorite-checkbox`)
+        .addEventListener(`change`, handler);
+  }
+
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
+  _subscribeOnEvents() {
+    const $type = this.getElement().querySelector(`.js-event__type-list`);
+
+    $type.addEventListener(`change`, () => {
+      const value = $type
+        .querySelector(`input:checked`)
+        .value;
+      this._type = types.find(({ id }) => id === value);
+      this.rerender();
+    });
+  }
+
 }
+
+export { PointEditForm as default };

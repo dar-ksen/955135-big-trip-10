@@ -21,21 +21,12 @@ const formatDate = (date) => DateFormatter.format(date);
 
 const isFirst = (index) => index === 0;
 
-const getFirst = (array) => array[0];
-
-const getLast = (array) => array[array.length - 1];
-
 const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
-
-const getUnique = (array) => [...new Set(array)];
 
 export {
   getTwoDigitFormat,
   formatTime,
   formatDate,
   isFirst,
-  getFirst,
-  getLast,
   getDate,
-  getUnique,
 };

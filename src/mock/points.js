@@ -1,65 +1,6 @@
-const EVENTS_COUNT = 15;
+import { cities, types } from '../const';
 
-const Types = [
-  {
-    id: `taxi`,
-    title: `Taxi`,
-    placeholder: `to`
-  },
-  {
-    id: `bus`,
-    title: `Bus`,
-    placeholder: `to`
-  },
-  {
-    id: `train`,
-    title: `Train`,
-    placeholder: `to`
-  },
-  {
-    id: `ship`,
-    title: `Ship`,
-    placeholder: `to`
-  },
-  {
-    id: `transport`,
-    title: `Transport`,
-    placeholder: `to`
-  },
-  {
-    id: `drive`,
-    title: `Drive`,
-    placeholder: `to`
-  },
-  {
-    id: `flight`,
-    title: `Flight`,
-    placeholder: `to`
-  },
-  {
-    id: `check-in`,
-    title: `Check`,
-    placeholder: `into`
-  },
-  {
-    id: `sightseeing`,
-    title: `Sightseeing`,
-    placeholder: `at`
-  },
-  {
-    id: `restaurant`,
-    title: `Restaurant`,
-    placeholder: `at`
-  },
-];
-
-const Cities = [
-  `Amsterdam`,
-  `Geneva`,
-  `Barcelona`,
-  `Dresden`,
-  `Praha`
-];
+const POINTS_COUNT = 5;
 
 const DescriptionsItems = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -115,29 +56,30 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-const generateEvent = () => {
+const generatePoint = () => {
   const startTime = getRandomDate();
   const duration = getRandomIntegerNumber(30, 120) * 60 * 1000;
   const endTime = new Date(startTime.valueOf() + duration);
 
   return {
-    type: getRandomArrayItem(Types),
-    city: getRandomArrayItem(Cities),
-    pictures: new Array(COUNT_PICTURE).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
+    type: getRandomArrayItem(types),
+    city: getRandomArrayItem(cities),
+    pictures: new Array(getRandomIntegerNumber(1, COUNT_PICTURE)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
     description: getRandomDescription(),
     startTime,
     endTime,
     price: getRandomIntegerNumber(50, 100),
     offers: getOfferState(),
+    isFavored: false,
   };
 };
 
-const generateEvents = (count) => {
+const generatePoints = (count) => {
   return new Array(count)
     .fill(``)
-    .map(generateEvent);
+    .map(generatePoint);
 };
 
-const events = generateEvents(EVENTS_COUNT);
+const points = generatePoints(POINTS_COUNT);
 
-export { events };
+export { points };

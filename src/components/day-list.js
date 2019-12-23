@@ -6,8 +6,10 @@ const getDayContainerTemplate = () => {
   `);
 };
 
-export default class DayList extends AbstractComponent {
+class DayList extends AbstractComponent {
   getTemplate() {
     return getDayContainerTemplate();
   }
 }
+
+export { DayList as default };
