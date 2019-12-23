@@ -38,7 +38,7 @@ const getOfferTemplate = (offers) => {
 };
 
 const editPointTemplate = (point, options = {}) => {
-  const { city, pictures, description, startTime, endTime, price, offers, isFavored } = point;
+  const { city, pictures, description, price, offers, isFavored } = point;
   const { type } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
