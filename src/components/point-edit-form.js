@@ -1,24 +1,11 @@
 import flatpickr from "flatpickr";
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
+
 import AbstractSmartComponent from './abstract-smart-component';
 
 import { cities, offerList, transferTypes, activityTypes, types } from '../const';
 
-
-const getTime = (time) => {
-  const formatterOptionsDate = {
-    year: `2-digit`,
-    month: `2-digit`,
-    day: `numeric`,
-    hour12: false,
-    hour: `2-digit`,
-    minute: `2-digit`,
-  };
-
-  const date = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate).format(time);
-  return `${date.replace(`,`, ``)}`;
-};
 
 const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
   const checkedType = activeType.id === type.id ? `checked` : ``;
@@ -100,12 +87,12 @@ const editPointTemplate = (point, options = {}) => {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getTime(startTime)}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getTime(endTime)}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="">
         </div>
 
         <div class="event__field-group  event__field-group--price">
