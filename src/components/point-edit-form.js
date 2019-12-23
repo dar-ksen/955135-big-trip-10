@@ -1,3 +1,6 @@
+import flatpickr from "flatpickr";
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 import AbstractSmartComponent from './abstract-smart-component';
 
 import { cities, offerList, transferTypes, activityTypes, types } from '../const';
@@ -162,6 +165,9 @@ class PointEditForm extends AbstractSmartComponent {
     this._point = point;
     this._type = { ...point.type };
 
+    this._flatpickr = null;
+    this._applyFlatpickr();
+
     this._subscribeOnEvents();
   }
 
@@ -181,6 +187,19 @@ class PointEditForm extends AbstractSmartComponent {
         .addEventListener(`change`, handler);
   }
 
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
+  }
+
+  reset() {
+    const point = this._point;
+    this._type = { ...point.type };
+
+    this.rerender();
+  }
+
   recoveryListeners() {
     this._subscribeOnEvents();
   }
@@ -194,6 +213,27 @@ class PointEditForm extends AbstractSmartComponent {
         .value;
       this._type = types.find(({ id }) => id === value);
       this.rerender();
+    });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+    const startTimeInput = this.getElement().querySelector(`#event-start-time-1`);
+    const endTimeInput = this.getElement().querySelector(`#event-end-time-1`);
+
+    this._setFlatpickr(startTimeInput, this._point.startTime);
+    this._setFlatpickr(endTimeInput, this._point.endTime, this._point.startTime);
+  }
+
+  _setFlatpickr(input, defaultTime, minDate = `today`) {
+    this._flatpickr = flatpickr(input, {
+      enableTime: true,
+      dateFormat: `d/m/y H:i`,
+      minDate,
+      defaultDate: defaultTime,
     });
   }
 
