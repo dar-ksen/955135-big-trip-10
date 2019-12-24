@@ -1,21 +1,11 @@
+import flatpickr from "flatpickr";
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
+
 import AbstractSmartComponent from './abstract-smart-component';
 
 import { cities, offerList, transferTypes, activityTypes, types } from '../const';
 
-
-const getTime = (time) => {
-  const formatterOptionsDate = {
-    year: `2-digit`,
-    month: `2-digit`,
-    day: `numeric`,
-    hour12: false,
-    hour: `2-digit`,
-    minute: `2-digit`,
-  };
-
-  const date = new Intl.DateTimeFormat(`en-US`, formatterOptionsDate).format(time);
-  return `${date.replace(`,`, ``)}`;
-};
 
 const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
   const checkedType = activeType.id === type.id ? `checked` : ``;
@@ -48,7 +38,7 @@ const getOfferTemplate = (offers) => {
 };
 
 const editPointTemplate = (point, options = {}) => {
-  const { city, pictures, description, startTime, endTime, price, offers, isFavored } = point;
+  const { city, pictures, description, price, offers, isFavored } = point;
   const { type } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
@@ -97,12 +87,12 @@ const editPointTemplate = (point, options = {}) => {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getTime(startTime)}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getTime(endTime)}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -162,6 +152,9 @@ class PointEditForm extends AbstractSmartComponent {
     this._point = point;
     this._type = { ...point.type };
 
+    this._flatpickr = null;
+    this._applyFlatpickr();
+
     this._subscribeOnEvents();
   }
 
@@ -181,6 +174,19 @@ class PointEditForm extends AbstractSmartComponent {
         .addEventListener(`change`, handler);
   }
 
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
+  }
+
+  reset() {
+    const point = this._point;
+    this._type = { ...point.type };
+
+    this.rerender();
+  }
+
   recoveryListeners() {
     this._subscribeOnEvents();
   }
@@ -194,6 +200,27 @@ class PointEditForm extends AbstractSmartComponent {
         .value;
       this._type = types.find(({ id }) => id === value);
       this.rerender();
+    });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+    const startTimeInput = this.getElement().querySelector(`#event-start-time-1`);
+    const endTimeInput = this.getElement().querySelector(`#event-end-time-1`);
+
+    this._setFlatpickr(startTimeInput, this._point.startTime);
+    this._setFlatpickr(endTimeInput, this._point.endTime, this._point.startTime);
+  }
+
+  _setFlatpickr(input, defaultTime, minDate = `today`) {
+    this._flatpickr = flatpickr(input, {
+      enableTime: true,
+      dateFormat: `d/m/y H:i`,
+      minDate,
+      defaultDate: defaultTime,
     });
   }
 
