@@ -74,8 +74,8 @@ class TripController {
 
     const days = ArrayUtils.getUnique(points.map((point) => getDate(point.startTime)));
 
-    days.forEach((day) => {
-      const dayComponent = new DayComponent(day);
+    days.forEach((day, index) => {
+      const dayComponent = new DayComponent(day, index);
       renderComponent($dayList, dayComponent);
 
       const $pointList = dayComponent.getElement().querySelector(`.js-trip-events__list`);

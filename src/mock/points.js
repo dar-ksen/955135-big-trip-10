@@ -80,6 +80,6 @@ const generatePoints = (count) => {
     .map(generatePoint);
 };
 
-const points = generatePoints(POINTS_COUNT);
+const points = generatePoints(POINTS_COUNT).sort((a, b) => a.startTime - b.endTime);
 
 export { points };
