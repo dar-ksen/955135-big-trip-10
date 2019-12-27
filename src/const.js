@@ -92,10 +92,17 @@ const offerList = {
   }
 };
 
+const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
+};
+
 export {
   cities,
   transferTypes,
   activityTypes,
   types,
-  offerList
+  offerList,
+  FilterType
 };
