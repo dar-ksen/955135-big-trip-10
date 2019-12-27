@@ -25,9 +25,10 @@ const renderPoints = (eventList, points, onDataChange, onViewChange) => {
 };
 
 class TripController {
-  constructor(container) {
+  constructor(container, pointModel) {
     this._container = container;
-    this._points = [];
+    this._pointModel = pointModel;
+
     this._showedPointControllers = [];
 
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
@@ -42,10 +43,11 @@ class TripController {
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
   }
 
-  render(points) {
-    this._points = points;
+  render() {
 
-    if (this._points.length === 0) {
+    const points = this._pointModel.getPoints();
+
+    if (points.length === 0) {
       renderComponent(this._container, this._noPointsMessageComponent);
       return;
     }
@@ -53,7 +55,7 @@ class TripController {
     renderComponent(this._container, this._sortComponent);
     renderComponent(this._container, this._dayListComponent);
 
-    this._renderDays(this._points);
+    this._renderDays(points);
   }
 
   _renderSortEvents(points) {
@@ -85,6 +87,12 @@ class TripController {
   }
 
   _onDataChange(pointController, replaceablePoint, replacementPoint) {
+    const isSuccess = this._pointsModel.updateTask(replaceablePoint.id, replacementPoint);
+
+    if (isSuccess) {
+      pointController.render(replaceablePoint);
+    }
+
     const index = this._points.findIndex((point) => point === replaceablePoint);
     this._points = ArrayUtils.replace(this._points, replacementPoint, index);
 
@@ -97,21 +105,22 @@ class TripController {
 
   _onSortTypeChange(sortType) {
     let sortedEvent = [];
+    const points = this._pointModel.getPoints();
 
     const $dayList = this._dayListComponent.getElement();
 
     switch (sortType) {
       case SortType.TIME: {
-        sortedEvent = ArrayUtils.sortPurely(this._points, sortByDurationInDescendingOrder);
+        sortedEvent = ArrayUtils.sortPurely(points, sortByDurationInDescendingOrder);
         break;
       }
       case SortType.PRICE: {
-        sortedEvent = ArrayUtils.sortPurely(this._points, sortByPriceInDescendingOrder);
+        sortedEvent = ArrayUtils.sortPurely(points, sortByPriceInDescendingOrder);
         break;
       }
       case SortType.DEFAULT:
       default : {
-        sortedEvent = this._points;
+        sortedEvent = points;
         break;
       }
     }
