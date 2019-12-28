@@ -1,16 +1,15 @@
 import AbstractComponent from './abstract-component';
 import { format } from 'date-fns';
 
-const DIFFERENCE_NUMBER = 1;
-
-const createDayTemplate = (date, index) => {
-  const targetDate = new Date(date);
+const createDayTemplate = (date, day) => {
 
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
-        <span class="day__counter">${index + DIFFERENCE_NUMBER}</span>
-        <time class="day__date" datetime="${date}">${format(targetDate, `LLL dd`)}</time>
+        <span class="day__counter">${day || ``}</span>
+        <time class="day__date" datetime="${date || ``}">
+        ${date && format(date, `LLL dd`) || ``}
+        </time>
       </div>
 
       <ul class="trip-events__list js-trip-events__list">
@@ -21,14 +20,14 @@ const createDayTemplate = (date, index) => {
 
 
 class Day extends AbstractComponent {
-  constructor(date, index) {
+  constructor(date, day) {
     super();
     this._date = date;
-    this._number = index;
+    this._day = day;
   }
 
   getTemplate() {
-    return createDayTemplate(this._date, this._number);
+    return createDayTemplate(this._date, this._day);
   }
 }
 
