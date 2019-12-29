@@ -1,11 +1,9 @@
 import flatpickr from "flatpickr";
-import 'flatpickr/dist/flatpickr.min.css';
-import 'flatpickr/dist/themes/light.css';
-
 import AbstractSmartComponent from './abstract-smart-component';
-
 import { cities, offerList, transferTypes, activityTypes, types } from '../const';
 
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 
 const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
   const checkedType = activeType.id === type.id ? `checked` : ``;
@@ -104,7 +102,7 @@ const editPointTemplate = (point, options = {}) => {
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">Delete</button>
+        <button class="event__reset-btn js-event__reset-btn" type="reset">Delete</button>
 
         <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
         <label class="event__favorite-btn" for="event-favorite-1">
@@ -145,16 +143,30 @@ const editPointTemplate = (point, options = {}) => {
   `);
 };
 
+const parseFormData = (formData, type) => {
+
+  return {
+    type,
+    city: formData.get(`event-destination`),
+    startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
+    endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
+    price: formData.get(`event-price`),
+  };
+};
+
 class PointEditForm extends AbstractSmartComponent {
   constructor(point) {
     super();
 
     this._point = point;
-    this._type = { ...point.type };
+    this._type = point.type;
 
-    this._flatpickr = null;
+    this._flatpickrStartDate = null;
+    this._flatpickrEndDate = null;
+    this._submitHandler = null;
+    this._deleteButtonClickHandler = null;
+
     this._applyFlatpickr();
-
     this._subscribeOnEvents();
   }
 
@@ -162,16 +174,36 @@ class PointEditForm extends AbstractSmartComponent {
     return editPointTemplate(this._point, { type: this._type });
   }
 
+  removeElement() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    super.removeElement();
+  }
+
   setSubmitHandler(handler) {
     this.getElement()
       .querySelector(`.js-event--edit`)
       .addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
   }
 
   setInputFavoriteChangeHandler(handler) {
     this.getElement()
       .querySelector(`.js-event__favorite-checkbox`)
         .addEventListener(`change`, handler);
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.js-event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   rerender() {
@@ -182,12 +214,21 @@ class PointEditForm extends AbstractSmartComponent {
 
   reset() {
     const point = this._point;
-    this._type = { ...point.type };
+    this._type = point.type;
 
     this.rerender();
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`.js-event--edit`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData, this._type);
+  }
+
   recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvents();
   }
 
@@ -204,24 +245,39 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   _applyFlatpickr() {
-    if (this._flatpickr) {
-      this._flatpickr.destroy();
-      this._flatpickr = null;
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
     }
+
     const startTimeInput = this.getElement().querySelector(`#event-start-time-1`);
     const endTimeInput = this.getElement().querySelector(`#event-end-time-1`);
-
-    this._setFlatpickr(startTimeInput, this._point.startTime);
-    this._setFlatpickr(endTimeInput, this._point.endTime, this._point.startTime);
-  }
-
-  _setFlatpickr(input, defaultTime, minDate = `today`) {
-    this._flatpickr = flatpickr(input, {
-      enableTime: true,
+    const flatpickrOptions = {
       dateFormat: `d/m/y H:i`,
-      minDate,
-      defaultDate: defaultTime,
-    });
+      enableTime: true,
+      allowInput: true
+    };
+
+
+    this._flatpickrStartDate = flatpickr(
+        startTimeInput,
+        {
+          ...flatpickrOptions,
+          defaultDate: this._point.startTime
+        }
+    );
+
+    this._flatpickrEndDate = flatpickr(
+        endTimeInput,
+        {
+          ...flatpickrOptions,
+          defaultDate: this._point.endTime,
+          minDate: this._point.startTime
+        }
+    );
+
   }
 
 }
