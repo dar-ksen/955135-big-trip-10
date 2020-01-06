@@ -17,7 +17,7 @@ const sortByPriceInDescendingOrder = (a, b) => b.price - a.price;
 const renderPoints = (container, points, onDataChange, onViewChange, isDefaultSorting = true) => {
   const pointControllers = [];
   const dates = isDefaultSorting
-    ? [...ArrayUtils.getUnique(points.map((point) => getDate(point.startTime)))]
+    ? ArrayUtils.getUnique(points.map((point) => getDate(point.startTime)))
     : [true];
 
   dates.forEach((date, dateIndex) => {
