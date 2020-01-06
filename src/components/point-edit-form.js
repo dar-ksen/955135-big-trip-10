@@ -143,16 +143,13 @@ const editPointTemplate = (point, options = {}) => {
   `);
 };
 
-const parseFormData = (formData, type) => {
-
-  return {
-    type,
-    city: formData.get(`event-destination`),
-    startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
-    endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
-    price: formData.get(`event-price`),
-  };
-};
+const parseFormData = (formData, type) => ({
+  type,
+  city: formData.get(`event-destination`),
+  startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
+  endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
+  price: formData.get(`event-price`),
+});
 
 class PointEditForm extends AbstractSmartComponent {
   constructor(point) {
