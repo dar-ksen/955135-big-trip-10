@@ -24,13 +24,17 @@ class PointModel {
   }
 
   removePoint(id) {
-    const index = this._points.findIndex((point) => point.id === id);
+    const points = this._points.filter((point) => point.id !== id);
 
-    if (index === -1) {
+    console.log(points);
+    console.log(this._points);
+
+    if (points.length === this._points.length) {
       return false;
     }
+    console.log('test');
 
-    this._points = [...this._points.slice(0, index), ...this._points.slice(index + 1)];
+    this._points = points;
 
     this._callHandlers(this._dataChangeHandlers);
 
