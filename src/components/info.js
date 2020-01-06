@@ -13,7 +13,7 @@ const getCitiesTemplate = (events) => {
     const destinationCity = ArrayUtils.getLast(cities);
     return `${sourceCity} &mdash; ... &mdash; ${destinationCity}`;
   }
-  return cities.map((city) => `${city}`).join(`&nbsp;&mdash;&nbsp;`);
+  return cities.join(`&nbsp;&mdash;&nbsp;`);
 };
 
 const getInfoElement = (points) => {
