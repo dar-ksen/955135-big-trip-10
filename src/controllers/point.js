@@ -3,7 +3,7 @@ import PointComponent from '../components/point';
 import PointEditFormComponent from '../components/point-edit-form';
 
 const Mode = {
-  ADDING: `adding`,
+  CREATING: `creating`,
   DEFAULT: `default`,
   EDIT: `edit`,
 };
@@ -83,7 +83,7 @@ class PointController {
         }
         break;
       }
-      case Mode.ADDING: {
+      case Mode.CREATING: {
         if (oldPointEditComponent && oldPointComponent) {
           removeComponent(oldPointComponent);
           removeComponent(oldPointEditComponent);
@@ -124,7 +124,7 @@ class PointController {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      if (this._mode === Mode.ADDING) {
+      if (this._mode === Mode.CREATING) {
         this._onDataChange(this, EMPTY_POINT, null);
       }
       this._stopPointEditing();

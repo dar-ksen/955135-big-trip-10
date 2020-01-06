@@ -98,7 +98,7 @@ class TripController {
     const day = new DayComponent();
     renderComponent($dayList, day, RenderPosition.AFTER_BEGIN);
     this._creatingPoint = new PointController(day.getElement().querySelector(`.js-trip-events__list`), this._onDataChange, this._onViewChange);
-    this._creatingPoint.render(EMPTY_POINT, pointControllerMode.ADDING);
+    this._creatingPoint.render(EMPTY_POINT, pointControllerMode.CREATING);
   }
 
   _removePoints() {
