@@ -8,7 +8,7 @@ import NoPointsMessageComponent from '../components/no-points-message';
 import { getDate } from '../utils/common';
 import { ArrayUtils } from '../utils/array';
 
-import { renderComponent } from '../utils/render';
+import { renderComponent, RenderPosition } from '../utils/render';
 
 const sortByDurationInDescendingOrder = (a, b) => (b.endTime - b.startTime) - (a.endTime - a.startTime);
 
@@ -92,8 +92,12 @@ class TripController {
       return;
     }
 
+    this._onViewChange();
+
     const $dayList = this._dayListComponent.getElement();
-    this._creatingPoint = new PointController($dayList, this._onDataChange, this._onViewChange);
+    const day = new DayComponent();
+    renderComponent($dayList, day, RenderPosition.AFTER_BEGIN);
+    this._creatingPoint = new PointController(day.getElement().querySelector(`.js-trip-events__list`), this._onDataChange, this._onViewChange);
     this._creatingPoint.render(EMPTY_POINT, pointControllerMode.ADDING);
   }
 
@@ -123,6 +127,7 @@ class TripController {
         destroyedPoint.destroy();
 
         this._showedPointControllers = [pointController, ...this._showedPointControllers];
+        this._updatePoints();
       }
     } else if (replacementPoint === null) {
       this._pointModel.removePoint(replaceablePoint.id);
