@@ -247,8 +247,8 @@ class PointEditForm extends AbstractSmartComponent {
   _applyFlatpickr() {
     if (this._flatpickrStartDate || this._flatpickrEndDate) {
       this._flatpickrStartDate.destroy();
-      this._flatpickrEndDate.destroy();
       this._flatpickrStartDate = null;
+      this._flatpickrEndDate.destroy();
       this._flatpickrEndDate = null;
     }
 
