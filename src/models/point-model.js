@@ -26,13 +26,9 @@ class PointModel {
   removePoint(id) {
     const points = this._points.filter((point) => point.id !== id);
 
-    console.log(points);
-    console.log(this._points);
-
     if (points.length === this._points.length) {
       return false;
     }
-    console.log('test');
 
     this._points = points;
 
