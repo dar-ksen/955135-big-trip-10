@@ -70,6 +70,14 @@ class TripController {
     this._pointModel.setFilterChangeHandler(this._onFilterChange);
   }
 
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
+
   render() {
 
     const points = this._pointModel.getPoints();
