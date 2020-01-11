@@ -1,5 +1,6 @@
 import InfoComponent from './components/info';
 import MenuComponent from './components/menu';
+import StatisticsComponent from './components/statistics';
 import FilterController from './controllers/filter';
 
 import PointModel from './models/point-model';
@@ -19,8 +20,10 @@ const $main = document.querySelector(`.js-trip-main`);
 const $info = $main.querySelector(`.js-trip-info`);
 const $control = $main.querySelector(`.js-trip-controls`);
 const $controlHeaders = $control.querySelectorAll(`.js-trip-controls-heading`);
+const menuComponent = new MenuComponent();
+const statisticsComponent = new StatisticsComponent();
 
-renderComponent($controlHeaders[0], new MenuComponent(), RenderPosition.AFTER);
+renderComponent($controlHeaders[0], menuComponent, RenderPosition.AFTER);
 
 const pointModel = new PointModel();
 pointModel.setPoints(points);
@@ -29,8 +32,9 @@ const filterController = new FilterController($controlHeaders[1], pointModel);
 filterController.render();
 
 renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
-
 const $event = document.querySelector(`.js-trip-events`);
+
+renderComponent($event, statisticsComponent);
 
 const tripController = new TripController($event, pointModel);
 
