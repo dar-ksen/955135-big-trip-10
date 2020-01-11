@@ -7,6 +7,7 @@ import NoPointsMessageComponent from '../components/no-points-message';
 
 import { getDate } from '../utils/common';
 import { ArrayUtils } from '../utils/array';
+import { HIDDEN_CLASS } from '../const';
 
 import { renderComponent, RenderPosition } from '../utils/render';
 
@@ -71,11 +72,11 @@ class TripController {
   }
 
   hide() {
-    this._container.hide();
+    this._container.classList.add(HIDDEN_CLASS);
   }
 
   show() {
-    this._container.show();
+    this._container.classList.remove(HIDDEN_CLASS);
   }
 
   render() {
