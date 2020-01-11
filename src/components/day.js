@@ -1,16 +1,15 @@
 import AbstractComponent from './abstract-component';
+import { format } from 'date-fns';
 
-const createDayTemplate = (date) => {
-  const targetDate = new Date(date);
-  const day = targetDate.toLocaleString(`en-US`, { day: `numeric` });
-  const month = targetDate.toLocaleString(`en-US`, { month: `short` });
-  const year = targetDate.toLocaleString(`en-US`, { year: `2-digit` });
+const createDayTemplate = (date, day) => {
 
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
-        <span class="day__counter">${day}</span>
-        <time class="day__date" datetime="2019-03-18">${month} ${year}</time>
+        <span class="day__counter">${day || ``}</span>
+        <time class="day__date" datetime="${date || ``}">
+        ${date && format(date, `LLL dd`) || ``}
+        </time>
       </div>
 
       <ul class="trip-events__list js-trip-events__list">
@@ -21,13 +20,14 @@ const createDayTemplate = (date) => {
 
 
 class Day extends AbstractComponent {
-  constructor(date) {
+  constructor(date, day) {
     super();
     this._date = date;
+    this._day = day;
   }
 
   getTemplate() {
-    return createDayTemplate(this._date);
+    return createDayTemplate(this._date, this._day);
   }
 }
 

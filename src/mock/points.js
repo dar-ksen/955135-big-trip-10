@@ -62,6 +62,7 @@ const generatePoint = () => {
   const endTime = new Date(startTime.valueOf() + duration);
 
   return {
+    id: String(new Date() + Math.random()),
     type: getRandomArrayItem(types),
     city: getRandomArrayItem(cities),
     pictures: new Array(getRandomIntegerNumber(1, COUNT_PICTURE)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
@@ -80,6 +81,6 @@ const generatePoints = (count) => {
     .map(generatePoint);
 };
 
-const points = generatePoints(POINTS_COUNT);
+const points = generatePoints(POINTS_COUNT).sort((a, b) => a.startTime - b.endTime);
 
 export { points };

@@ -6,11 +6,14 @@ const getUnique = (array) => [...new Set(array)];
 
 const sortPurely = (array, iterate) => array.slice().sort(iterate);
 
+const replace = (array, replacement, index) => [...array.slice(0, index), replacement, ...array.slice(index + 1)];
+
 const ArrayUtils = {
   getFirst,
   getLast,
   getUnique,
-  sortPurely
+  sortPurely,
+  replace
 };
 
 export { ArrayUtils };
