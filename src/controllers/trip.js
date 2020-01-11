@@ -101,6 +101,30 @@ class TripController {
     this._creatingPoint.render(EMPTY_POINT, pointControllerMode.CREATING);
   }
 
+  deletePoint(point) {
+    this._pointModel.removePoint(point.id);
+    this._updatePoints();
+  }
+
+  addPoint(pointController, nextPoint) {
+    this._pointModel.addPoint(nextPoint);
+    pointController.render(nextPoint);
+
+    const destroyedPoint = this._showedPointControllers.pop();
+    destroyedPoint.destroy();
+
+    this._showedPointControllers = [pointController, ...this._showedPointControllers];
+    this._updatePoints();
+  }
+
+  editPoint(point, nextPoint) {
+    const isSuccess = this._pointModel.updatePoint(point.id, nextPoint);
+
+    if (isSuccess) {
+      this._updatePoints();
+    }
+  }
+
   _removePoints() {
     this._showedPointControllers.forEach((pointController) => pointController.destroy());
     this._showedPointControllers = [];
@@ -113,32 +137,25 @@ class TripController {
     this._showedPointControllers = renderPoints($dayList, this._pointModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
   }
 
-  _onDataChange(pointController, replaceablePoint, replacementPoint) {
-    if (replaceablePoint === EMPTY_POINT) {
-      this._creatingPoint = null;
-      if (replacementPoint === null) {
-        pointController.destroy();
-        this._updatePoints();
-      } else {
-        this._pointModel.addPoint(replacementPoint);
-        pointController.render(replacementPoint);
+  _onDataChange(pointController, point, nextPoint) {
+    this._creatingPoint = null;
+    const isDeletingPoint = nextPoint === null;
+    const isCreatingPoint = point === EMPTY_POINT;
+    const isEditingPoint = point !== EMPTY_POINT && nextPoint !== null;
 
-        const destroyedPoint = this._showedPointControllers.pop();
-        destroyedPoint.destroy();
+    if (isDeletingPoint) {
+      this.deletePoint(point);
+      return;
+    }
 
-        this._showedPointControllers = [pointController, ...this._showedPointControllers];
-        this._updatePoints();
-      }
-    } else if (replacementPoint === null) {
-      this._pointModel.removePoint(replaceablePoint.id);
-      this._updatePoints();
-    } else {
-      const isSuccess = this._pointModel.updatePoint(replaceablePoint.id, replacementPoint);
+    if (isCreatingPoint) {
+      this.addPoint(pointController, nextPoint);
+      return;
+    }
 
-      if (isSuccess) {
-        pointController.render(replacementPoint, pointControllerMode.DEFAULT);
-        this._updatePoints();
-      }
+    if (isEditingPoint) {
+      this.editPoint(point, nextPoint);
+      return;
     }
   }
 
