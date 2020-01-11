@@ -98,11 +98,14 @@ const FilterType = {
   PAST: `past`
 };
 
+const HIDDEN_CLASS = `visually-hidden`;
+
 export {
   cities,
   transferTypes,
   activityTypes,
   types,
   offerList,
-  FilterType
+  FilterType,
+  HIDDEN_CLASS
 };
