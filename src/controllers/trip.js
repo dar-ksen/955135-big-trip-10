@@ -96,6 +96,13 @@ class TripController {
     this._showedPointControllers = renderPoints($dayList, points, this._onDataChange, this._onViewChange);
   }
 
+  _rerender() {
+    this._removePoints();
+    const $dayList = this._dayListComponent.getElement();
+    $dayList.innerHTML = ``;
+    this._showedPointControllers = renderPoints($dayList, this._pointModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
+  }
+
   createPoint() {
     if (this._creatingPoint) {
       return;
@@ -110,12 +117,12 @@ class TripController {
     this._creatingPoint.render(EMPTY_POINT, pointControllerMode.CREATING);
   }
 
-  deletePoint(point) {
+  _deletePoint(point) {
     this._pointModel.removePoint(point.id);
-    this._updatePoints();
+    this._rerender();
   }
 
-  addPoint(pointController, nextPoint) {
+  _addPoint(pointController, nextPoint) {
     this._pointModel.addPoint(nextPoint);
     pointController.render(nextPoint);
 
@@ -123,27 +130,20 @@ class TripController {
     destroyedPoint.destroy();
 
     this._showedPointControllers = [pointController, ...this._showedPointControllers];
-    this._updatePoints();
+    this._rerender();
   }
 
-  editPoint(point, nextPoint) {
+  _editPoint(point, nextPoint) {
     const isSuccess = this._pointModel.updatePoint(point.id, nextPoint);
 
     if (isSuccess) {
-      this._updatePoints();
+      this._rerender();
     }
   }
 
   _removePoints() {
     this._showedPointControllers.forEach((pointController) => pointController.destroy());
     this._showedPointControllers = [];
-  }
-
-  _updatePoints() {
-    this._removePoints();
-    const $dayList = this._dayListComponent.getElement();
-    $dayList.innerHTML = ``;
-    this._showedPointControllers = renderPoints($dayList, this._pointModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
   }
 
   _onDataChange(pointController, point, nextPoint) {
@@ -153,17 +153,17 @@ class TripController {
     const isEditingPoint = point !== EMPTY_POINT && nextPoint !== null;
 
     if (isDeletingPoint) {
-      this.deletePoint(point);
+      this._deletePoint(point);
       return;
     }
 
     if (isCreatingPoint) {
-      this.addPoint(pointController, nextPoint);
+      this._addPoint(pointController, nextPoint);
       return;
     }
 
     if (isEditingPoint) {
-      this.editPoint(point, nextPoint);
+      this._editPoint(point, nextPoint);
       return;
     }
   }
@@ -203,7 +203,7 @@ class TripController {
   }
 
   _onFilterChange() {
-    this._updatePoints();
+    this._rerender();
   }
 
 }
