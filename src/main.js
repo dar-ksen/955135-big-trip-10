@@ -22,12 +22,12 @@ const $control = $main.querySelector(`.js-trip-controls`);
 const $controlHeaders = $control.querySelectorAll(`.js-trip-controls-heading`);
 const $bodyContainer = document.querySelector(`.js-page-body__container`);
 const menuComponent = new MenuComponent();
-const statisticsComponent = new StatisticsComponent();
 
 renderComponent($controlHeaders[0], menuComponent, RenderPosition.AFTER);
 
 const pointModel = new PointModel();
 pointModel.setPoints(points);
+const statisticsComponent = new StatisticsComponent(pointModel);
 
 const filterController = new FilterController($controlHeaders[1], pointModel);
 filterController.render();
