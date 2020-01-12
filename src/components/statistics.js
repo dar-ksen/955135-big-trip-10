@@ -66,7 +66,7 @@ const generateChartsData = (points) => {
   };
 };
 
-const renderChart = (ctx, data, label, title, isLabelPositonLeft = false) => {
+const renderChart = (ctx, data, label, title, isLabelPositionLeft = false) => {
   return new Chart(ctx, {
     type: `horizontalBar`,
     plugins: [chartjsPluginDatalabes],
@@ -138,7 +138,7 @@ const renderChart = (ctx, data, label, title, isLabelPositonLeft = false) => {
           anchor: `end`,
           align: `left`,
           formatter(value) {
-            return isLabelPositonLeft ? `${label}${value}` : `${value}${label}`;
+            return isLabelPositionLeft ? `${label}${value}` : `${value}${label}`;
           }
         }
       },
@@ -160,15 +160,15 @@ const getStatisticsTemplate = () => {
     <h2 class="visually-hidden">Trip statistics</h2>
 
     <div class="statistics__item statistics__item--money">
-      <canvas class="statistics__chart  statistics__chart--money" width="900"></canvas>
+      <canvas class="statistics__chart  statistics__chart--money js-statistics__chart--money" width="900"></canvas>
     </div>
 
     <div class="statistics__item statistics__item--transport">
-      <canvas class="statistics__chart  statistics__chart--transport" width="900"></canvas>
+      <canvas class="statistics__chart  statistics__chart--transport js-statistics__chart--transport" width="900"></canvas>
     </div>
 
     <div class="statistics__item statistics__item--time-spend">
-      <canvas class="statistics__chart  statistics__chart--time" width="900"></canvas>
+      <canvas class="statistics__chart  statistics__chart--time js-statistics__chart--time" width="900"></canvas>
     </div>
   </section>
   `);
@@ -194,9 +194,9 @@ class Statistics extends AbstractSmartComponent {
   _renderCharts() {
     const element = this.getElement();
 
-    const moneyCtx = element.querySelector(`.statistics__chart--money`);
-    const transportCtx = element.querySelector(`.statistics__chart--transport`);
-    const timeCtx = element.querySelector(`.statistics__chart--time`);
+    const moneyCtx = element.querySelector(`.js-statistics__chart--money`);
+    const transportCtx = element.querySelector(`.js-statistics__chart--transport`);
+    const timeCtx = element.querySelector(`.js-statistics__chart--time`);
 
     this._resetCharts();
 
