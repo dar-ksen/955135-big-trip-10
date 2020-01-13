@@ -1,6 +1,6 @@
 import flatpickr from "flatpickr";
 import AbstractSmartComponent from './abstract-smart-component';
-import { cities, offerList, transferTypes, activityTypes, types } from '../const';
+import { cities, transferTypes, activityTypes, types } from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
@@ -15,21 +15,25 @@ const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
 
 const getCitiesTemplate = (cityList) => cityList.map((city) => `<option value="${city}"></option>`).join(`\n`);
 
-const getPicturesTemplate = (pictures) => {
-  return pictures.map((picture) => `<img class="event__photo" src="${picture}" alt="Event photo"></img>`).join(`\n`);
-};
+const getPicturesTemplate = (pictures) => pictures
+  .map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}"></img>`)
+  .join(`\n`);
 
 const getOfferTemplate = (offers) => {
-  const isChecked = (offer) => {
+  /* const isChecked = (offer) => {
     return offers[offer] ? `checked` : ``;
   };
-  return Object.keys(offers).map((offer)=> `
+  */
+  return offers.map((offer, index) => `
       <div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer}-1" type="checkbox" name="event-offer-${offer}" ${isChecked(offer)}>
-        <label class="event__offer-label" for="event-offer-${offer}-1">
-        <span class="event__offer-title">${offerList[offer].title}</span>
+        <input class="event__offer-checkbox visually-hidden"
+          id="event-offer-${index}"
+          type="checkbox" name="event-offer-${index}"
+          checked }>
+        <label class="event__offer-label" for="event-offer-${index}">
+        <span class="event__offer-title">${offer.title}</span>
         &plus;
-        &euro;&nbsp;<span class="event__offer-price">${offerList[offer].price}</span>
+        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
         </label>
       </div>
   `).join(`\n`);

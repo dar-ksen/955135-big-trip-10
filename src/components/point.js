@@ -1,7 +1,6 @@
 import AbstractComponent from './abstract-component';
 
 import { formatTime, getTwoDigitFormat } from '../utils/common';
-import { offerList } from '../const';
 
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
@@ -21,19 +20,16 @@ const getDurationTemplate = (duration) => `
   ${duration.minutes !== `00` ? `${duration.minutes}M` : ``}`
 ;
 
-const getAvailableOffersTemplate = (offers, availableOfferNames) => {
-  return availableOfferNames.map((offerName)=> `<li class="event__offer">
-    <span class="event__offer-title">${offers[offerName].title}</span>
+const getOffersTemplate = (offers) => {
+  return offers.map((offer)=> `<li class="event__offer">
+    <span class="event__offer-title">${offer.title}</span>
      &plus;
-    &euro;&nbsp;<span class="event__offer-price">${offers[offerName].price}</span>
+    &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
    </li>`).join(`\n`);
 };
 
 const getPointTemplate = ({ type, city, startTime, endTime, price, offers }) => {
-  const availableOfferNames = Object.entries(offers)
-  .filter(([, isOfferAvailable]) => isOfferAvailable)
-  .map(([offerName]) => offerName);
-  const offerTemplate = getAvailableOffersTemplate(offerList, availableOfferNames);
+  const offerTemplate = getOffersTemplate(offers);
   const duration = getDuration(startTime, endTime);
   const durationTemplate = getDurationTemplate(duration);
 
