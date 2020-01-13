@@ -18,15 +18,17 @@ const menuItems = [
   }
 ];
 
+const getMenuItemsTemplate = () => menuItems
+  .map((item) => `<a class="trip-tabs__btn js-trip-tabs__btn ${
+    item.active ? ACTIVE_MENU_CLASS : ``
+  }" href="#" id="${item.name}">${item.name}</a>`
+  ).join(``);
+
 const getMenuTemplate = () => {
+  const menuItemsTemplate = getMenuItemsTemplate();
   return (`
   <nav class="trip-controls__trip-tabs  trip-tabs">
-    ${menuItems
-      .map((item) => `<a class="trip-tabs__btn js-trip-tabs__btn ${
-        item.active ? ACTIVE_MENU_CLASS : ``
-      }" href="#" id="${item.name}">${item.name}</a>`
-      )
-      .join(``)}
+    ${menuItemsTemplate}
   </nav>
   `);
 };
