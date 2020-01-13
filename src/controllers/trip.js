@@ -49,9 +49,9 @@ const renderPoints = (container, points, onDataChange, onViewChange, isDefaultSo
 };
 
 class TripController {
-  constructor(container, pointModel) {
+  constructor(container, pointsModel) {
     this._container = container;
-    this._pointModel = pointModel;
+    this._pointsModel = pointsModel;
 
     this._showedPointControllers = [];
     this._isDefaultSorting = true;
@@ -68,7 +68,7 @@ class TripController {
     this._dayListComponent = new DayListComponent();
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
-    this._pointModel.setFilterChangeHandler(this._onFilterChange);
+    this._pointsModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   hide() {
@@ -81,7 +81,7 @@ class TripController {
 
   render() {
 
-    const points = this._pointModel.getPoints();
+    const points = this._pointsModel.getPoints();
 
     if (points.length === 0) {
       renderComponent(this._container, this._noPointsMessageComponent);
@@ -100,7 +100,7 @@ class TripController {
     this._removePoints();
     const $dayList = this._dayListComponent.getElement();
     $dayList.innerHTML = ``;
-    this._showedPointControllers = renderPoints($dayList, this._pointModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
+    this._showedPointControllers = renderPoints($dayList, this._pointsModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
   }
 
   createPoint() {
@@ -118,12 +118,12 @@ class TripController {
   }
 
   _deletePoint(point) {
-    this._pointModel.removePoint(point.id);
+    this._pointsModel.removePoint(point.id);
     this._rerender();
   }
 
   _addPoint(pointController, nextPoint) {
-    this._pointModel.addPoint(nextPoint);
+    this._pointsModel.addPoint(nextPoint);
     pointController.render(nextPoint);
 
     const destroyedPoint = this._showedPointControllers.pop();
@@ -134,7 +134,7 @@ class TripController {
   }
 
   _editPoint(point, nextPoint) {
-    const isSuccess = this._pointModel.updatePoint(point.id, nextPoint);
+    const isSuccess = this._pointsModel.updatePoint(point.id, nextPoint);
 
     if (isSuccess) {
       this._rerender();
@@ -174,7 +174,7 @@ class TripController {
 
   _onSortTypeChange(sortType) {
     let sortedPoints = [];
-    const points = this._pointModel.getPoints();
+    const points = this._pointsModel.getPoints();
 
     const $dayList = this._dayListComponent.getElement();
 

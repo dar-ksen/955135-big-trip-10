@@ -3,9 +3,9 @@ import FilterComponent from '../components/filter';
 import { renderComponent, replaceComponent, RenderPosition } from '../utils/render';
 
 class FilterController {
-  constructor(container, pointModel) {
+  constructor(container, pointsModel) {
     this._container = container;
-    this._pointModel = pointModel;
+    this._pointsModel = pointsModel;
 
     this._activeFilterType = FilterType.EVERYTHING;
     this._filterComponent = null;
@@ -36,7 +36,7 @@ class FilterController {
   }
 
   _onFilterChange(filterType) {
-    this._pointModel.setFilter(filterType);
+    this._pointsModel.setFilter(filterType);
     this._activeFilterType = filterType;
   }
 }

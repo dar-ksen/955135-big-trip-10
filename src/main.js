@@ -3,7 +3,7 @@ import MenuComponent, { MenuItem } from './components/menu';
 import StatisticsComponent from './components/statistics';
 import FilterController from './controllers/filter';
 
-import PointModel from './models/point-model';
+import PointsModel from './models/points';
 
 import TripController from './controllers/trip';
 
@@ -25,11 +25,11 @@ const menuComponent = new MenuComponent();
 
 renderComponent($controlHeaders[0], menuComponent, RenderPosition.AFTER);
 
-const pointModel = new PointModel();
-pointModel.setPoints(points);
-const statisticsComponent = new StatisticsComponent(pointModel);
+const pointsModel = new PointsModel();
+pointsModel.setPoints(points);
+const statisticsComponent = new StatisticsComponent(pointsModel);
 
-const filterController = new FilterController($controlHeaders[1], pointModel);
+const filterController = new FilterController($controlHeaders[1], pointsModel);
 filterController.render();
 
 renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
@@ -38,7 +38,7 @@ const $event = document.querySelector(`.js-trip-events`);
 renderComponent($bodyContainer, statisticsComponent);
 statisticsComponent.hide();
 
-const tripController = new TripController($event, pointModel);
+const tripController = new TripController($event, pointsModel);
 
 tripController.render(points);
 

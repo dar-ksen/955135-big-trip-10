@@ -2,7 +2,7 @@ import { getPointsByFilter } from '../services/point-filtration';
 import { FilterType } from '../const';
 import { ArrayUtils } from '../utils/array';
 
-class PointModel {
+class PointsModel {
   constructor() {
     this._points = [];
     this._activeFilterType = FilterType.EVERYTHING;
@@ -64,4 +64,4 @@ class PointModel {
   }
 }
 
-export { PointModel as default };
+export { PointsModel as default };
