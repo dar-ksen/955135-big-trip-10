@@ -1,3 +1,4 @@
+import API from './api';
 import InfoComponent from './components/info';
 import MenuComponent, { MenuItem } from './components/menu';
 import StatisticsComponent from './components/statistics';
@@ -9,13 +10,15 @@ import TripController from './controllers/trip';
 
 import { renderComponent, RenderPosition } from './utils/render';
 
-import { points } from './mock/points';
+const AUTHORIZATION = `Basic eo0w590ik29889a`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
 
 const addButton = document.querySelector(`.js-trip-main__event-add-btn`);
 addButton.addEventListener(`click`, () => {
   tripController.createPoint();
 });
 
+const api = new API(END_POINT, AUTHORIZATION);
 const $main = document.querySelector(`.js-trip-main`);
 const $info = $main.querySelector(`.js-trip-info`);
 const $control = $main.querySelector(`.js-trip-controls`);
@@ -26,21 +29,18 @@ const menuComponent = new MenuComponent();
 renderComponent($controlHeaders[0], menuComponent, RenderPosition.AFTER);
 
 const pointsModel = new PointsModel();
-pointsModel.setPoints(points);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
 const filterController = new FilterController($controlHeaders[1], pointsModel);
 filterController.render();
 
-renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
+// renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
 const $event = document.querySelector(`.js-trip-events`);
 
 renderComponent($bodyContainer, statisticsComponent);
 statisticsComponent.hide();
 
 const tripController = new TripController($event, pointsModel);
-
-tripController.render(points);
 
 menuComponent.setChangeHandler((menuItem) => {
   switch (menuItem) {
@@ -57,6 +57,14 @@ menuComponent.setChangeHandler((menuItem) => {
   }
 });
 
+api.getPoints()
+  .then((points) => {
+    pointsModel.setPoints(points);
+    tripController.render();
+    renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
+    console.log(pointsModel);
+  });
+/*
 const cost = points
               .map(({ price }) => price)
               .reduce((sum, price) => sum + price);
@@ -64,3 +72,4 @@ const cost = points
 const $cost = document.querySelector(`.js-trip-info__cost-value`);
 
 $cost.textContent = cost;
+*/
