@@ -20,13 +20,7 @@ const EMPTY_POINT = {
   startTime: new Date(),
   endTime: new Date(),
   price: 0,
-  offers: {
-    luggage: false,
-    comfort: false,
-    meal: false,
-    seats: false,
-    train: false,
-  },
+  offers: [],
   isFavored: false,
 };
 
