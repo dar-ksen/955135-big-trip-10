@@ -7,6 +7,7 @@ import NoPointsMessageComponent from '../components/no-points-message';
 
 import { getDate } from '../utils/common';
 import { ArrayUtils } from '../utils/array';
+import { HIDDEN_CLASS } from '../const';
 
 import { renderComponent, RenderPosition } from '../utils/render';
 
@@ -70,6 +71,14 @@ class TripController {
     this._pointModel.setFilterChangeHandler(this._onFilterChange);
   }
 
+  hide() {
+    this._container.classList.add(HIDDEN_CLASS);
+  }
+
+  show() {
+    this._container.classList.remove(HIDDEN_CLASS);
+  }
+
   render() {
 
     const points = this._pointModel.getPoints();
@@ -87,6 +96,13 @@ class TripController {
     this._showedPointControllers = renderPoints($dayList, points, this._onDataChange, this._onViewChange);
   }
 
+  _rerender() {
+    this._removePoints();
+    const $dayList = this._dayListComponent.getElement();
+    $dayList.innerHTML = ``;
+    this._showedPointControllers = renderPoints($dayList, this._pointModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
+  }
+
   createPoint() {
     if (this._creatingPoint) {
       return;
@@ -101,44 +117,54 @@ class TripController {
     this._creatingPoint.render(EMPTY_POINT, pointControllerMode.CREATING);
   }
 
+  _deletePoint(point) {
+    this._pointModel.removePoint(point.id);
+    this._rerender();
+  }
+
+  _addPoint(pointController, nextPoint) {
+    this._pointModel.addPoint(nextPoint);
+    pointController.render(nextPoint);
+
+    const destroyedPoint = this._showedPointControllers.pop();
+    destroyedPoint.destroy();
+
+    this._showedPointControllers = [pointController, ...this._showedPointControllers];
+    this._rerender();
+  }
+
+  _editPoint(point, nextPoint) {
+    const isSuccess = this._pointModel.updatePoint(point.id, nextPoint);
+
+    if (isSuccess) {
+      this._rerender();
+    }
+  }
+
   _removePoints() {
     this._showedPointControllers.forEach((pointController) => pointController.destroy());
     this._showedPointControllers = [];
   }
 
-  _updatePoints() {
-    this._removePoints();
-    const $dayList = this._dayListComponent.getElement();
-    $dayList.innerHTML = ``;
-    this._showedPointControllers = renderPoints($dayList, this._pointModel.getPoints(), this._onDataChange, this._onViewChange, this._isDefaultSorting);
-  }
+  _onDataChange(pointController, point, nextPoint) {
+    this._creatingPoint = null;
+    const isDeletingPoint = nextPoint === null;
+    const isCreatingPoint = point === EMPTY_POINT;
+    const isEditingPoint = point !== EMPTY_POINT && nextPoint !== null;
 
-  _onDataChange(pointController, replaceablePoint, replacementPoint) {
-    if (replaceablePoint === EMPTY_POINT) {
-      this._creatingPoint = null;
-      if (replacementPoint === null) {
-        pointController.destroy();
-        this._updatePoints();
-      } else {
-        this._pointModel.addPoint(replacementPoint);
-        pointController.render(replacementPoint);
+    if (isDeletingPoint) {
+      this._deletePoint(point);
+      return;
+    }
 
-        const destroyedPoint = this._showedPointControllers.pop();
-        destroyedPoint.destroy();
+    if (isCreatingPoint) {
+      this._addPoint(pointController, nextPoint);
+      return;
+    }
 
-        this._showedPointControllers = [pointController, ...this._showedPointControllers];
-        this._updatePoints();
-      }
-    } else if (replacementPoint === null) {
-      this._pointModel.removePoint(replaceablePoint.id);
-      this._updatePoints();
-    } else {
-      const isSuccess = this._pointModel.updatePoint(replaceablePoint.id, replacementPoint);
-
-      if (isSuccess) {
-        pointController.render(replacementPoint, pointControllerMode.DEFAULT);
-        this._updatePoints();
-      }
+    if (isEditingPoint) {
+      this._editPoint(point, nextPoint);
+      return;
     }
   }
 
@@ -177,7 +203,7 @@ class TripController {
   }
 
   _onFilterChange() {
-    this._updatePoints();
+    this._rerender();
   }
 
 }

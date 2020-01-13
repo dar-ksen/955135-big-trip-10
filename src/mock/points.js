@@ -1,6 +1,6 @@
 import { cities, types } from '../const';
 
-const POINTS_COUNT = 5;
+const POINTS_COUNT = 30;
 
 const DescriptionsItems = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,

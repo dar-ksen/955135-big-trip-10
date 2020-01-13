@@ -1,5 +1,6 @@
 import InfoComponent from './components/info';
-import MenuComponent from './components/menu';
+import MenuComponent, { MenuItem } from './components/menu';
+import StatisticsComponent from './components/statistics';
 import FilterController from './controllers/filter';
 
 import PointModel from './models/point-model';
@@ -19,22 +20,42 @@ const $main = document.querySelector(`.js-trip-main`);
 const $info = $main.querySelector(`.js-trip-info`);
 const $control = $main.querySelector(`.js-trip-controls`);
 const $controlHeaders = $control.querySelectorAll(`.js-trip-controls-heading`);
+const $bodyContainer = document.querySelector(`.js-page-body__container`);
+const menuComponent = new MenuComponent();
 
-renderComponent($controlHeaders[0], new MenuComponent(), RenderPosition.AFTER);
+renderComponent($controlHeaders[0], menuComponent, RenderPosition.AFTER);
 
 const pointModel = new PointModel();
 pointModel.setPoints(points);
+const statisticsComponent = new StatisticsComponent(pointModel);
 
 const filterController = new FilterController($controlHeaders[1], pointModel);
 filterController.render();
 
 renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
-
 const $event = document.querySelector(`.js-trip-events`);
+
+renderComponent($bodyContainer, statisticsComponent);
+statisticsComponent.hide();
 
 const tripController = new TripController($event, pointModel);
 
 tripController.render(points);
+
+menuComponent.setChangeHandler((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.TABLE:
+      menuComponent.setActiveItem(MenuItem.TABLE);
+      tripController.show();
+      statisticsComponent.hide();
+      break;
+    case MenuItem.STATS:
+      menuComponent.setActiveItem(MenuItem.STATS);
+      statisticsComponent.show();
+      tripController.hide();
+      break;
+  }
+});
 
 const cost = points
               .map(({ price }) => price)
