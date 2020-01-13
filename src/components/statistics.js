@@ -47,22 +47,22 @@ const generateChartsData = (points) => {
     }
   });
 
-  const moneyData = Object.entries(moneyStatistics)
-    .filter((item) => item[1] !== 0)
-    .sort((a, b) => b[1] - a[1]);
+  const moneyStatisticsEntries = Object.entries(moneyStatistics)
+    .filter(([, price]) => price !== 0)
+    .sort(([, priceA], [, priceB]) => priceB - priceA);
 
-  const transportData = Object.entries(transportStatistics)
-    .filter((item) => item[1] !== 0)
-    .sort((a, b) => b[1] - a[1]);
+  const transportStatisticsEntries = Object.entries(transportStatistics)
+    .filter(([, count]) => count !== 0)
+    .sort(([, countA], [, countB]) => countB - countA);
 
-  const timeData = Object.entries(timeStatistics)
-    .filter((item) => item[1] !== 0)
-    .sort((a, b) => b[1] - a[1]);
+  const timeStatisticsEntries = Object.entries(timeStatistics)
+    .filter(([, duration]) => duration !== 0)
+    .sort(([, durationA], [, durationB]) => durationB - durationA);
 
   return {
-    moneyData,
-    transportData,
-    timeData
+    moneyStatisticsEntries,
+    transportStatisticsEntries,
+    timeStatisticsEntries
   };
 };
 
@@ -200,26 +200,26 @@ class Statistics extends AbstractSmartComponent {
 
     this._resetCharts();
 
-    const { moneyData, transportData, timeData } = generateChartsData(
+    const { moneyStatisticsEntries, transportStatisticsEntries, timeStatisticsEntries } = generateChartsData(
         this._pointsModel.getPoints()
     );
 
     this._moneyChart = renderChart(
         moneyCtx,
-        moneyData,
+        moneyStatisticsEntries,
         LabelPrefix.EURO,
         TitleName.MONEY,
         true
     );
     this._transportChart = renderChart(
         transportCtx,
-        transportData,
+        transportStatisticsEntries,
         LabelPrefix.TIMES,
         TitleName.TRANSPORT
     );
     this._timeChart = renderChart(
         timeCtx,
-        timeData,
+        timeStatisticsEntries,
         LabelPrefix.HOURS,
         TitleName.TIME
     );
