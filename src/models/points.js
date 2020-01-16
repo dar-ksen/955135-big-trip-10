@@ -14,6 +14,10 @@ class PointsModel {
     return getPointsByFilter(this._points, this._activeFilterType);
   }
 
+  getTotalCost() {
+    return this._points.reduce((sum, point) => sum + point.price, 0);
+  }
+
   setPoints(points) {
     this._points = Array.from(points);
   }

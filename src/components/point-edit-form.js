@@ -1,6 +1,6 @@
 import flatpickr from "flatpickr";
 import AbstractSmartComponent from './abstract-smart-component';
-import { cities, transferTypes, activityTypes, types } from '../const';
+import { transferTypes, activityTypes, types } from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
@@ -13,7 +13,7 @@ const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
           </div>`;
 }).join(`\n`);
 
-const getCitiesTemplate = (cityList) => cityList.map((city) => `<option value="${city}"></option>`).join(`\n`);
+const getCitiesTemplate = (destinations) => destinations.map((destination) => `<option value="${destination.name}"></option>`).join(`\n`);
 
 const getPicturesTemplate = (pictures) => pictures
   .map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}"></img>`)
@@ -41,14 +41,14 @@ const getOfferTemplate = (offers) => {
 
 const editPointTemplate = (point, options = {}) => {
   const { city, pictures, description, price, offers, isFavored } = point;
-  const { type } = options;
+  const { type, destinations } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
   const typeOfActivityListTemplate = getTypeListTemplate(activityTypes, type);
 
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offers);
-  const citiesTemplate = getCitiesTemplate(cities);
+  const citiesTemplate = getCitiesTemplate(destinations);
 
   const favoredPoint = isFavored ? `checked` : ``;
   return (`
@@ -116,7 +116,7 @@ const editPointTemplate = (point, options = {}) => {
           </svg>
         </label>
 
-        <button class="event__rollup-btn" type="button">
+        <button class="event__rollup-btn js-event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
       </header>
@@ -156,23 +156,27 @@ const parseFormData = (formData, type) => ({
 });
 
 class PointEditForm extends AbstractSmartComponent {
-  constructor(point) {
+  constructor(point, destinationsModel, offersModel) {
     super();
 
     this._point = point;
     this._type = point.type;
+    this._destinationsModel = destinationsModel;
+    this._destinations = destinationsModel.getDestinations();
+    this._offersModel = offersModel;
 
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
     this._submitHandler = null;
     this._deleteButtonClickHandler = null;
+    this._closeButtonClickHandler = null;
 
     this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return editPointTemplate(this._point, { type: this._type });
+    return editPointTemplate(this._point, { type: this._type, destinations: this._destinations });
   }
 
   removeElement() {
@@ -207,6 +211,13 @@ class PointEditForm extends AbstractSmartComponent {
     this._deleteButtonClickHandler = handler;
   }
 
+  setCloseButtonClickHandler(handler) {
+    this.getElement().querySelector(`.js-event__rollup-btn`)
+      .addEventListener(`click`, handler);
+
+    this._closeButtonClickHandler = handler;
+  }
+
   rerender() {
     super.rerender();
 
@@ -230,6 +241,7 @@ class PointEditForm extends AbstractSmartComponent {
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
+    this.setCloseButtonClickHandler(this._closeButtonClickHandler);
     this._subscribeOnEvents();
   }
 

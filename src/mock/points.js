@@ -64,13 +64,13 @@ const generatePoint = () => {
   return {
     id: String(new Date() + Math.random()),
     type: getRandomArrayItem(types),
-    city: getRandomArrayItem(cities),
-    pictures: new Array(getRandomIntegerNumber(1, COUNT_PICTURE)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
-    description: getRandomDescription(),
     startTime,
     endTime,
-    price: getRandomIntegerNumber(50, 100),
+    city: getRandomArrayItem(cities),
+    description: getRandomDescription(),
+    pictures: new Array(getRandomIntegerNumber(1, COUNT_PICTURE)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
     offers: getOfferState(),
+    price: getRandomIntegerNumber(50, 100),
     isFavored: false,
   };
 };

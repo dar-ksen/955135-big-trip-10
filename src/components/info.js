@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component';
+import AbstractSmartComponent from './abstract-smart-component';
 
 import { formatDate } from '../utils/common';
 
@@ -36,15 +36,18 @@ const getInfoElement = (points) => {
   `);
 };
 
-class Info extends AbstractComponent {
-  constructor(points) {
+class Info extends AbstractSmartComponent {
+  constructor(pointsModel) {
     super();
-    this._points = points;
+    this._pointsModel = pointsModel;
   }
 
+  recoveryListeners() {}
+
   getTemplate() {
-    return getInfoElement(this._points);
+    return getInfoElement(this._pointsModel.getPoints());
   }
+
 }
 
 export { Info as default };

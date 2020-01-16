@@ -25,10 +25,12 @@ const EMPTY_POINT = {
 };
 
 class PointController {
-  constructor(container, onDataChange, onViewChange) {
+  constructor(container, destinationsModel, offersModel, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
+    this._destinationsModel = destinationsModel;
+    this._offersModel = offersModel;
 
     this._mode = Mode.DEFAULT;
     this._pointComponent = null;
@@ -44,7 +46,7 @@ class PointController {
 
     this._pointComponent = new PointComponent(point);
 
-    this._pointEditFormComponent = new PointEditFormComponent(point);
+    this._pointEditFormComponent = new PointEditFormComponent(point, this._destinationsModel, this._offersModel);
 
     this._pointComponent.setEditButtonClickHandler(() => {
       this._startPointEditing();
@@ -57,6 +59,8 @@ class PointController {
       this._onDataChange(this, point, { ...point, ...data });
       this._stopPointEditing();
     });
+
+    this._pointEditFormComponent.setCloseButtonClickHandler(() => this._stopPointEditing());
 
     this._pointEditFormComponent.setInputFavoriteChangeHandler(() => {
       this._onDataChange(this, point, { ...point, isFavored: !point.isFavored });

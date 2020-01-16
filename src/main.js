@@ -1,10 +1,11 @@
 import API from './api';
-import InfoComponent from './components/info';
 import MenuComponent, { MenuItem } from './components/menu';
 import StatisticsComponent from './components/statistics';
 import FilterController from './controllers/filter';
 
 import PointsModel from './models/points';
+import DestinationsModel from './models/destinations';
+import OffersModel from './models/offers';
 
 import TripController from './controllers/trip';
 
@@ -29,18 +30,19 @@ const menuComponent = new MenuComponent();
 renderComponent($controlHeaders[0], menuComponent, RenderPosition.AFTER);
 
 const pointsModel = new PointsModel();
+const destinationsModel = new DestinationsModel();
+const offersModel = new OffersModel();
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
 const filterController = new FilterController($controlHeaders[1], pointsModel);
 filterController.render();
 
-// renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
 const $event = document.querySelector(`.js-trip-events`);
 
 renderComponent($bodyContainer, statisticsComponent);
 statisticsComponent.hide();
 
-const tripController = new TripController($event, pointsModel);
+const tripController = new TripController($event, $info, pointsModel, destinationsModel, offersModel, api);
 
 menuComponent.setChangeHandler((menuItem) => {
   switch (menuItem) {
@@ -60,16 +62,18 @@ menuComponent.setChangeHandler((menuItem) => {
 api.getPoints()
   .then((points) => {
     pointsModel.setPoints(points);
-    tripController.render();
-    renderComponent($info, new InfoComponent(points), RenderPosition.AFTER_BEGIN);
-    console.log(pointsModel);
+  })
+  .then(()=> {
+    api.getDestinations()
+      .then((destinations) => {
+        destinationsModel.setDestinations(destinations);
+      });
+  })
+  .then(()=> {
+    api.getOffers()
+      .then((offers) => {
+        offersModel.setOffers(offers);
+        tripController.render();
+      });
   });
-/*
-const cost = points
-              .map(({ price }) => price)
-              .reduce((sum, price) => sum + price);
 
-const $cost = document.querySelector(`.js-trip-info__cost-value`);
-
-$cost.textContent = cost;
-*/
