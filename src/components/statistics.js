@@ -36,11 +36,11 @@ const generateChartsData = (points) => {
       moneyStatistics[point.type] = Number(point.price);
     }
 
-    if (point.type.id in transportStatistics) {
+    if (point.type in transportStatistics) {
       transportStatistics[point.type] += 1;
     }
 
-    if (point.type.id in timeStatistics) {
+    if (point.type in timeStatistics) {
       timeStatistics[point.type] += differenceInHours(point.endTime, point.startTime);
     } else {
       timeStatistics[point.type] = differenceInHours(point.endTime, point.startTime);
