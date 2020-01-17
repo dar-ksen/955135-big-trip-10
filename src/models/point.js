@@ -1,5 +1,3 @@
-import { types } from '../const';
-
 class PointModel {
   constructor(data) {
     this.id = data.id;
@@ -27,14 +25,14 @@ class PointModel {
       'id': this.id,
       'is_favorite': this.isFavored,
       'offers': this.offers,
-      'type': this.type.id
+      'type': this.type
     };
   }
 
   static parsePoint(data) {
     return new PointModel({
       id: data[`id`],
-      type: types.find(({ id }) => id === data[`type`]),
+      type: data[`type`],
       startTime: new Date(data[`date_from`]),
       endTime: new Date(data[`date_to`]),
       city: data[`destination`][`name`],

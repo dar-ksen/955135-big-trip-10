@@ -9,11 +9,7 @@ const Mode = {
 };
 
 const EMPTY_POINT = {
-  type: {
-    id: `taxi`,
-    title: `Taxi`,
-    placeholder: `to`
-  },
+  type: `taxi`,
   city: ``,
   pictures: [],
   description: ``,

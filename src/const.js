@@ -1,68 +1,49 @@
-const cities = [
-  `Amsterdam`,
-  `Geneva`,
-  `Barcelona`,
-  `Dresden`,
-  `Praha`
-];
-
-const transferTypes = [
-  {
-    id: `taxi`,
+const TYPE_ATTRIBUTES = {
+  'taxi': {
     title: `Taxi`,
-    placeholder: `to`
+    placeholder: `to`,
   },
-  {
-    id: `bus`,
+  'bus': {
     title: `Bus`,
-    placeholder: `to`
+    placeholder: `to`,
   },
-  {
-    id: `train`,
+  'train': {
     title: `Train`,
-    placeholder: `to`
+    placeholder: `to`,
   },
-  {
-    id: `ship`,
+  'ship': {
     title: `Ship`,
-    placeholder: `to`
+    placeholder: `to`,
   },
-  {
-    id: `transport`,
+  'transport': {
     title: `Transport`,
-    placeholder: `to`
+    placeholder: `to`,
   },
-  {
-    id: `drive`,
+  'drive': {
     title: `Drive`,
-    placeholder: `to`
+    placeholder: `to`,
   },
-  {
-    id: `flight`,
+  'flight': {
     title: `Flight`,
     placeholder: `to`
   },
-];
-
-const activityTypes = [
-  {
-    id: `check-in`,
+  'check-in': {
     title: `Check`,
     placeholder: `into`
   },
-  {
-    id: `sightseeing`,
+  'sightseeing': {
     title: `Sightseeing`,
     placeholder: `at`
   },
-  {
-    id: `restaurant`,
+  'restaurant': {
     title: `Restaurant`,
     placeholder: `at`
-  },
-];
+  }
+};
 
-const types = [...transferTypes, ...activityTypes];
+const transferTypes = [`taxi`, `bus`, `train`, `ship`, `transport`, `drive`, `flight`];
+
+const activityTypes = [`check-in`, `sightseeing`, `restaurant`];
 
 const offerList = {
   luggage:
@@ -101,10 +82,9 @@ const FilterType = {
 const HIDDEN_CLASS = `visually-hidden`;
 
 export {
-  cities,
+  TYPE_ATTRIBUTES,
   transferTypes,
   activityTypes,
-  types,
   offerList,
   FilterType,
   HIDDEN_CLASS

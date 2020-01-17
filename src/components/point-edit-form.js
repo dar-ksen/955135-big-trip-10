@@ -1,15 +1,15 @@
 import flatpickr from "flatpickr";
 import AbstractSmartComponent from './abstract-smart-component';
-import { transferTypes, activityTypes, types } from '../const';
+import { transferTypes, activityTypes, TYPE_ATTRIBUTES } from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 
 const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
-  const checkedType = activeType.id === type.id ? `checked` : ``;
+  const checkedType = activeType === type ? `checked` : ``;
   return `<div class="event__type-item">
-            <input id="event-type-${type.id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.id}" ${checkedType}>
-            <label class="event__type-label  event__type-label--${type.id}" for="event-type-${type.id}-1">${type.title}</label>
+            <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${checkedType}>
+            <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${TYPE_ATTRIBUTES[type].title}</label>
           </div>`;
 }).join(`\n`);
 
@@ -59,7 +59,7 @@ const editPointTemplate = (point, options = {}) => {
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
             <span class="visually-hidden">Choose event type</span>
-            <img class="event__type-icon" width="17" height="17" src="img/icons/${type.id}.png" alt="Event type icon">
+            <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
           </label>
           <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -78,7 +78,7 @@ const editPointTemplate = (point, options = {}) => {
 
         <div class="event__field-group  event__field-group--destination">
           <label class="event__label  event__type-output" for="event-destination-1">
-            ${type.title} ${type.placeholder}
+            ${TYPE_ATTRIBUTES[type].title} ${TYPE_ATTRIBUTES[type].placeholder}
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
           <datalist id="destination-list-1">
@@ -148,9 +148,8 @@ const editPointTemplate = (point, options = {}) => {
   `);
 };
 
-const parseFormData = (formData, type) => ({
-  type,
-  test: formData.get(`event-type`),
+const parseFormData = (formData) => ({
+  type: formData.get(`event-type`),
   city: formData.get(`event-destination`),
   startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
   endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
@@ -178,7 +177,7 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    const offersType = this._offersModel.getOffers().find(({ type }) => type === this._type.id).offers;
+    const offersType = this._offersModel.getOffers().find(({ type }) => type === this._type).offers;
     return editPointTemplate(this._point, { type: this._type, destinations: this._destinations, offersType });
   }
 
@@ -238,7 +237,7 @@ class PointEditForm extends AbstractSmartComponent {
     const form = this.getElement().querySelector(`.js-event--edit`);
     const formData = new FormData(form);
 
-    return parseFormData(formData, this._type);
+    return parseFormData(formData);
   }
 
   recoveryListeners() {
@@ -259,7 +258,7 @@ class PointEditForm extends AbstractSmartComponent {
       const value = $type
         .querySelector(`input:checked`)
         .value;
-      this._type = types.find(({ id }) => id === value);
+      this._type = value;
       this.rerender();
     });
 

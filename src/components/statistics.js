@@ -30,20 +30,20 @@ const generateChartsData = (points) => {
   const timeStatistics = {};
 
   points.forEach((point) => {
-    if (point.type.id in moneyStatistics) {
-      moneyStatistics[point.type.id] += Number(point.price);
+    if (point.type in moneyStatistics) {
+      moneyStatistics[point.type] += Number(point.price);
     } else {
-      moneyStatistics[point.type.id] = Number(point.price);
+      moneyStatistics[point.type] = Number(point.price);
     }
 
     if (point.type.id in transportStatistics) {
-      transportStatistics[point.type.id] += 1;
+      transportStatistics[point.type] += 1;
     }
 
     if (point.type.id in timeStatistics) {
-      timeStatistics[point.type.id] += differenceInHours(point.endTime, point.startTime);
+      timeStatistics[point.type] += differenceInHours(point.endTime, point.startTime);
     } else {
-      timeStatistics[point.type.id] = differenceInHours(point.endTime, point.startTime);
+      timeStatistics[point.type] = differenceInHours(point.endTime, point.startTime);
     }
   });
 

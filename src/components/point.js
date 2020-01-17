@@ -1,6 +1,7 @@
 import AbstractComponent from './abstract-component';
 
 import { formatTime, getTwoDigitFormat } from '../utils/common';
+import { TYPE_ATTRIBUTES } from '../const';
 
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
@@ -37,9 +38,9 @@ const getPointTemplate = ({ type, city, startTime, endTime, price, offers }) => 
   <li class="trip-events__item">
     <div class="event">
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/${type.id}.png" alt="Event type icon">
+        <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type.title} ${type.placeholder} ${city}</h3>
+      <h3 class="event__title">${TYPE_ATTRIBUTES[type].title} ${TYPE_ATTRIBUTES[type].placeholder} ${city}</h3>
 
       <div class="event__schedule">
         <p class="event__time">
