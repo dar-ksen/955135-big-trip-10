@@ -14,6 +14,18 @@ class DestinationsModel {
   setDestinations(destinations) {
     this._destinations = Array.from(destinations);
   }
+
+  getObject() {
+    const destinationsObject = {};
+    this._destinations.forEach((destination) => {
+      destinationsObject[destination.name] = {
+        description: destination.description,
+        pictures: destination.pictures,
+      };
+    });
+
+    return destinationsObject;
+  }
 }
 
 export {
