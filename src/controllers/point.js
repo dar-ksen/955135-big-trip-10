@@ -1,6 +1,8 @@
+import flatpickr from "flatpickr";
 import { renderComponent, replaceComponent, removeComponent, RenderPosition } from '../utils/render';
 import PointComponent from '../components/point';
 import PointEditFormComponent from '../components/point-edit-form';
+import PointModel from '../models/point';
 
 const Mode = {
   CREATING: `creating`,
@@ -51,15 +53,21 @@ class PointController {
 
     this._pointEditFormComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      const data = this._pointEditFormComponent.getData();
-      this._onDataChange(this, point, { ...point, ...data });
+
+      const formData = this._pointEditFormComponent.getData();
+      const data = this._parseFormData(formData);
+
+      this._onDataChange(this, point, data);
       this._stopPointEditing();
     });
 
     this._pointEditFormComponent.setCloseButtonClickHandler(() => this._stopPointEditing());
 
     this._pointEditFormComponent.setInputFavoriteChangeHandler(() => {
-      this._onDataChange(this, point, { ...point, isFavored: !point.isFavored });
+      const newPoint = PointModel.clone(point);
+      newPoint.isFavored = !newPoint.isFavored;
+
+      this._onDataChange(this, point, newPoint);
     });
 
     this._pointEditFormComponent.setDeleteButtonClickHandler(() => {
@@ -88,6 +96,34 @@ class PointController {
       }
     }
 
+  }
+
+  _parseFormData(formData) {
+    const type = formData.get(`event-type`);
+    const city = formData.get(`event-destination`);
+    const offersType = this._offersModel.getObject();
+    const destinations = this._destinationsModel.getObject();
+
+    const offers = [];
+    offersType[type].forEach((offer, index) => {
+      if (formData.get(`event-offer-${index}`)) {
+        offers.push(offer);
+      }
+    });
+
+    const isFavored = formData.get(`event-favorite`) ? true : false;
+
+    return new PointModel({
+      type,
+      startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
+      endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
+      city,
+      description: destinations[city].description,
+      pictures: destinations[city].pictures,
+      offers,
+      price: Number(formData.get(`event-price`)),
+      isFavored,
+    });
   }
 
   setDefaultView() {
