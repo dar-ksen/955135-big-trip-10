@@ -148,29 +148,6 @@ const editPointTemplate = (point, options = {}) => {
   `);
 };
 
-const parseFormData = (formData, offersType, destinations) => {
-  const type = formData.get(`event-type`);
-  const city = formData.get(`event-destination`);
-
-  const offers = [];
-  offersType[type].forEach((offer, index) => {
-    if (formData.get(`event-offer-${index}`)) {
-      offers.push(offer);
-    }
-  });
-
-  return {
-    type,
-    startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
-    endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
-    city,
-    description: destinations[city].description,
-    pictures: destinations[city].pictures,
-    offers,
-    price: Number(formData.get(`event-price`)),
-  };
-};
-
 class PointEditForm extends AbstractSmartComponent {
   constructor(point, destinationsModel, offersModel) {
     super();
@@ -251,9 +228,7 @@ class PointEditForm extends AbstractSmartComponent {
   getData() {
     const form = this.getElement().querySelector(`.js-event--edit`);
     const formData = new FormData(form);
-    const offersType = this._offersModel.getObject();
-
-    return parseFormData(formData, offersType, this._destinations);
+    return formData;
   }
 
   recoveryListeners() {
