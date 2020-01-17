@@ -10,6 +10,15 @@ class OffersModel {
   setOffers(offers) {
     this._offers = Array.from(offers);
   }
+
+  getObject() {
+    const offersObject = {};
+    this._offers.forEach((offer) => {
+      offersObject[offer.type] = offer.offers;
+    });
+
+    return offersObject;
+  }
 }
 
 export {
