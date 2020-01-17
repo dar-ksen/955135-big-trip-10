@@ -19,17 +19,17 @@ const getPicturesTemplate = (pictures) => pictures
   .map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}"></img>`)
   .join(`\n`);
 
-const getOfferTemplate = (offers) => {
-  /* const isChecked = (offer) => {
-    return offers[offer] ? `checked` : ``;
-  };
-  */
-  return offers.map((offer, index) => `
+const getOfferTemplate = (offersType, offers) => {
+  const isChecked = (offer) => offers
+    .map(({ title }) => title)
+    .indexOf(offer.title) !== -1 ? `checked` : ``;
+
+  return offersType.map((offer, index) => `
       <div class="event__offer-selector">
         <input class="event__offer-checkbox visually-hidden"
           id="event-offer-${index}"
           type="checkbox" name="event-offer-${index}"
-          checked }>
+          ${isChecked(offer)}>
         <label class="event__offer-label" for="event-offer-${index}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;
@@ -37,17 +37,18 @@ const getOfferTemplate = (offers) => {
         </label>
       </div>
   `).join(`\n`);
+
 };
 
 const editPointTemplate = (point, options = {}) => {
   const { city, pictures, description, price, offers, isFavored } = point;
-  const { type, destinations } = options;
+  const { type, destinations, offersType } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
   const typeOfActivityListTemplate = getTypeListTemplate(activityTypes, type);
 
   const picturesTemplate = getPicturesTemplate(pictures);
-  const offerTemplate = getOfferTemplate(offers);
+  const offerTemplate = getOfferTemplate(offersType, offers);
   const citiesTemplate = getCitiesTemplate(destinations);
 
   const favoredPoint = isFavored ? `checked` : ``;
@@ -152,7 +153,7 @@ const parseFormData = (formData, type) => ({
   city: formData.get(`event-destination`),
   startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
   endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
-  price: formData.get(`event-price`),
+  price: Number(formData.get(`event-price`)),
 });
 
 class PointEditForm extends AbstractSmartComponent {
@@ -176,7 +177,8 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return editPointTemplate(this._point, { type: this._type, destinations: this._destinations });
+    const offersType = this._offersModel.getOffers().find(({ type }) => type === this._type.id).offers;
+    return editPointTemplate(this._point, { type: this._type, destinations: this._destinations, offersType });
   }
 
   removeElement() {
