@@ -13,7 +13,7 @@ const getTypeListTemplate = (typeList, activeType) => typeList.map((type) => {
           </div>`;
 }).join(`\n`);
 
-const getCitiesTemplate = (destinations) => destinations.map((destination) => `<option value="${destination.name}"></option>`).join(`\n`);
+const getCitiesTemplate = (cities) => cities.map((city) => `<option value="${city}"></option>`).join(`\n`);
 
 const getPicturesTemplate = (pictures) => pictures
   .map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}"></img>`)
@@ -49,7 +49,7 @@ const editPointTemplate = (point, options = {}) => {
 
   const picturesTemplate = getPicturesTemplate(pictures);
   const offerTemplate = getOfferTemplate(offersType, offers);
-  const citiesTemplate = getCitiesTemplate(destinations);
+  const citiesTemplate = getCitiesTemplate(Object.keys(destinations));
 
   const favoredPoint = isFavored ? `checked` : ``;
   return (`
@@ -148,8 +148,9 @@ const editPointTemplate = (point, options = {}) => {
   `);
 };
 
-const parseFormData = (formData, offersType) => {
+const parseFormData = (formData, offersType, destinations) => {
   const type = formData.get(`event-type`);
+  const city = formData.get(`event-destination`);
 
   const offers = [];
   offersType[type].forEach((offer, index) => {
@@ -159,11 +160,13 @@ const parseFormData = (formData, offersType) => {
   });
 
   return {
-    offers,
     type,
-    city: formData.get(`event-destination`),
     startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
     endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
+    city,
+    description: destinations[city].description,
+    pictures: destinations[city].pictures,
+    offers,
     price: Number(formData.get(`event-price`)),
   };
 };
@@ -175,7 +178,7 @@ class PointEditForm extends AbstractSmartComponent {
     this._point = point;
     this._type = point.type;
     this._destinationsModel = destinationsModel;
-    this._destinations = destinationsModel.getDestinations();
+    this._destinations = destinationsModel.getObject();
     this._offersModel = offersModel;
 
     this._flatpickrStartDate = null;
@@ -250,7 +253,7 @@ class PointEditForm extends AbstractSmartComponent {
     const formData = new FormData(form);
     const offersType = this._offersModel.getObject();
 
-    return parseFormData(formData, offersType);
+    return parseFormData(formData, offersType, this._destinations);
   }
 
   recoveryListeners() {
@@ -276,9 +279,8 @@ class PointEditForm extends AbstractSmartComponent {
     });
 
     $city.addEventListener(`change`, () => {
-      const cityDestinations = this._destinations.find(({ name }) => name === $city.value);
-      $cityDescription.textContent = cityDestinations.description;
-      $cityPhotos.innerHTML = getPicturesTemplate(cityDestinations.pictures);
+      $cityDescription.textContent = this._destinations[$city.value].description;
+      $cityPhotos.innerHTML = getPicturesTemplate(this._destinations[$city.value].pictures);
     });
   }
 
