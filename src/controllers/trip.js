@@ -147,11 +147,13 @@ class TripController {
   }
 
   _editPoint(point, nextPoint) {
-    const isSuccess = this._pointsModel.updatePoint(point.id, nextPoint);
-
-    if (isSuccess) {
-      this._rerender();
-    }
+    this._api.updatePoint(point.id, nextPoint)
+      .then((pointModel) =>{
+        const isSuccess = this._pointsModel.updatePoint(point.id, pointModel);
+        if (isSuccess) {
+          this._rerender();
+        }
+      });
   }
 
   _removePoints() {
