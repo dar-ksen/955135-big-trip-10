@@ -3,6 +3,8 @@ import AbstractComponent from './abstract-component';
 import { formatTime, getTwoDigitFormat } from '../utils/common';
 import { TYPE_ATTRIBUTES } from '../const';
 
+const MAX_OFFERS_SHOW = 3;
+
 const getDuration = (start, end) => {
   const duration = Math.floor((end - start) / (60 * 1000));
   let minutes = getTwoDigitFormat(duration % 60);
@@ -22,7 +24,7 @@ const getDurationTemplate = (duration) => `
 ;
 
 const getOffersTemplate = (offers) => {
-  return offers.map((offer)=> `<li class="event__offer">
+  return offers.slice(0, MAX_OFFERS_SHOW).map((offer)=> `<li class="event__offer">
     <span class="event__offer-title">${offer.title}</span>
      &plus;
     &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
