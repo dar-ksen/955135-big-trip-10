@@ -50,14 +50,12 @@ const API = class {
 
   getDestinations() {
     return this._load({ url: `destinations` })
-      .then((response) => response.json())
-      .then();
+      .then((response) => response.json());
   }
 
   getOffers() {
     return this._load({ url: `offers` })
-      .then((response) => response.json())
-      .then();
+      .then((response) => response.json());
   }
 
   _load({ url, method = METHOD.GET, body = null, headers = new Headers() }) {
