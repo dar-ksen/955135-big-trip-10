@@ -150,6 +150,7 @@ const editPointTemplate = (point, options = {}) => {
 
 const parseFormData = (formData, type) => ({
   type,
+  test: formData.get(`event-type`),
   city: formData.get(`event-destination`),
   startTime: flatpickr.parseDate(formData.get(`event-start-time`), `d/m/y H:i`),
   endTime: flatpickr.parseDate(formData.get(`event-end-time`), `d/m/y H:i`),
@@ -249,13 +250,23 @@ class PointEditForm extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const $type = this.getElement().querySelector(`.js-event__type-list`);
+    const $city = this.getElement().querySelector(`.event__input--destination`);
+    const $cityDescription = this.getElement().querySelector(`.event__destination-description`);
+    const $cityPhotos = this.getElement().querySelector(`.event__photos-tape`);
 
+    // TODO fix it
     $type.addEventListener(`change`, () => {
       const value = $type
         .querySelector(`input:checked`)
         .value;
       this._type = types.find(({ id }) => id === value);
       this.rerender();
+    });
+
+    $city.addEventListener(`change`, () => {
+      const cityDestinations = this._destinations.find(({ name }) => name === $city.value);
+      $cityDescription.textContent = cityDestinations.description;
+      $cityPhotos.innerHTML = getPicturesTemplate(cityDestinations.pictures);
     });
   }
 
