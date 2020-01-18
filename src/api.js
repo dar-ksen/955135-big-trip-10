@@ -43,10 +43,9 @@ const API = class {
       .then(PointModel.parsePoint);
   }
 
-  /* :TODO
-    deletePoint(id) {
-    }
-  */
+  deletePoint(id) {
+    return this._load({ url: `points/${id}`, method: METHOD.DELETE });
+  }
 
   getDestinations() {
     return this._load({ url: `destinations` })
