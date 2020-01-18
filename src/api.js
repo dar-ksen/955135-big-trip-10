@@ -27,10 +27,16 @@ const API = class {
       .then(PointModel.parsePoints);
   }
 
-  /* :TODO
-    createPoint(point) {
-    }
-  */
+  createPoint(point) {
+    return this._load({
+      url: `points`,
+      method: METHOD.POST,
+      body: JSON.stringify(point.toRAW()),
+      headers: new Headers({ 'Content-Type': `application/json` })
+    })
+      .then((response) => response.json())
+      .then(PointModel.parsePoint);
+  }
 
   updatePoint(id, data) {
     return this._load({
