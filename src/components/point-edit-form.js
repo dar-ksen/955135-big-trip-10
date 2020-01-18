@@ -40,8 +40,21 @@ const getOfferTemplate = (offersType, offers) => {
 
 };
 
+const getPointStatus = (isNew) => isNew ? `` : `
+        <label class="event__favorite-btn" for="event-favorite-1">
+          <span class="visually-hidden">Add to favorite</span>
+          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+          </svg>
+        </label>
+
+        <button class="event__rollup-btn js-event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
+`;
+
 const editPointTemplate = (point, options = {}) => {
-  const { city, pictures, description, price, offers, isFavored } = point;
+  const { city, pictures, description, price, offers, isFavored, isNew = false } = point;
   const { type, destinations, offersType } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
@@ -52,6 +65,7 @@ const editPointTemplate = (point, options = {}) => {
   const citiesTemplate = getCitiesTemplate(Object.keys(destinations));
 
   const favoredPoint = isFavored ? `checked` : ``;
+  const pointStatus = getPointStatus(isNew, favoredPoint);
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit js-event--edit" action="#" method="post">
@@ -109,17 +123,7 @@ const editPointTemplate = (point, options = {}) => {
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn js-event__reset-btn" type="reset">Delete</button>
 
-        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
-        <label class="event__favorite-btn" for="event-favorite-1">
-          <span class="visually-hidden">Add to favorite</span>
-          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-          </svg>
-        </label>
-
-        <button class="event__rollup-btn js-event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
+        ${pointStatus}
       </header>
 
       <section class="event__details">
@@ -138,6 +142,7 @@ const editPointTemplate = (point, options = {}) => {
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
+            <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
               ${picturesTemplate}
             </div>
           </div>
@@ -206,10 +211,12 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   setCloseButtonClickHandler(handler) {
-    this.getElement().querySelector(`.js-event__rollup-btn`)
-      .addEventListener(`click`, handler);
+    const rollupBtn = this.getElement().querySelector(`.js-event__rollup-btn`);
+    if (rollupBtn) {
+      rollupBtn.addEventListener(`click`, handler);
+      this._closeButtonClickHandler = handler;
+    }
 
-    this._closeButtonClickHandler = handler;
   }
 
   rerender() {
