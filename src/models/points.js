@@ -15,7 +15,9 @@ class PointsModel {
   }
 
   getTotalCost() {
-    return this._points.reduce((sum, point) => sum + point.price, 0);
+    return this._points
+      .reduce((sum, point) => sum + point.price + point.offers
+        .reduce((sumOfferPrice, offer) => sumOfferPrice + offer.price, 0), 0);
   }
 
   setPoints(points) {
