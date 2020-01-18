@@ -139,14 +139,11 @@ class TripController {
   }
 
   _addPoint(pointController, nextPoint) {
-    this._pointsModel.addPoint(nextPoint);
-    pointController.render(nextPoint);
-
-    const destroyedPoint = this._showedPointControllers.pop();
-    destroyedPoint.destroy();
-
-    this._showedPointControllers = [pointController, ...this._showedPointControllers];
-    this._rerender();
+    this._api.createPoint(nextPoint)
+      .then((pointModel) => {
+        this._pointsModel.addPoint(pointModel);
+        this._rerender();
+      });
   }
 
   _editPoint(point, nextPoint) {
