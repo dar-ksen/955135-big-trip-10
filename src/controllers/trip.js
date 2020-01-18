@@ -172,6 +172,11 @@ class TripController {
     const isCreatingPoint = point === EMPTY_POINT;
     const isEditingPoint = point !== EMPTY_POINT && nextPoint !== null;
 
+    if (isCreatingPoint && isDeletingPoint) {
+      pointController.destroy();
+      return;
+    }
+
     if (isDeletingPoint) {
       this._deletePoint(point);
       this._rerenderHeaderInfo();

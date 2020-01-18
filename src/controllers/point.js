@@ -20,6 +20,7 @@ const EMPTY_POINT = {
   price: 0,
   offers: [],
   isFavored: false,
+  isNew: true,
 };
 
 class PointController {
@@ -133,9 +134,15 @@ class PointController {
   }
 
   destroy() {
-    removeComponent(this._pointEditFormComponent);
     removeComponent(this._pointComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+    if (this._mode === Mode.CREATING) {
+      const parentElement = this._pointEditFormComponent.getElement().parentElement.parentElement;
+      removeComponent(this._pointEditFormComponent);
+      parentElement.remove();
+      return;
+    }
+    removeComponent(this._pointEditFormComponent);
   }
 
   _startPointEditing() {
