@@ -131,8 +131,11 @@ class TripController {
   }
 
   _deletePoint(point) {
-    this._pointsModel.removePoint(point.id);
-    this._rerender();
+    this._api.deletePoint(point.id)
+      .then(() => {
+        this._pointsModel.removePoint(point.id);
+        this._rerender();
+      });
   }
 
   _addPoint(pointController, nextPoint) {
