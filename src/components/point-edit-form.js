@@ -51,7 +51,6 @@ const editPointTemplate = (point, options = {}) => {
   const offerTemplate = getOfferTemplate(offersType, offers);
   const citiesTemplate = getCitiesTemplate(Object.keys(destinations));
 
-  const favoredPoint = isFavored ? `checked` : ``;
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit js-event--edit" action="#" method="post">
@@ -110,7 +109,7 @@ const editPointTemplate = (point, options = {}) => {
         <button class="event__reset-btn js-event__reset-btn" type="reset">${isNew ? `Cancel` : `Delete` }</button>
 
         ${isNew ? `` : `
-        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
+        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavored && `checked`}>
         <label class="event__favorite-btn" for="event-favorite-1">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
