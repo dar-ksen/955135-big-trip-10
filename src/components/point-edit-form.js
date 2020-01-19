@@ -40,22 +40,9 @@ const getOfferTemplate = (offersType, offers) => {
 
 };
 
-const getPointStatus = (isNew) => isNew ? `` : `
-        <label class="event__favorite-btn" for="event-favorite-1">
-          <span class="visually-hidden">Add to favorite</span>
-          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-          </svg>
-        </label>
-
-        <button class="event__rollup-btn js-event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
-`;
-
 const editPointTemplate = (point, options = {}) => {
-  const { city, pictures, description, price, offers, isFavored, isNew = false } = point;
-  const { type, destinations, offersType } = options;
+  const { pictures, description, price, offers, isFavored, isNew = false } = point;
+  const { city, type, destinations, offersType } = options;
 
   const typeOfTransferListTemplate = getTypeListTemplate(transferTypes, type);
   const typeOfActivityListTemplate = getTypeListTemplate(activityTypes, type);
@@ -65,7 +52,6 @@ const editPointTemplate = (point, options = {}) => {
   const citiesTemplate = getCitiesTemplate(Object.keys(destinations));
 
   const favoredPoint = isFavored ? `checked` : ``;
-  const pointStatus = getPointStatus(isNew, favoredPoint);
   return (`
   <li class="trip-events__item">
     <form class="event  event--edit js-event--edit" action="#" method="post">
@@ -121,12 +107,23 @@ const editPointTemplate = (point, options = {}) => {
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn js-event__reset-btn" type="reset">Delete</button>
+        <button class="event__reset-btn js-event__reset-btn" type="reset">${isNew ? `Cancel` : `Delete` }</button>
 
-        ${pointStatus}
+        ${isNew ? `` : `
+        <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
+        <label class="event__favorite-btn" for="event-favorite-1">
+          <span class="visually-hidden">Add to favorite</span>
+          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+          </svg>
+        </label>
+
+        <button class="event__rollup-btn js-event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>`}
       </header>
 
-      <section class="event__details">
+     <section class="event__details ${isNew && !city ? `visually-hidden` : ``}">
 
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -142,7 +139,6 @@ const editPointTemplate = (point, options = {}) => {
 
           <div class="event__photos-container">
             <div class="event__photos-tape">
-            <input id="event-favorite-1" class="event__favorite-checkbox js-event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoredPoint}>
               ${picturesTemplate}
             </div>
           </div>
@@ -159,6 +155,7 @@ class PointEditForm extends AbstractSmartComponent {
 
     this._point = point;
     this._type = point.type;
+    this._city = point.city;
     this._destinationsModel = destinationsModel;
     this._destinations = destinationsModel.getObject();
     this._offersModel = offersModel;
@@ -175,7 +172,11 @@ class PointEditForm extends AbstractSmartComponent {
 
   getTemplate() {
     const offersType = this._offersModel.getObject()[this._type];
-    return editPointTemplate(this._point, { type: this._type, destinations: this._destinations, offersType });
+    return editPointTemplate(this._point, {
+      type: this._type,
+      city: this._city,
+      destinations: this._destinations,
+      offersType });
   }
 
   removeElement() {
@@ -198,9 +199,11 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   setInputFavoriteChangeHandler(handler) {
-    this.getElement()
-      .querySelector(`.js-event__favorite-checkbox`)
-        .addEventListener(`change`, handler);
+    if (!this._point.isNew) {
+      this.getElement()
+        .querySelector(`.js-event__favorite-checkbox`)
+          .addEventListener(`change`, handler);
+    }
   }
 
   setDeleteButtonClickHandler(handler) {
@@ -211,9 +214,9 @@ class PointEditForm extends AbstractSmartComponent {
   }
 
   setCloseButtonClickHandler(handler) {
-    const rollupBtn = this.getElement().querySelector(`.js-event__rollup-btn`);
-    if (rollupBtn) {
-      rollupBtn.addEventListener(`click`, handler);
+    if (!this._point.isNew) {
+      this.getElement().querySelector(`.js-event__rollup-btn`)
+        .addEventListener(`click`, handler);
       this._closeButtonClickHandler = handler;
     }
 
@@ -261,8 +264,13 @@ class PointEditForm extends AbstractSmartComponent {
     });
 
     $city.addEventListener(`change`, () => {
-      $cityDescription.textContent = this._destinations[$city.value].description;
-      $cityPhotos.innerHTML = getPicturesTemplate(this._destinations[$city.value].pictures);
+      this._city = $city.value;
+      if (this._point.isNew) {
+        this.rerender();
+      } else {
+        $cityDescription.textContent = this._destinations[$city.value].description;
+        $cityPhotos.innerHTML = getPicturesTemplate(this._destinations[$city.value].pictures);
+      }
     });
   }
 
