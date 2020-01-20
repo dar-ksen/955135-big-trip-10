@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component';
-import { upperFirstCharacter } from '../utils/common';
+import { toCapitalizeFirstCharacter } from '../utils/common';
 
 const ACTIVE_MENU_CLASS = `trip-tabs__btn--active`;
 
@@ -22,7 +22,7 @@ const menuItems = [
 const getMenuItemsTemplate = () => menuItems
   .map((item) => `<a class="trip-tabs__btn js-trip-tabs__btn ${
     item.active ? ACTIVE_MENU_CLASS : ``
-  }" href="#" id="${item.name}">${upperFirstCharacter(item.name)}</a>`
+  }" href="#" id="${item.name}">${toCapitalizeFirstCharacter(item.name)}</a>`
   ).join(``);
 
 const getMenuTemplate = () => {

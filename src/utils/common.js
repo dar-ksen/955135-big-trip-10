@@ -10,7 +10,7 @@ const isFirst = (index) => index === 0;
 
 const getDate = (date) => new Intl.DateTimeFormat(`en-US`).format(date);
 
-const upperFirstCharacter = (str) => str[0].toUpperCase() + str.slice(1);
+const toCapitalizeFirstCharacter = (str) => str[0].toUpperCase() + str.slice(1);
 
 export {
   getTwoDigitFormat,
@@ -18,5 +18,5 @@ export {
   formatDate,
   isFirst,
   getDate,
-  upperFirstCharacter,
+  toCapitalizeFirstCharacter,
 };
