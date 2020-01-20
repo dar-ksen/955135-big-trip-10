@@ -122,7 +122,7 @@ const editPointTemplate = (point, options = {}) => {
         </button>`}
       </header>
 
-     <section class="event__details ${isNew && !city ? `visually-hidden` : ``}">
+     <section class="event__details ${!city ? `visually-hidden` : ``}">
 
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -294,7 +294,8 @@ class PointEditForm extends AbstractSmartComponent {
         startTimeInput,
         {
           ...flatpickrOptions,
-          defaultDate: this._point.startTime
+          defaultDate: this._point.startTime,
+          maxDate: this._point.endTime,
         }
     );
 
@@ -303,7 +304,7 @@ class PointEditForm extends AbstractSmartComponent {
         {
           ...flatpickrOptions,
           defaultDate: this._point.endTime,
-          minDate: this._point.startTime
+          minDate: new Date(),
         }
     );
 
