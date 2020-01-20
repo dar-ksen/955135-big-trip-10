@@ -16,8 +16,8 @@ const checkStatus = (response) => {
 };
 
 const API = class {
-  constructor(endPoint, authorization) {
-    this._endPoint = endPoint;
+  constructor(apiOrigin, authorization) {
+    this._apiOrigin = apiOrigin;
     this._authorization = authorization;
   }
 
@@ -66,7 +66,7 @@ const API = class {
   _load({ url, method = METHOD.GET, body = null, headers = new Headers() }) {
     headers.append(`Authorization`, this._authorization);
 
-    return fetch(`${this._endPoint}/${url}`, { method, body, headers })
+    return fetch(`${this._apiOrigin}/${url}`, { method, body, headers })
       .then(checkStatus)
       .catch((err) => {
         throw err;

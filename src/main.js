@@ -12,14 +12,14 @@ import TripController from './controllers/trip';
 import { renderComponent, RenderPosition } from './utils/render';
 
 const AUTHORIZATION = `Basic eo0w590ik29889a`;
-const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
+const API_ORIGIN = `https://htmlacademy-es-10.appspot.com/big-trip`;
 
 const addButton = document.querySelector(`.js-trip-main__event-add-btn`);
 addButton.addEventListener(`click`, () => {
   tripController.createPoint();
 });
 
-const api = new API(END_POINT, AUTHORIZATION);
+const api = new API(API_ORIGIN, AUTHORIZATION);
 const $main = document.querySelector(`.js-trip-main`);
 const $info = $main.querySelector(`.js-trip-info`);
 const $control = $main.querySelector(`.js-trip-controls`);

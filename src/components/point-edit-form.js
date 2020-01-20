@@ -20,9 +20,7 @@ const getPicturesTemplate = (pictures) => pictures
   .join(`\n`);
 
 const getOfferTemplate = (offersType, offers) => {
-  const getCheckedAttribute = (offer) => offers
-    .map(({ title }) => title)
-    .indexOf(offer.title) !== -1 ? `checked` : ``;
+  const getCheckedAttribute = (offer) => offers.find((o) => o.title === offer.title) ? `checked` : ``;
 
   return offersType.map((offer, index) => `
       <div class="event__offer-selector">
@@ -253,7 +251,7 @@ class PointEditForm extends AbstractSmartComponent {
     const $cityDescription = this.getElement().querySelector(`.event__destination-description`);
     const $cityPhotos = this.getElement().querySelector(`.event__photos-tape`);
 
-    // TODO fix it
+    // TODO: Fix change event on input.
     $type.addEventListener(`change`, () => {
       const value = $type
         .querySelector(`input:checked`)
