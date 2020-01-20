@@ -20,7 +20,7 @@ const getPicturesTemplate = (pictures) => pictures
   .join(`\n`);
 
 const getOfferTemplate = (offersType, offers) => {
-  const isChecked = (offer) => offers
+  const getCheckedAttribute = (offer) => offers
     .map(({ title }) => title)
     .indexOf(offer.title) !== -1 ? `checked` : ``;
 
@@ -29,7 +29,7 @@ const getOfferTemplate = (offersType, offers) => {
         <input class="event__offer-checkbox visually-hidden"
           id="event-offer-${index}"
           type="checkbox" name="event-offer-${index}"
-          ${isChecked(offer)}>
+          ${getCheckedAttribute(offer)}>
         <label class="event__offer-label" for="event-offer-${index}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;
